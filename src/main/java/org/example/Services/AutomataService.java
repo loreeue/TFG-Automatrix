@@ -9,10 +9,7 @@ import automata.turing.TuringMachine;
 import file.XMLCodec;
 import org.springframework.stereotype.Service;
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class AutomataService {
@@ -80,17 +77,17 @@ public class AutomataService {
     }
 
     public boolean areEquivalent(FiniteStateAutomaton afd1, FiniteStateAutomaton afd2) {
-        // 1. Comprobar si tienen el mismo número de estados
+        // 1. Check if they have the same number of states
         if (afd1.getStates().length != afd2.getStates().length) {
             return false;
         }
 
-        // 2. Comprobar si tienen el mismo número de transiciones
+        // 2. Check if they have the same number of transitions
         if (afd1.getTransitions().length != afd2.getTransitions().length) {
             return false;
         }
 
-        // 3. Comprobar si tienen los mismos estados de aceptación
+        // 3. Check if they have the same states where it accepts
         State[] acceptingStates1 = afd1.getFinalStates();
         State[] acceptingStates2 = afd2.getFinalStates();
 
@@ -101,22 +98,59 @@ public class AutomataService {
         Set<State> acceptingStatesSet1 = new HashSet<>(Arrays.asList(acceptingStates1));
         Set<State> acceptingStatesSet2 = new HashSet<>(Arrays.asList(acceptingStates2));
 
-        if (!acceptingStatesSet1.equals(acceptingStatesSet2)) {
+        if (!stateEquals(acceptingStatesSet1, acceptingStatesSet2)) {
             return false;
         }
 
-        // 4. Comprobar si tienen las mismas transiciones
+        // 4. Check if they have the same transitions
         Transition[] transitions1 = afd1.getTransitions();
         Transition[] transitions2 = afd2.getTransitions();
 
         Set<Transition> transitionSet1 = new HashSet<>(Arrays.asList(transitions1));
         Set<Transition> transitionSet2 = new HashSet<>(Arrays.asList(transitions2));
 
-        if (!transitionSet1.equals(transitionSet2)) {
+        if (!transitionEquals(transitionSet1, transitionSet2)) {
             return false;
         }
+        return true;
+    }
 
-        // Si todas las comprobaciones pasaron, los AFDs son equivalentes
+    public boolean transitionEquals(Set<Transition> t1, Set<Transition> t2) {
+        if (t1.size() != t2.size()) return false;
+
+        for (Transition transition1 : t1) {
+            boolean foundEqualState = false;
+            for (Transition transition2 : t2) {
+                if (transition1.getFromState().getID() == transition2.getFromState().getID() &&
+                        transition1.getToState().getID() == transition2.getToState().getID()) {
+                    foundEqualState = true;
+                    break;
+                }
+            }
+            if (!foundEqualState) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean stateEquals(Set<State> s1, Set<State> s2) {
+        if (s1.size() != s2.size()) return false;
+
+        for (State state1 : s1) {
+            boolean foundEqualState = false;
+            for (State state2 : s2) {
+                if (state1.getID() == state2.getID() &&
+                        Objects.equals(state1.getLabel(), state2.getLabel()) &&
+                        Objects.equals(state1.getName(), state2.getName())) {
+                    foundEqualState = true;
+                    break;
+                }
+            }
+            if (!foundEqualState) {
+                return false;
+            }
+        }
         return true;
     }
 }

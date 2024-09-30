@@ -31,7 +31,7 @@ public class AutomataTransformerRESTController {
             // Save the resulting DFA to a file
             String outputPath = "/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github/src/main/java/org/example/Files_Output/afd.jff";
             File outputFile = new File(outputPath);
-            // Guardar el DFA resultante en la ruta especificada
+            // Save the resulting DFA to the specified path
             automataService.saveAFND(afd, outputFile.getAbsolutePath());
             return "DFA successfully created and saved at: " + outputFile.getAbsolutePath();
         } catch (Exception e) {
@@ -53,7 +53,7 @@ public class AutomataTransformerRESTController {
             // Save the resulting minimized AFD to a file
             String outputPath = "/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github/src/main/java/org/example/Files_Output/afd_minimized.jff";
             File outputFile = new File(outputPath);
-            // Guardar el AFD minimizado en la ruta especificada
+            // Save the resulting DFA to the specified path
             automataService.saveAFND(minimizedAfd, outputFile.getAbsolutePath());
             return "Minimized AFD successfully created and saved at: " + outputFile.getAbsolutePath();
         } catch (Exception e) {
@@ -61,5 +61,4 @@ public class AutomataTransformerRESTController {
             return "Error: " + e.getMessage();
         }
     }
-
 }
