@@ -25,7 +25,7 @@ public class AutomataSimulatorRESTController {
             FiniteStateAutomaton automaton = automataService.loadAFD(tempFile.getAbsolutePath());
             // Simulate the input
             boolean result = automataService.simulateAFD(automaton, input);
-            return result ? "Accepted" : "Rejected";
+            return result ? "Accepted" : "No accepted";
         } catch (Exception e) {
             e.printStackTrace();
             return "Error: " + e.getMessage();
@@ -41,7 +41,7 @@ public class AutomataSimulatorRESTController {
             FiniteStateAutomaton automaton = automataService.loadAFND(tempFile.getAbsolutePath());
             // Simulate the input
             boolean result = automataService.simulateAFND(automaton, input);
-            return result ? "Accepted" : "Rejected";
+            return result ? "Accepted" : "No accepted";
         } catch (Exception e) {
             e.printStackTrace();
             return "Error: " + e.getMessage();
@@ -57,7 +57,7 @@ public class AutomataSimulatorRESTController {
             TuringMachine turingMachine = automataService.loadTuringMachine(tempFile.getAbsolutePath());
             // Simulate the input
             boolean result = automataService.simulateTuringMachine(turingMachine, input);
-            return result ? "Accepted" : "Rejected";
+            return result ? "Accepted" : "No accepted";
         } catch (Exception e) {
             e.printStackTrace();
             return "Error: " + e.getMessage();
@@ -73,7 +73,7 @@ public class AutomataSimulatorRESTController {
             PushdownAutomaton automaton = automataService.loadAP(tempFile.getAbsolutePath());
             // Simulate the input
             boolean result = automataService.simulateAP(automaton, input);
-            return result ? "Accepted" : "Rejected";
+            return result ? "Accepted" : "No accepted";
         } catch (Exception e) {
             e.printStackTrace();
             return "Error: " + e.getMessage();
