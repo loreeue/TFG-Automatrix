@@ -1,6 +1,5 @@
 package org.example.Services;
 
-import automata.*;
 import automata.fsa.FiniteStateAutomaton;
 import automata.fsa.Minimizer;
 import automata.fsa.NFAToDFA;
@@ -10,6 +9,7 @@ import file.XMLCodec;
 import org.springframework.stereotype.Service;
 import java.io.File;
 import java.util.*;
+import automata.*;
 
 @Service
 public class AutomataService {

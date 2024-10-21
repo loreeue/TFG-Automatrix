@@ -38,29 +38,8 @@
 			<from>3</from>
 			<to>3</to>
 			<read>1</read>
-			<pop>S</pop>
-			<push>S</push>
-		</transition>
-		<transition>
-			<from>3</from>
-			<to>3</to>
-			<read/>
-			<pop>S</pop>
-			<push/>
-		</transition>
-		<transition>
-			<from>1</from>
-			<to>2</to>
-			<read>b</read>
-			<pop>S</pop>
-			<push>AS</push>
-		</transition>
-		<transition>
-			<from>1</from>
-			<to>2</to>
-			<read>b</read>
-			<pop>A</pop>
-			<push>AA</push>
+			<pop>Z</pop>
+			<push>Z</push>
 		</transition>
 		<transition>
 			<from>2</from>
@@ -77,6 +56,27 @@
 			<push>A</push>
 		</transition>
 		<transition>
+			<from>0</from>
+			<to>1</to>
+			<read>a</read>
+			<pop>Z</pop>
+			<push>Z</push>
+		</transition>
+		<transition>
+			<from>3</from>
+			<to>3</to>
+			<read/>
+			<pop>Z</pop>
+			<push/>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>2</to>
+			<read>b</read>
+			<pop>A</pop>
+			<push>AA</push>
+		</transition>
+		<transition>
 			<from>2</from>
 			<to>1</to>
 			<read>a</read>
@@ -84,18 +84,18 @@
 			<push>A</push>
 		</transition>
 		<transition>
-			<from>0</from>
-			<to>1</to>
-			<read>a</read>
-			<pop>S</pop>
-			<push>S</push>
+			<from>1</from>
+			<to>2</to>
+			<read>b</read>
+			<pop>Z</pop>
+			<push>AZ</push>
 		</transition>
 		<transition>
 			<from>0</from>
 			<to>3</to>
 			<read/>
-			<pop>S</pop>
-			<push>S</push>
+			<pop>Z</pop>
+			<push>Z</push>
 		</transition>
 	</automaton>
 </structure>
