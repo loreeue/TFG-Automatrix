@@ -115,6 +115,45 @@ public class AutomataService {
         return true;
     }
 
+    public boolean areEquivalent(Automaton afd1, Automaton afd2) {
+        // 1. Check if they have the same number of states
+        if (afd1.getStates().length != afd2.getStates().length) {
+            return false;
+        }
+
+        // 2. Check if they have the same number of transitions
+        if (afd1.getTransitions().length != afd2.getTransitions().length) {
+            return false;
+        }
+
+        // 3. Check if they have the same states where it accepts
+        State[] acceptingStates1 = afd1.getFinalStates();
+        State[] acceptingStates2 = afd2.getFinalStates();
+
+        if (acceptingStates1.length != acceptingStates2.length) {
+            return false;
+        }
+
+        Set<State> acceptingStatesSet1 = new HashSet<>(Arrays.asList(acceptingStates1));
+        Set<State> acceptingStatesSet2 = new HashSet<>(Arrays.asList(acceptingStates2));
+
+        if (!stateEquals(acceptingStatesSet1, acceptingStatesSet2)) {
+            return false;
+        }
+
+        // 4. Check if they have the same transitions
+        Transition[] transitions1 = afd1.getTransitions();
+        Transition[] transitions2 = afd2.getTransitions();
+
+        Set<Transition> transitionSet1 = new HashSet<>(Arrays.asList(transitions1));
+        Set<Transition> transitionSet2 = new HashSet<>(Arrays.asList(transitions2));
+
+        if (!transitionEquals(transitionSet1, transitionSet2)) {
+            return false;
+        }
+        return true;
+    }
+
     public boolean transitionEquals(Set<Transition> t1, Set<Transition> t2) {
         if (t1.size() != t2.size()) return false;
 
