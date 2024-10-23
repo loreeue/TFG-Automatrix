@@ -1,6 +1,7 @@
 package org.example.Services;
 
 import automata.Automaton;
+import automata.State;
 import automata.fsa.Minimizer;
 import grammar.Grammar;
 import grammar.GrammarToAutomatonConverter;
@@ -47,6 +48,16 @@ public class GrammarService {
             GrammarToAutomatonConverter converter = new RightLinearGrammarToFSAConverter();
             Automaton automaton1 = converter.convertToAutomaton(g1);
             Automaton automaton2 = converter.convertToAutomaton(g2);
+
+            // If there arent inicial state, we put it to the first node of the list
+            if (automaton1.getInitialState() == null) {
+                State initialState = automaton1.getStates()[0];
+                automaton1.setInitialState(initialState);
+            }
+            if (automaton2.getInitialState() == null) {
+                State initialState = automaton2.getStates()[0];
+                automaton2.setInitialState(initialState);
+            }
 
             // Minimize both automata
             Minimizer min = new Minimizer();
