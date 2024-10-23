@@ -4,8 +4,10 @@ import automata.fsa.FiniteStateAutomaton;
 import automata.fsa.Minimizer;
 import automata.fsa.NFAToDFA;
 import automata.pda.PushdownAutomaton;
+import automata.pda.PDAToCFGConverter;
 import automata.turing.TuringMachine;
 import file.XMLCodec;
+import grammar.cfg.ContextFreeGrammar;
 import org.springframework.stereotype.Service;
 import java.io.File;
 import java.util.*;
@@ -191,5 +193,16 @@ public class AutomataService {
             }
         }
         return true;
+    }
+
+    public String convertAPToGIC(PushdownAutomaton automaton) {
+        PDAToCFGConverter converter = new PDAToCFGConverter();
+        ContextFreeGrammar cfg = converter.convertToContextFreeGrammar(automaton);
+        return cfg.toString();
+    }
+
+    public void saveAP(Automaton ap, String filePath) {
+        XMLCodec codec = new XMLCodec();
+        codec.encode(ap, new File(filePath), new HashMap<>());
     }
 }

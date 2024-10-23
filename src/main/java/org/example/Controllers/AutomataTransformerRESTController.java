@@ -1,14 +1,16 @@
 package org.example.Controllers;
 
+import automata.Automaton;
 import automata.fsa.FiniteStateAutomaton;
+import automata.pda.PushdownAutomaton;
+import grammar.Grammar;
+import grammar.cfg.CFGToPDALLConverter;
+import org.example.Entities.Grammar2Request;
 import org.example.Services.AutomataService;
+import org.example.Services.GrammarService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 
 @RestController
@@ -17,6 +19,9 @@ public class AutomataTransformerRESTController {
 
     @Autowired
     private AutomataService automataService;
+
+    @Autowired
+    private GrammarService grammarService;
 
     @PostMapping("/afnd-to-afd")
     public String convertAfndToAfd(@RequestParam("file") MultipartFile file) {
@@ -56,6 +61,38 @@ public class AutomataTransformerRESTController {
             // Save the resulting DFA to the specified path
             automataService.saveAFND(minimizedAfd, outputFile.getAbsolutePath());
             return "Minimized AFD successfully created and saved at: " + outputFile.getAbsolutePath();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error: " + e.getMessage();
+        }
+    }
+
+    @PostMapping("/ap-to-gic")
+    public String convertApToGic(@RequestParam("file") MultipartFile file) {
+        try {
+            // Convert the MultipartFile to a file and load the pushdown automaton
+            File tempFile = File.createTempFile("pda", ".jff");
+            file.transferTo(tempFile);
+            PushdownAutomaton automaton = automataService.loadAP(tempFile.getAbsolutePath());
+            // Simulate the input
+            return automataService.convertAPToGIC(automaton);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error: " + e.getMessage();
+        }
+    }
+
+    @PostMapping("/gic-to-ap")
+    public String convertGicToAp(@RequestBody Grammar2Request request) {
+        try {
+            Grammar grammar = grammarService.parseGrammar(request.getGrammar());
+            CFGToPDALLConverter converter = new CFGToPDALLConverter();
+            Automaton ap = converter.convertToAutomaton(grammar);
+            String outputPath = "/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github/src/main/java/org/example/Files_Output/gic-ap.jff";
+            File outputFile = new File(outputPath);
+            // Save the resulting AP to the specified path
+            automataService.saveAP(ap, outputFile.getAbsolutePath());
+            return "Saved new AP at: " + outputFile.getAbsolutePath();
         } catch (Exception e) {
             e.printStackTrace();
             return "Error: " + e.getMessage();
