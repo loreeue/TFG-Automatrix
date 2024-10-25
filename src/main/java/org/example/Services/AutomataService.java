@@ -3,10 +3,15 @@ package org.example.Services;
 import automata.fsa.FiniteStateAutomaton;
 import automata.fsa.Minimizer;
 import automata.fsa.NFAToDFA;
+import automata.pda.PDATransition;
 import automata.pda.PushdownAutomaton;
 import automata.pda.PDAToCFGConverter;
 import automata.turing.TuringMachine;
 import file.XMLCodec;
+import grammar.Grammar;
+import grammar.GrammarToAutomatonConverter;
+import grammar.Production;
+import grammar.cfg.CFGToPDALLConverter;
 import grammar.cfg.ContextFreeGrammar;
 import org.springframework.stereotype.Service;
 import java.io.File;
@@ -204,5 +209,26 @@ public class AutomataService {
     public void saveAP(Automaton ap, String filePath) {
         XMLCodec codec = new XMLCodec();
         codec.encode(ap, new File(filePath), new HashMap<>());
+    }
+
+    // Other version of GrammarToAutomatonConverter -> convertToAutomaton. For AP
+    public Automaton convertToAutomaton(Grammar grammar) {
+        GrammarToAutomatonConverter converter = new CFGToPDALLConverter();
+        ArrayList<Transition> list = new ArrayList<>();
+
+        PushdownAutomaton automaton = new PushdownAutomaton();
+        converter.createStatesForConversion(grammar, automaton);
+        Production[] productions = grammar.getProductions();
+
+        for (Production production : productions) {
+            PDATransition transition = (PDATransition) converter.getTransitionForProduction(production);
+            list.add(transition);
+        }
+
+        for (Transition transition : list) {
+            automaton.addTransition(transition);
+        }
+
+        return automaton;
     }
 }

@@ -86,8 +86,7 @@ public class AutomataTransformerRESTController {
     public String convertGicToAp(@RequestBody Grammar2Request request) {
         try {
             Grammar grammar = grammarService.parseGrammar(request.getGrammar());
-            CFGToPDALLConverter converter = new CFGToPDALLConverter();
-            Automaton ap = converter.convertToAutomaton(grammar);
+            Automaton ap = automataService.convertToAutomaton(grammar);
             String outputPath = "/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github/src/main/java/org/example/Files_Output/gic-ap.jff";
             File outputFile = new File(outputPath);
             // Save the resulting AP to the specified path

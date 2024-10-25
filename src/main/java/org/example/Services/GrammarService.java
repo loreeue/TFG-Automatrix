@@ -39,6 +39,7 @@ public class GrammarService {
             Production production = new Production(lhs, rhs);
             grammar.addProduction(production);
         }
+        grammar.setStartVariable(grammar.getVariables()[0]);
         return grammar;
     }
 
