@@ -97,4 +97,15 @@ public class AutomataTransformerRESTController {
             return "Error: " + e.getMessage();
         }
     }
+
+    @PostMapping("/gic-to-chomsky")
+    public String convertGicToChomsky(@RequestBody Grammar2Request request) {
+        try {
+            Grammar grammar = grammarService.parseGrammar(request.getGrammar());
+            return grammarService.transformToChomsky(grammar);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error: " + e.getMessage();
+        }
+    }
 }

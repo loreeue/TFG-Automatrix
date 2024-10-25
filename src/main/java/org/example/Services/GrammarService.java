@@ -8,6 +8,9 @@ import grammar.GrammarToAutomatonConverter;
 import grammar.Production;
 import grammar.reg.RegularGrammar;
 import grammar.reg.RightLinearGrammarToFSAConverter;
+import gui.environment.GrammarEnvironment;
+import gui.grammar.GrammarInputPane;
+import gui.grammar.transform.ChomskyPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Map;
@@ -72,5 +75,15 @@ public class GrammarService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public String transformToChomsky(Grammar grammar) {
+        GrammarInputPane inputPane = new GrammarInputPane(new RegularGrammar());
+        GrammarEnvironment environment = new GrammarEnvironment(inputPane);
+        ChomskyPane chomskyPane = new ChomskyPane(environment, grammar);
+
+        // Obtain new grammar
+        Grammar cnfGrammar = chomskyPane.getGrammar();
+        return cnfGrammar.toString();
     }
 }
