@@ -1,5 +1,6 @@
 package org.example.Services;
 
+import automata.fsa.FSAToRegularExpressionConverter;
 import automata.fsa.FiniteStateAutomaton;
 import automata.fsa.Minimizer;
 import automata.fsa.NFAToDFA;
@@ -13,10 +14,12 @@ import grammar.GrammarToAutomatonConverter;
 import grammar.Production;
 import grammar.cfg.CFGToPDALLConverter;
 import grammar.cfg.ContextFreeGrammar;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.io.File;
 import java.util.*;
 import automata.*;
+import regular.RegularExpression;
 
 @Service
 public class AutomataService {
@@ -230,5 +233,10 @@ public class AutomataService {
         }
 
         return automaton;
+    }
+
+    public String convertAFDToER(FiniteStateAutomaton afd) {
+        String er = FSAToRegularExpressionConverter.convertToRegularExpression(afd);
+        return er;
     }
 }

@@ -1,16 +1,21 @@
 package org.example.Controllers;
 
 import automata.Automaton;
+import automata.fsa.FSAToRegularExpressionConverter;
 import automata.fsa.FiniteStateAutomaton;
 import automata.pda.PushdownAutomaton;
 import grammar.Grammar;
 import grammar.cfg.CFGToPDALLConverter;
+import org.example.Entities.AutomatonUtils;
 import org.example.Entities.Grammar2Request;
 import org.example.Services.AutomataService;
 import org.example.Services.GrammarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import regular.RegularExpression;
+
 import java.io.File;
 
 @RestController
@@ -103,6 +108,26 @@ public class AutomataTransformerRESTController {
         try {
             Grammar grammar = grammarService.parseGrammar(request.getGrammar());
             return grammarService.transformToChomsky(grammar);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error: " + e.getMessage();
+        }
+    }
+
+    @PostMapping("/afd-to-er")
+    public String convertAfdToEr(@RequestParam("file") MultipartFile file) {
+        try {
+            File tempFile = File.createTempFile("afd", ".jff");
+            file.transferTo(tempFile);
+            // Load the NFA
+            FiniteStateAutomaton afd = automataService.loadAFND(tempFile.getAbsolutePath());
+            // Auxiliar comprobation
+            AutomatonUtils.ensureCompleteTransitions(afd);
+            // Convert NFA to ER
+            if (!FSAToRegularExpressionConverter.isConvertable(afd)) {
+                return "El autómata no se puede convertir a una expresión regular.";
+            }
+            return automataService.convertAFDToER(afd);
         } catch (Exception e) {
             e.printStackTrace();
             return "Error: " + e.getMessage();
