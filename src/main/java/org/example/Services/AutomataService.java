@@ -14,6 +14,7 @@ import grammar.GrammarToAutomatonConverter;
 import grammar.Production;
 import grammar.cfg.CFGToPDALLConverter;
 import grammar.cfg.ContextFreeGrammar;
+import grammar.reg.RightLinearGrammarToFSAConverter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.io.File;
@@ -238,5 +239,19 @@ public class AutomataService {
     public String convertAFDToER(FiniteStateAutomaton afd) {
         String er = FSAToRegularExpressionConverter.convertToRegularExpression(afd);
         return er;
+    }
+
+    public FiniteStateAutomaton convertGLDToAFD(Grammar grammar) {
+        FiniteStateAutomaton automaton = new FiniteStateAutomaton();
+        RightLinearGrammarToFSAConverter converter = new RightLinearGrammarToFSAConverter();
+
+        converter.createStatesForConversion(grammar, automaton);
+        for (Production production : grammar.getProductions()) {
+            Transition transition = converter.getTransitionForProduction(production);
+            if (transition != null) {
+                automaton.addTransition(transition);
+            }
+        }
+        return automaton;
     }
 }

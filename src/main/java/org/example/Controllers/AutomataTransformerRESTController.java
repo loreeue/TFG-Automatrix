@@ -133,4 +133,21 @@ public class AutomataTransformerRESTController {
             return "Error: " + e.getMessage();
         }
     }
+
+    @PostMapping("/gld-to-afd")
+    public String convertGldToAfd(@RequestBody Grammar2Request request) {
+        try {
+            Grammar grammar = grammarService.parseGrammar(request.getGrammar());
+            FiniteStateAutomaton afd = automataService.convertGLDToAFD(grammar);
+            // Save the resulting minimized AFD to a file
+            String outputPath = "/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github/src/main/java/org/example/Files_Output/gld-afd.jff";
+            File outputFile = new File(outputPath);
+            // Save the resulting DFA to the specified path
+            automataService.saveAFND(afd, outputFile.getAbsolutePath());
+            return "New AFD successfully created and saved at: " + outputFile.getAbsolutePath();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error: " + e.getMessage();
+        }
+    }
 }
