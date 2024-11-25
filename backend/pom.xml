@@ -65,7 +65,7 @@
             <artifactId>jflap</artifactId>
             <version>7.1</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/JFlap-7.1-MAVEN-SNAPSHOT.jar</systemPath>
+            <systemPath>/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github/libs/JFlap-7.1-MAVEN-SNAPSHOT.jar</systemPath>
         </dependency>
     </dependencies>
 
