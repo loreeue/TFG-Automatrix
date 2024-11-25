@@ -3,7 +3,7 @@ import { Box, Typography, Button, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const Simulations = () => {
-    const navigate = useNavigate(); // Hook para redirigir
+    const navigate = useNavigate();
 
     return (
         <Box sx={{ padding: 3 }}>

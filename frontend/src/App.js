@@ -5,10 +5,19 @@ import Grammars from "./components/Grammars";
 import AFDs from "./components/AFDs";
 import Transformations from "./components/Transformations";
 import Simulations from "./components/Simulations";
-import SimulateAFD from "./components/SimulateAFD";
-import SimulateAFND from "./components/SimulateAFND";
-import SimulateAP from "./components/SimulateAP";
-import SimulateMT from "./components/SimulateMT";
+import SimulateAFD from "./components/simulations/SimulateAFD";
+import SimulateAFND from "./components/simulations/SimulateAFND";
+import SimulateAP from "./components/simulations/SimulateAP";
+import SimulateMT from "./components/simulations/SimulateMT";
+import EquivalentGrammars from "./components/grammars/EquivalentGrammars";
+import EquivalentAFDs from "./components/afds/EquivalentAFDs";
+import MinimizeAFD from "./components/afds/MinimizeAFD";
+import AFDtoER from "./components/transformations/AFDtoER";
+import AFNDtoAFD from "./components/transformations/AFNDtoAFD";
+import APtoGIC from "./components/transformations/APtoGIC";
+import GICtoAP from "./components/transformations/GICtoAP";
+import GICtoChomsky from "./components/transformations/GICtoChomsky";
+import GLDtoAFD from "./components/transformations/GLDtoAFD";
 
 const App = () => {
     return (
@@ -23,6 +32,15 @@ const App = () => {
                 <Route path="/simulate-afnd" element={<SimulateAFND />} />
                 <Route path="/simulate-ap" element={<SimulateAP />} />
                 <Route path="/simulate-mt" element={<SimulateMT />} />
+                <Route path="/equivalent-grammars" element={<EquivalentGrammars />} />
+                <Route path="/equivalent-afds" element={<EquivalentAFDs />} />
+                <Route path="/minimize-afd" element={<MinimizeAFD />} />
+                <Route path="/afd-to-er" element={<AFDtoER />} />
+                <Route path="/afnd-to-afd" element={<AFNDtoAFD />} />
+                <Route path="/ap-to-gic" element={<APtoGIC />} />
+                <Route path="/gic-to-ap" element={<GICtoAP />} />
+                <Route path="/gic-to-chomsky" element={<GICtoChomsky />} />
+                <Route path="/gld-to-afd" element={<GLDtoAFD />} />
             </Routes>
         </Router>
     );
