@@ -19,9 +19,13 @@ import GICtoAP from "./components/transformations/GICtoAP";
 import GICtoChomsky from "./components/transformations/GICtoChomsky";
 import GLDtoAFD from "./components/transformations/GLDtoAFD";
 
+import Header from "./components/Header";
+import Footer from "./components/Footer"
+
 const App = () => {
     return (
         <Router>
+            <Header />
             <Routes>
                 <Route path="/" element={<MainMenu />} />
                 <Route path="/gramaticas" element={<Grammars />} />
@@ -42,6 +46,7 @@ const App = () => {
                 <Route path="/gic-to-chomsky" element={<GICtoChomsky />} />
                 <Route path="/gld-to-afd" element={<GLDtoAFD />} />
             </Routes>
+            <Footer />
         </Router>
     );
 };
