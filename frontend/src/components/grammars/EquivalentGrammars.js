@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Box, Typography, TextField, Button, CircularProgress } from "@mui/material";
+import { Box, Typography, TextField, Button, CircularProgress, IconButton } from "@mui/material";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const EquivalentGrammars = () => {
     const [grammar1, setGrammar1] = useState("");
@@ -8,30 +9,88 @@ const EquivalentGrammars = () => {
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState("");
 
+    const exampleGrammar = '{\n\t"production1":"S -> aA",\n\t"production2":"A -> b"\n}';
+
+    const handleCopyExample = () => {
+        navigator.clipboard.writeText(exampleGrammar);
+        alert("Ejemplo copiado al portapapeles!");
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        setLoading(true); // Activa el indicador de carga
+        setLoading(true);
 
         try {
+            const parsedGrammar1 = JSON.parse(grammar1.trim());
+            const parsedGrammar2 = JSON.parse(grammar2.trim());
+
             const response = await axios.post("/api/grammar/equivalent", {
-                grammar1,
-                grammar2,
+                grammar1: parsedGrammar1,
+                grammar2: parsedGrammar2,
             });
             setResult(response.data ? "Las gramáticas son equivalentes." : "Las gramáticas no son equivalentes.");
         } catch (error) {
             console.error("Error verificando equivalencia:", error);
-            setResult("Ocurrió un error al verificar las gramáticas.");
+            setResult("Formato de gramática inválido o error en el servidor.");
         } finally {
-            setLoading(false); // Desactiva el indicador de carga
+            setLoading(false);
         }
     };
 
     return (
-        <Box sx={{ padding: 3 }}>
+        <Box
+            sx={{
+                height: "100vh", // Contenedor ocupa toda la ventana
+                overflowY: "auto", // Scroll vertical
+                padding: 3,
+            }}
+        >
             <Typography variant="h4" gutterBottom>
                 Verificar Equivalencia de Gramáticas
             </Typography>
+            {/* Explicación */}
+            <Box
+                sx={{
+                    marginBottom: 3,
+                    padding: 2,
+                    border: "1px solid #ccc",
+                    borderRadius: "8px",
+                    backgroundColor: "#f9f9f9",
+                }}
+            >
+                <Typography variant="h6" gutterBottom>
+                    Instrucciones:
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    Introduzca cada gramática en formato JSON, con sus producciones enumeradas como se muestra a
+                    continuación:
+                </Typography>
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        backgroundColor: "#e0e0e0",
+                        padding: 2,
+                        borderRadius: "8px",
+                        fontFamily: "monospace",
+                    }}
+                >
+                    <Box sx={{ flex: 1 }}>{exampleGrammar}</Box>
+                    <IconButton
+                        onClick={handleCopyExample}
+                        sx={{
+                            marginLeft: 1,
+                            backgroundColor: "#d6d6d6",
+                            "&:hover": {
+                                backgroundColor: "#cfcfcf",
+                            },
+                        }}
+                    >
+                        <ContentCopyIcon />
+                    </IconButton>
+                </Box>
+            </Box>
+
             <form onSubmit={handleSubmit}>
                 <TextField
                     label="Gramática 1"

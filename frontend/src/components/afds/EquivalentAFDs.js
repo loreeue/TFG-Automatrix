@@ -46,7 +46,17 @@ const EquivalentAFDs = () => {
     };
 
     return (
-        <Box sx={{ padding: 3 }}>
+        <Box
+            sx={{
+                minHeight: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                backgroundColor: "#f5f5f5",
+                padding: 3,
+            }}
+        >
             <Typography variant="h4" gutterBottom>
                 Verificar Equivalencia de AFDs
             </Typography>

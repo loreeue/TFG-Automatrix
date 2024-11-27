@@ -5,7 +5,6 @@ import { Box, Typography, Button, CircularProgress } from "@mui/material";
 const MinimizeAFD = () => {
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [result, setResult] = useState("");
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -15,27 +14,36 @@ const MinimizeAFD = () => {
         event.preventDefault();
 
         if (!file) {
-            setResult("Por favor selecciona un archivo.");
+            alert("Por favor selecciona un archivo.");
             return;
         }
 
-        setLoading(true); // Activa el indicador de carga
+        setLoading(true);
 
         const formData = new FormData();
         formData.append("file", file);
 
         try {
-            const response = await axios.post("/api/extra/afd-to-minimized-afd", formData, {
+            const response = await axios.post("/api/convert/afd-to-minimized-afd", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
+                    responseType: "blob", // Indica que se espera un archivo binario
                 },
             });
-            setResult(response.data);
+
+            // Crear un enlace para descargar el archivo
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "afd_minimized.jff"); // Nombre del archivo descargado
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
         } catch (error) {
             console.error("Error al minimizar AFD:", error);
-            setResult("Error: No se pudo procesar la solicitud.");
+            alert("Error: No se pudo procesar la solicitud.");
         } finally {
-            setLoading(false); // Desactiva el indicador de carga
+            setLoading(false);
         }
     };
 
@@ -64,7 +72,6 @@ const MinimizeAFD = () => {
                         Archivo seleccionado: {file.name}
                     </Typography>
                 )}
-
                 <Button
                     type="submit"
                     variant="contained"
@@ -75,15 +82,6 @@ const MinimizeAFD = () => {
                     {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Minimizar AFD"}
                 </Button>
             </form>
-            {result && (
-                <Typography
-                    variant="h6"
-                    color={result.startsWith("Error") ? "error" : "primary"}
-                    sx={{ marginTop: 3 }}
-                >
-                    {result}
-                </Typography>
-            )}
         </Box>
     );
 };

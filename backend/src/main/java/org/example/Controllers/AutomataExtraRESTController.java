@@ -35,9 +35,9 @@ public class AutomataExtraRESTController {
             // Compare the minimized AFDs
             boolean areEquivalent = automataService.areEquivalent(minimizedAfd1, minimizedAfd2);
             if (areEquivalent) {
-                return "The two AFDs are equivalent.";
+                return "Los dos AFDs sí son equivalentes.";
             } else {
-                return "The two AFDs are not equivalent.";
+                return "Los dos AFDs no son equivalentes.";
             }
         } catch (Exception e) {
             e.printStackTrace();
