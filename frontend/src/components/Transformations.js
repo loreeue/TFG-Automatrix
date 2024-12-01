@@ -3,14 +3,26 @@ import { Box, Typography, Button, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import TransformIcon from "@mui/icons-material/Transform";
 import { useTheme } from "@mui/material/styles";
+import {purple} from "@mui/material/colors";
 
 const Transformations = () => {
     const navigate = useNavigate();
     const theme = useTheme();
+    const gradientAnimation = {
+        background: `linear-gradient(-45deg, white, ${purple[300]})`,
+        backgroundSize: "400% 400%",
+        animation: "gradient 15s ease infinite",
+        "@keyframes gradient": {
+            "0%": { backgroundPosition: "0% 50%" },
+            "50%": { backgroundPosition: "100% 50%" },
+            "100%": { backgroundPosition: "0% 50%" },
+        },
+    };
 
     return (
         <Box
             sx={{
+                ...gradientAnimation,
                 minHeight: "100vh",
                 display: "flex",
                 flexDirection: "column",

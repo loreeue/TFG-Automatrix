@@ -6,17 +6,29 @@ import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import TransformIcon from "@mui/icons-material/Transform";
 import ValidationIcon from "@mui/icons-material/CheckCircle";
 import logo from "../assets/logo.png";
+import { purple } from "@mui/material/colors";
 
 const MainMenu = () => {
+    const gradientAnimation = {
+        background: `linear-gradient(-45deg, white, ${purple[300]})`,
+        backgroundSize: "400% 400%",
+        animation: "gradient 15s ease infinite",
+        "@keyframes gradient": {
+            "0%": { backgroundPosition: "0% 50%" },
+            "50%": { backgroundPosition: "100% 50%" },
+            "100%": { backgroundPosition: "0% 50%" },
+        },
+    };
+
     return (
         <Box
             sx={{
+                ...gradientAnimation,
                 minHeight: "100vh",
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "flex-start", // Mover todo hacia arriba
+                justifyContent: "flex-start",
                 alignItems: "center",
-                backgroundColor: "#f5f5f5",
                 padding: 3,
             }}
         >
