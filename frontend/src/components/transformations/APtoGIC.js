@@ -9,26 +9,30 @@ const APToGIC = () => {
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
+        setResult(""); // Reset result when a new file is selected
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         if (!file) {
-            setResult("Por favor selecciona un archivo.");
+            alert("Por favor selecciona un archivo.");
             return;
         }
 
         setLoading(true);
+
         const formData = new FormData();
         formData.append("file", file);
 
         try {
-            const response = await axios.post("/api/extra/ap-to-gic", formData, {
+            const response = await axios.post("/api/convert/ap-to-gic", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
+
+            // Set the resulting grammar as text in the UI
             setResult(response.data);
         } catch (error) {
             console.error("Error al convertir AP a GIC:", error);
@@ -39,11 +43,20 @@ const APToGIC = () => {
     };
 
     return (
-        <Box sx={{ padding: 3 }}>
+        <Box
+            sx={{
+                minHeight: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                padding: 3,
+                backgroundColor: "#f5f5f5",
+            }}
+        >
             <Typography variant="h4" gutterBottom>
                 Convertir AP a GIC
             </Typography>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={{ width: "100%", maxWidth: "600px" }}>
                 <Button
                     variant="contained"
                     component="label"
@@ -63,7 +76,6 @@ const APToGIC = () => {
                         Archivo seleccionado: {file.name}
                     </Typography>
                 )}
-
                 <Button
                     type="submit"
                     variant="contained"
@@ -74,14 +86,27 @@ const APToGIC = () => {
                     {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Convertir AP a GIC"}
                 </Button>
             </form>
+
             {result && (
-                <Typography
-                    variant="h6"
-                    color={result.startsWith("Error") ? "error" : "primary"}
-                    sx={{ marginTop: 3 }}
+                <Box
+                    sx={{
+                        marginTop: 3,
+                        padding: 2,
+                        border: "1px solid #ccc",
+                        borderRadius: "8px",
+                        backgroundColor: "#f9f9f9",
+                        width: "100%",
+                        maxWidth: "600px",
+                        overflowX: "auto",
+                        whiteSpace: "pre-wrap", // Preserve line breaks
+                        fontFamily: "monospace", // Use monospaced font for clarity
+                    }}
                 >
+                    <Typography variant="h6" gutterBottom>
+                        Gramática Independiente de Contexto:
+                    </Typography>
                     {result}
-                </Typography>
+                </Box>
             )}
         </Box>
     );

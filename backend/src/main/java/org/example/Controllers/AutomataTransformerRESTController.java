@@ -22,6 +22,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.core.io.Resource;
 import java.nio.file.Path;
+import java.io.FileWriter;
 
 @RestController
 @RequestMapping("/api/convert")
@@ -102,44 +103,91 @@ public class AutomataTransformerRESTController {
     }
 
     @PostMapping("/ap-to-gic")
-    public String convertApToGic(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Resource> convertApToGic(@RequestParam("file") MultipartFile file) {
         try {
-            // Convert the MultipartFile to a file and load the pushdown automaton
+            // Convert the MultipartFile to a temporary file
             File tempFile = File.createTempFile("pda", ".jff");
             file.transferTo(tempFile);
+
+            // Load the Pushdown Automaton from the file
             PushdownAutomaton automaton = automataService.loadAP(tempFile.getAbsolutePath());
-            // Simulate the input
-            return automataService.convertAPToGIC(automaton);
+
+            // Convert the AP to a GIC (Grammar Independently Contextual)
+            String gicRepresentation = automataService.convertAPToGIC(automaton);
+
+            // Save the GIC to a temporary file
+            File outputFile = File.createTempFile("ap_to_gic", ".txt");
+            try (FileWriter writer = new FileWriter(outputFile)) {
+                writer.write(gicRepresentation);
+            }
+
+            // Prepare the file as a downloadable resource
+            Resource resource = new FileSystemResource(outputFile);
+
+            return ResponseEntity.ok()
+                    .header("Content-Disposition", "attachment; filename=" + outputFile.getName())
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body(resource);
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     @PostMapping("/gic-to-ap")
-    public String convertGicToAp(@RequestBody Grammar2Request request) {
+    public ResponseEntity<Resource> convertGicToAp(@RequestBody Grammar2Request request) {
         try {
+            // Parse the grammar provided in the request
             Grammar grammar = grammarService.parseGrammar(request.getGrammar());
+
+            // Convert the grammar to a Pushdown Automaton (AP)
             Automaton ap = automataService.convertToAutomaton(grammar);
-            String outputPath = "/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/files/files_output/gic-ap.jff";
+
+            // Save the resulting AP as a .jff file
+            String outputPath = "/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/files/files_output/gic_to_ap.jff";
             File outputFile = new File(outputPath);
-            // Save the resulting AP to the specified path
             automataService.saveAP(ap, outputFile.getAbsolutePath());
-            return "Saved new AP at: " + outputFile.getAbsolutePath();
+
+            // Create a resource for the saved file
+            Resource resource = new FileSystemResource(outputFile);
+
+            // Return the file as a downloadable resource
+            return ResponseEntity.ok()
+                    .header("Content-Disposition", "attachment; filename=" + outputFile.getName())
+                    .contentType(MediaType.APPLICATION_XML)
+                    .body(resource);
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     @PostMapping("/gic-to-chomsky")
-    public String convertGicToChomsky(@RequestBody Grammar2Request request) {
+    public ResponseEntity<Resource> convertGicToChomsky(@RequestBody Grammar2Request request) {
         try {
+            // Parse the input grammar
             Grammar grammar = grammarService.parseGrammar(request.getGrammar());
-            return grammarService.transformToChomsky(grammar);
+
+            // Transform the grammar to Chomsky Normal Form
+            String transformedGrammar = grammarService.transformToChomsky(grammar);
+
+            // Save the transformed grammar to a temporary file
+            File tempFile = File.createTempFile("chomsky_", ".txt");
+            try (FileWriter writer = new FileWriter(tempFile)) {
+                writer.write(transformedGrammar);
+            }
+
+            // Create a resource for the file
+            Resource resource = new FileSystemResource(tempFile);
+
+            // Send the file as a downloadable response
+            return ResponseEntity.ok()
+                    .header("Content-Disposition", "attachment; filename=chomsky_grammar.txt")
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body(resource);
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
