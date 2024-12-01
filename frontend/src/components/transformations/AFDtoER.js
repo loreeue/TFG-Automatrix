@@ -9,6 +9,7 @@ const AFDToER = () => {
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
+        setResult(""); // Clear the previous result when a new file is selected
     };
 
     const handleSubmit = async (event) => {
@@ -25,12 +26,18 @@ const AFDToER = () => {
         formData.append("file", file);
 
         try {
-            const response = await axios.post("/api/extra/afd-to-er", formData, {
+            const response = await axios.post("/api/convert/afd-to-er", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            setResult(response.data);
+
+            // Check if the response contains an error message or the result
+            if (response.data.startsWith("Error") || response.data.includes("no se puede convertir")) {
+                setResult(response.data); // Show error messages from the backend
+            } else {
+                setResult(`Expresión Regular Generada: ${response.data}`);
+            }
         } catch (error) {
             console.error("Error al convertir AFD a ER:", error);
             setResult("Error: No se pudo procesar la solicitud.");
@@ -78,7 +85,7 @@ const AFDToER = () => {
             {result && (
                 <Typography
                     variant="h6"
-                    color={result.startsWith("Error") ? "error" : "primary"}
+                    color={result.startsWith("Error") || result.includes("no se puede convertir") ? "error" : "primary"}
                     sx={{ marginTop: 3 }}
                 >
                     {result}

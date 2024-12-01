@@ -5,7 +5,6 @@ import { Box, Typography, Button, CircularProgress } from "@mui/material";
 const AFNDToAFD = () => {
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [result, setResult] = useState("");
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -15,24 +14,34 @@ const AFNDToAFD = () => {
         event.preventDefault();
 
         if (!file) {
-            setResult("Por favor selecciona un archivo.");
+            alert("Por favor selecciona un archivo.");
             return;
         }
 
         setLoading(true);
+
         const formData = new FormData();
         formData.append("file", file);
 
         try {
-            const response = await axios.post("/api/extra/afnd-to-afd", formData, {
+            const response = await axios.post("/api/convert/afnd-to-afd", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
+                    responseType: "blob", // Indica que el backend devuelve un archivo binario
                 },
             });
-            setResult(response.data);
+
+            // Crear un enlace para descargar el archivo convertido
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "afd_converted.jff"); // Nombre del archivo descargado
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link); // Elimina el enlace después de hacer clic
         } catch (error) {
             console.error("Error al convertir AFND a AFD:", error);
-            setResult("Error: No se pudo procesar la solicitud.");
+            alert("Error: No se pudo procesar la solicitud.");
         } finally {
             setLoading(false);
         }
@@ -74,15 +83,6 @@ const AFNDToAFD = () => {
                     {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Convertir AFND a AFD"}
                 </Button>
             </form>
-            {result && (
-                <Typography
-                    variant="h6"
-                    color={result.startsWith("Error") ? "error" : "primary"}
-                    sx={{ marginTop: 3 }}
-                >
-                    {result}
-                </Typography>
-            )}
         </Box>
     );
 };

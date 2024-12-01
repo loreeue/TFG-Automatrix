@@ -34,24 +34,36 @@ public class AutomataTransformerRESTController {
     private GrammarService grammarService;
 
     @PostMapping("/afnd-to-afd")
-    public String convertAfndToAfd(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Resource> convertAfndToAfd(@RequestParam("file") MultipartFile file) {
         try {
             // Convert MultipartFile to a temporary file
             File tempFile = File.createTempFile("afnd", ".jff");
             file.transferTo(tempFile);
-            // Load the NFA
+
+            // Load the AFND (NFA)
             FiniteStateAutomaton afnd = automataService.loadAFND(tempFile.getAbsolutePath());
-            // Convert NFA to DFA
+
+            // Convert AFND to AFD (DFA)
             FiniteStateAutomaton afd = automataService.convertAFNDToAFD(afnd);
-            // Save the resulting DFA to a file
+
+            // Save the resulting AFD to a file
             String outputPath = "/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/files/files_output/afd.jff";
             File outputFile = new File(outputPath);
-            // Save the resulting DFA to the specified path
             automataService.saveAFND(afd, outputFile.getAbsolutePath());
-            return "DFA successfully created and saved at: " + outputFile.getAbsolutePath();
+
+            // Prepare the file as a downloadable resource
+            Path filePath = outputFile.toPath();
+            Resource resource = new FileSystemResource(filePath);
+
+            // Serve the file as a response with proper headers
+            return ResponseEntity.ok()
+                    .header("Content-Disposition", "attachment; filename=\"" + outputFile.getName() + "\"")
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
         }
     }
 
@@ -132,39 +144,63 @@ public class AutomataTransformerRESTController {
     }
 
     @PostMapping("/afd-to-er")
-    public String convertAfdToEr(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> convertAfdToEr(@RequestParam("file") MultipartFile file) {
         try {
+            // Save uploaded file as a temporary file
             File tempFile = File.createTempFile("afd", ".jff");
             file.transferTo(tempFile);
-            // Load the NFA
+
+            // Load the AFD from the temporary file
             FiniteStateAutomaton afd = automataService.loadAFND(tempFile.getAbsolutePath());
-            // Auxiliar comprobation
+
+            // Ensure transitions are complete (auxiliary validation)
             AutomatonUtils.ensureCompleteTransitions(afd);
-            // Convert NFA to ER
+
+            // Check if the automaton can be converted to a regular expression
             if (!FSAToRegularExpressionConverter.isConvertable(afd)) {
-                return "El autómata no se puede convertir a una expresión regular.";
+                return ResponseEntity.ok("El autómata no se puede convertir a una expresión regular.");
             }
-            return automataService.convertAFDToER(afd);
+
+            // Convert AFD to a regular expression
+            String regularExpression = automataService.convertAFDToER(afd);
+
+            // Return the generated regular expression as a response
+            return ResponseEntity.ok(regularExpression);
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error: " + e.getMessage());
         }
     }
 
     @PostMapping("/gld-to-afd")
-    public String convertGldToAfd(@RequestBody Grammar2Request request) {
+    public ResponseEntity<Resource> convertGldToAfd(@RequestBody Grammar2Request request) {
         try {
+            // Parse the grammar received in the request
             Grammar grammar = grammarService.parseGrammar(request.getGrammar());
+
+            // Convert the given GLD (Right-Linear Grammar) to an AFD (Deterministic Finite Automaton)
             FiniteStateAutomaton afd = automataService.convertGLDToAFD(grammar);
-            // Save the resulting minimized AFD to a file
+
+            // Save the resulting AFD into a .jff file
             String outputPath = "/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/files/files_output/gld-afd.jff";
             File outputFile = new File(outputPath);
-            // Save the resulting DFA to the specified path
             automataService.saveAFND(afd, outputFile.getAbsolutePath());
-            return "New AFD successfully created and saved at: " + outputFile.getAbsolutePath();
+
+            // Prepare the file as a downloadable resource
+            Resource resource = new FileSystemResource(outputFile);
+
+            // Return the file as a downloadable resource with appropriate headers
+            return ResponseEntity.ok()
+                    .header("Content-Disposition", "attachment; filename=" + outputFile.getName()) // Define download filename
+                    .contentType(MediaType.APPLICATION_XML) // Set the correct MIME type for .jff files
+                    .body(resource);
         } catch (Exception e) {
+            // Print the exception stack trace for debugging purposes
             e.printStackTrace();
-            return "Error: " + e.getMessage();
+
+            // Return a 500 Internal Server Error response in case of failure
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }
