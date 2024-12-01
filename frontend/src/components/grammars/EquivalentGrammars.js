@@ -40,8 +40,8 @@ const EquivalentGrammars = () => {
     return (
         <Box
             sx={{
-                height: "100vh", // Contenedor ocupa toda la ventana
-                overflowY: "auto", // Scroll vertical
+                height: "100vh",
+                overflowY: "auto",
                 padding: 3,
             }}
         >

@@ -9,7 +9,7 @@ const APToGIC = () => {
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
-        setResult(""); // Reset result when a new file is selected
+        setResult("");
     };
 
     const handleSubmit = async (event) => {
@@ -32,7 +32,6 @@ const APToGIC = () => {
                 },
             });
 
-            // Set the resulting grammar as text in the UI
             setResult(response.data);
         } catch (error) {
             console.error("Error al convertir AP a GIC:", error);
@@ -98,8 +97,8 @@ const APToGIC = () => {
                         width: "100%",
                         maxWidth: "600px",
                         overflowX: "auto",
-                        whiteSpace: "pre-wrap", // Preserve line breaks
-                        fontFamily: "monospace", // Use monospaced font for clarity
+                        whiteSpace: "pre-wrap",
+                        fontFamily: "monospace",
                     }}
                 >
                     <Typography variant="h6" gutterBottom>

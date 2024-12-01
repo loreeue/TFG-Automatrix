@@ -27,11 +27,10 @@ const GICToAP = () => {
         try {
             const response = await axios.post("/api/convert/gic-to-ap", { grammar: JSON.parse(grammar) }, { responseType: "blob" });
 
-            // Create a download link for the file
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement("a");
             link.href = url;
-            link.setAttribute("download", "gic_to_ap.jff"); // File name
+            link.setAttribute("download", "gic_to_ap.jff");
             document.body.appendChild(link);
             link.click();
             link.parentNode.removeChild(link);

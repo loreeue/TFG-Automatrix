@@ -37,7 +37,7 @@ const SimulateAFD = () => {
             return;
         }
 
-        setLoading(true); // Activa el indicador de carga
+        setLoading(true);
         const formData = new FormData();
         formData.append("file", file);
         formData.append("input", input);

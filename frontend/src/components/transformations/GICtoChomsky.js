@@ -24,12 +24,11 @@ const GICToChomsky = () => {
         }
 
         setLoading(true);
-        setResult(""); // Clear previous result
+        setResult("");
 
         try {
             const response = await axios.post("/api/convert/gic-to-chomsky", { grammar: JSON.parse(grammar) });
 
-            // Display the result directly
             setResult(response.data);
         } catch (error) {
             console.error("Error al convertir GIC a Forma Normal de Chomsky:", error);
@@ -133,8 +132,8 @@ const GICToChomsky = () => {
                         width: "100%",
                         maxWidth: "600px",
                         overflowX: "auto",
-                        whiteSpace: "pre-wrap", // Preserve line breaks
-                        fontFamily: "monospace", // Monospace font for readability
+                        whiteSpace: "pre-wrap",
+                        fontFamily: "monospace",
                     }}
                 >
                     <Typography variant="h6" gutterBottom>

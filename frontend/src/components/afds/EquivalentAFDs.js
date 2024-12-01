@@ -24,7 +24,7 @@ const EquivalentAFDs = () => {
             return;
         }
 
-        setLoading(true); // Activa el indicador de carga
+        setLoading(true);
 
         const formData = new FormData();
         formData.append("file1", file1);
@@ -41,7 +41,7 @@ const EquivalentAFDs = () => {
             console.error("Error al comparar AFDs:", error);
             setResult("Error: No se pudo procesar la solicitud.");
         } finally {
-            setLoading(false); // Desactiva el indicador de carga
+            setLoading(false);
         }
     };
 

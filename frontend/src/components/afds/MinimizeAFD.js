@@ -27,15 +27,14 @@ const MinimizeAFD = () => {
             const response = await axios.post("/api/convert/afd-to-minimized-afd", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
-                    responseType: "blob", // Indica que se espera un archivo binario
+                    responseType: "blob",
                 },
             });
 
-            // Crear un enlace para descargar el archivo
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement("a");
             link.href = url;
-            link.setAttribute("download", "afd_minimized.jff"); // Nombre del archivo descargado
+            link.setAttribute("download", "afd_minimized.jff");
             document.body.appendChild(link);
             link.click();
             link.parentNode.removeChild(link);

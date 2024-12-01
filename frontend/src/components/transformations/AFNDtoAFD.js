@@ -27,18 +27,17 @@ const AFNDToAFD = () => {
             const response = await axios.post("/api/convert/afnd-to-afd", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
-                    responseType: "blob", // Indica que el backend devuelve un archivo binario
+                    responseType: "blob",
                 },
             });
 
-            // Crear un enlace para descargar el archivo convertido
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement("a");
             link.href = url;
-            link.setAttribute("download", "afd_converted.jff"); // Nombre del archivo descargado
+            link.setAttribute("download", "afd_converted.jff");
             document.body.appendChild(link);
             link.click();
-            document.body.removeChild(link); // Elimina el enlace después de hacer clic
+            document.body.removeChild(link);
         } catch (error) {
             console.error("Error al convertir AFND a AFD:", error);
             alert("Error: No se pudo procesar la solicitud.");

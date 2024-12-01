@@ -90,7 +90,7 @@ public class AutomataTransformerRESTController {
             Path filePath = outputFile.toPath();
             Resource resource = new FileSystemResource(filePath);
 
-            // Use correct MIME type for .jff
+            // Serve the file as a response with proper headers
             return ResponseEntity.ok()
                     .header("Content-Disposition", "attachment; filename=\"" + outputFile.getName() + "\"")
                     .contentType(MediaType.APPLICATION_OCTET_STREAM) // For file download
@@ -244,10 +244,7 @@ public class AutomataTransformerRESTController {
                     .contentType(MediaType.APPLICATION_XML) // Set the correct MIME type for .jff files
                     .body(resource);
         } catch (Exception e) {
-            // Print the exception stack trace for debugging purposes
             e.printStackTrace();
-
-            // Return a 500 Internal Server Error response in case of failure
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }

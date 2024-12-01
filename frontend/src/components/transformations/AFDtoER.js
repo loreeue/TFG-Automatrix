@@ -9,7 +9,7 @@ const AFDToER = () => {
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
-        setResult(""); // Clear the previous result when a new file is selected
+        setResult("");
     };
 
     const handleSubmit = async (event) => {
@@ -32,9 +32,8 @@ const AFDToER = () => {
                 },
             });
 
-            // Check if the response contains an error message or the result
             if (response.data.startsWith("Error") || response.data.includes("no se puede convertir")) {
-                setResult(response.data); // Show error messages from the backend
+                setResult(response.data);
             } else {
                 setResult(`Expresión Regular Generada: ${response.data}`);
             }

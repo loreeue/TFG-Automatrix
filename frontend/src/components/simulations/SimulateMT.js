@@ -37,7 +37,7 @@ const SimulateMT = () => {
             return;
         }
 
-        setLoading(true); // Activa el indicador de carga
+        setLoading(true);
         const formData = new FormData();
         formData.append("file", file);
         formData.append("input", input);
@@ -57,7 +57,7 @@ const SimulateMT = () => {
             console.error(error);
             setResult("Error: " + error.message);
         } finally {
-            setLoading(false); // Desactiva el indicador de carga
+            setLoading(false);
         }
     };
 

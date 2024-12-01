@@ -27,11 +27,10 @@ const GLDToAFD = () => {
         try {
             const response = await axios.post("/api/convert/gld-to-afd", { grammar: JSON.parse(grammar) }, { responseType: "blob" });
 
-            // Create a link to download the generated file
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement("a");
             link.href = url;
-            link.setAttribute("download", "afd_from_gld.jff"); // File name
+            link.setAttribute("download", "afd_from_gld.jff");
             document.body.appendChild(link);
             link.click();
             link.parentNode.removeChild(link);
@@ -46,8 +45,8 @@ const GLDToAFD = () => {
     return (
         <Box
             sx={{
-                height: "100vh", // Full viewport height
-                overflowY: "auto", // Vertical scrolling
+                height: "100vh",
+                overflowY: "auto",
                 padding: 3,
             }}
         >
