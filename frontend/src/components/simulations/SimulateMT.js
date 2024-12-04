@@ -44,7 +44,7 @@ const SimulateMT = () => {
 
         try {
             const response = await axios.post(
-                "/api/validate/mt",
+                "/api/validate/turingMachine",
                 formData,
                 {
                     headers: {
