@@ -1,117 +1,112 @@
 import React from "react";
-import { Box, Typography, Button, Grid } from "@mui/material";
+import { Box, Typography, Grid, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import TransformIcon from "@mui/icons-material/Transform";
 import { useTheme } from "@mui/material/styles";
-import {purple} from "@mui/material/colors";
 
 const Transformations = () => {
     const navigate = useNavigate();
     const theme = useTheme();
-    const gradientAnimation = {
-        background: `linear-gradient(-45deg, white, ${purple[300]})`,
-        backgroundSize: "400% 400%",
-        animation: "gradient 15s ease infinite",
-        "@keyframes gradient": {
-            "0%": { backgroundPosition: "0% 50%" },
-            "50%": { backgroundPosition: "100% 50%" },
-            "100%": { backgroundPosition: "0% 50%" },
-        },
-    };
 
     return (
         <Box
             sx={{
-                ...gradientAnimation,
+                backgroundColor: "#1A1A1A",
                 minHeight: "100vh",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-start",
                 alignItems: "center",
-                backgroundColor: "#f5f5f5",
-                padding: 3,
+                padding: "2rem",
+                color: "#FFFFFF",
             }}
         >
-            {/* Título */}
-            <Box
+            {/* Título principal */}
+            <Typography
+                variant="h3"
                 sx={{
-                    marginTop: "3rem",
-                    marginBottom: "2rem",
-                    animation: "fadeIn 1s ease-out",
-                    "@keyframes fadeIn": {
-                        from: { opacity: 0 },
-                        to: { opacity: 1 },
-                    },
-                }}
-            >
-                <Typography
-                    variant="h3"
-                    sx={{
-                        fontWeight: "bold",
-                        textAlign: "center",
-                        color: "#333",
-                    }}
-                >
-                    <TransformIcon
-                        sx={{
-                            fontSize: "3rem",
-                            verticalAlign: "middle",
-                            marginRight: "0.5rem",
-                            color: theme.palette.primary.main,
-                        }}
-                    />
-                    Transformaciones
-                </Typography>
-            </Box>
-
-            {/* Botones */}
-            <Grid
-                container
-                spacing={2}
-                sx={{
-                    width: "80%",
-                    justifyContent: "center",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    marginBottom: "3rem",
+                    fontFamily: "'Spicy Rice', cursive",
                     animation: "slideIn 0.8s ease-out",
-                    "@keyframes slideIn": {
-                        from: { transform: "translateY(50px)", opacity: 0 },
-                        to: { transform: "translateY(0)", opacity: 1 },
-                    },
                 }}
             >
-                {/* Lista de botones */}
+                Transformaciones
+            </Typography>
+
+            {/* Lista de transformaciones */}
+            <Grid container spacing={3} sx={{ maxWidth: "1200px", alignItems: "stretch" }}>
                 {[
-                    { label: "AFND → AFD", path: "/afnd-to-afd" },
-                    { label: "GLD → AFD", path: "/gld-to-afd" },
-                    { label: "AFD → ER", path: "/afd-to-er" },
-                    { label: "GIC → AP Vaciado", path: "/gic-to-ap" },
-                    { label: "AP Vaciado → GIC", path: "/ap-to-gic" },
-                    { label: "GIC → FN Chomsky", path: "/gic-to-chomsky" },
-                ].map((button, index) => (
-                    <Grid item xs={12} sm={6} md={4} key={index}>
-                        <Button
-                            variant="contained"
-                            size="large"
-                            onClick={() => navigate(button.path)}
+                    { label: "AFND → AFD", description: "Convierte un AFND a su equivalente AFD.", path: "/afnd-to-afd" },
+                    { label: "GLD → AFD", description: "Transforma una gramática GLD en un AFD.", path: "/gld-to-afd" },
+                    { label: "AFD → ER", description: "Genera la expresión regular equivalente a un AFD.", path: "/afd-to-er" },
+                ].map((transformation, index) => (
+                    <Grid
+                        item
+                        xs={12}
+                        sm={6}
+                        md={4}
+                        key={index}
+                        sx={{
+                            animation: `slideIn 0.8s ease-out ${index * 0.2}s`,
+                        }}
+                    >
+                        <Paper
+                            elevation={3}
                             sx={{
-                                padding: "1.5rem 2rem",
-                                fontSize: "1.2rem",
+                                padding: "2rem",
                                 backgroundColor: theme.palette.secondary.main,
-                                color: "white",
+                                color: "#FFFFFF",
+                                textAlign: "center",
                                 borderRadius: "12px",
-                                transition: "transform 0.3s, background-color 0.3s",
+                                height: "100%",
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "center",
+                                cursor: "pointer",
+                                transition: "background-color 0.3s",
                                 "&:hover": {
                                     backgroundColor: theme.palette.primary.main,
-                                    transform: "scale(1.05)",
                                 },
-                                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-                                textAlign: "center",
                             }}
+                            onClick={() => navigate(transformation.path)}
                         >
-                            {button.label}
-                        </Button>
+                            <Typography
+                                variant="h4"
+                                sx={{
+                                    fontFamily: "'Spicy Rice', cursive",
+                                    marginBottom: "0.5rem",
+                                }}
+                            >
+                                {transformation.label}
+                            </Typography>
+                            <Typography
+                                sx={{
+                                    fontSize: "1rem",
+                                    lineHeight: "1.5",
+                                }}
+                            >
+                                {transformation.description}
+                            </Typography>
+                        </Paper>
                     </Grid>
                 ))}
             </Grid>
+
+            <style>
+                {`
+                @keyframes slideIn {
+                    from {
+                        transform: translateY(-50px);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
+                }
+                `}
+            </style>
         </Box>
     );
 };

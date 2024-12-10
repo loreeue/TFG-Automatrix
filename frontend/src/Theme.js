@@ -1,14 +1,16 @@
 import { createTheme } from "@mui/material/styles";
-import { purple } from "@mui/material/colors";
 
 const theme = createTheme({
     palette: {
         primary: {
-            main: purple[500], // Color lila principal
+            main: "#331832", // Color principal oscuro
         },
         secondary: {
-            main: purple[300], // Color lila claro
+            main: "#694D75", // Color secundario más claro
         },
+    },
+    typography: {
+        fontFamily: "'Raleway', sans-serif", // Fuente personalizada
     },
 });
 

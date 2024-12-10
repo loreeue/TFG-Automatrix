@@ -1,186 +1,115 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Box, Button, Grid } from "@mui/material";
-import BookIcon from "@mui/icons-material/Book";
-import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
-import TransformIcon from "@mui/icons-material/Transform";
-import ValidationIcon from "@mui/icons-material/CheckCircle";
-import logo from "../assets/logo.png";
-import { purple } from "@mui/material/colors";
+import { Box, Typography, Grid, Paper } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 const MainMenu = () => {
-    const gradientAnimation = {
-        background: `linear-gradient(-45deg, white, ${purple[300]})`,
-        backgroundSize: "400% 400%",
-        animation: "gradient 15s ease infinite",
-        "@keyframes gradient": {
-            "0%": { backgroundPosition: "0% 50%" },
-            "50%": { backgroundPosition: "100% 50%" },
-            "100%": { backgroundPosition: "0% 50%" },
-        },
-    };
+    const theme = useTheme();
 
     return (
         <Box
             sx={{
-                ...gradientAnimation,
+                backgroundColor: "#1A1A1A",
                 minHeight: "100vh",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-start",
                 alignItems: "center",
-                padding: 3,
+                padding: "2rem",
+                color: "#FFFFFF",
+                fontFamily: "'Raleway', sans-serif", // Fuente global
             }}
         >
-            {/* Logo Automatrix */}
-            <Box
-                sx={{
-                    marginTop: "3rem",
-                    marginBottom: "2rem",
-                    animation: "fadeIn 1s ease-out",
-                    "@keyframes fadeIn": {
-                        from: { opacity: 0 },
-                        to: { opacity: 1 },
+            {/* Secciones informativas */}
+            <Grid container spacing={3} sx={{ maxWidth: "1200px" }}>
+                {[
+                    {
+                        title: "Automatización",
+                        description:
+                            "Resuelve ejercicios de autómatas y lenguajes formales de manera automática.",
                     },
-                }}
-            >
-                <img
-                    src={logo}
-                    alt="Automatrix Logo"
-                    style={{
-                        width: "350px",
-                        height: "auto",
-                    }}
-                />
-            </Box>
-
-            {/* Botones */}
-            <Grid container spacing={2} sx={{ width: "80%" }}>
-                <Grid
-                    item
-                    xs={3}
-                    sx={{
-                        animation: "slideIn 0.5s ease-out",
-                        "@keyframes slideIn": {
-                            from: { transform: "translateY(-50px)", opacity: 0 },
-                            to: { transform: "translateY(0)", opacity: 1 },
-                        },
-                    }}
-                >
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        component={Link}
-                        to="/gramaticas"
-                        startIcon={<BookIcon />}
+                    {
+                        title: "Visualización",
+                        description:
+                            "Genera representaciones gráficas de AFDs, máquinas de Turing y más.",
+                    },
+                    {
+                        title: "Validación",
+                        description:
+                            "Comprueba la equivalencia entre gramáticas y verifica sus propiedades.",
+                    },
+                ].map((section, index) => (
+                    <Grid
+                        item
+                        xs={12}
+                        md={4}
+                        key={index}
                         sx={{
-                            width: "100%",
-                            padding: "3rem",
-                            fontSize: "1.2rem",
-                            transition: "transform 0.3s, background-color 0.3s",
-                            "&:hover": {
-                                transform: "scale(1.1)",
-                                backgroundColor: "primary.dark",
-                            },
+                            animation: `slideIn 0.8s ease-out ${index * 0.2}s`, // Animación para cada elemento con un delay
                         }}
                     >
-                        Gramáticas
-                    </Button>
-                </Grid>
-                <Grid
-                    item
-                    xs={3}
-                    sx={{
-                        animation: "slideIn 0.6s ease-out",
-                        "@keyframes slideIn": {
-                            from: { transform: "translateY(-50px)", opacity: 0 },
-                            to: { transform: "translateY(0)", opacity: 1 },
-                        },
-                    }}
-                >
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        component={Link}
-                        to="/afds"
-                        startIcon={<CompareArrowsIcon />}
-                        sx={{
-                            width: "100%",
-                            padding: "3rem",
-                            fontSize: "1.2rem",
-                            transition: "transform 0.3s, background-color 0.3s",
-                            "&:hover": {
-                                transform: "scale(1.1)",
-                                backgroundColor: "primary.dark",
-                            },
-                        }}
-                    >
-                        AFDs
-                    </Button>
-                </Grid>
-                <Grid
-                    item
-                    xs={3}
-                    sx={{
-                        animation: "slideIn 0.7s ease-out",
-                        "@keyframes slideIn": {
-                            from: { transform: "translateY(-50px)", opacity: 0 },
-                            to: { transform: "translateY(0)", opacity: 1 },
-                        },
-                    }}
-                >
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        component={Link}
-                        to="/transformaciones"
-                        startIcon={<TransformIcon />}
-                        sx={{
-                            width: "100%",
-                            padding: "3rem",
-                            fontSize: "1.2rem",
-                            transition: "transform 0.3s, background-color 0.3s",
-                            "&:hover": {
-                                transform: "scale(1.1)",
-                                backgroundColor: "primary.dark",
-                            },
-                        }}
-                    >
-                        Transformaciones
-                    </Button>
-                </Grid>
-                <Grid
-                    item
-                    xs={3}
-                    sx={{
-                        animation: "slideIn 0.8s ease-out",
-                        "@keyframes slideIn": {
-                            from: { transform: "translateY(-50px)", opacity: 0 },
-                            to: { transform: "translateY(0)", opacity: 1 },
-                        },
-                    }}
-                >
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        component={Link}
-                        to="/validaciones"
-                        startIcon={<ValidationIcon />}
-                        sx={{
-                            width: "100%",
-                            padding: "3rem",
-                            fontSize: "1.2rem",
-                            transition: "transform 0.3s, background-color 0.3s",
-                            "&:hover": {
-                                transform: "scale(1.1)",
-                                backgroundColor: "primary.dark",
-                            },
-                        }}
-                    >
-                        Validaciones
-                    </Button>
-                </Grid>
+                        <Paper
+                            elevation={3}
+                            sx={{
+                                padding: "2rem",
+                                backgroundColor: theme.palette.secondary.main,
+                                color: "#FFFFFF",
+                                textAlign: "center",
+                                borderRadius: "20px",
+                                height: "400px",
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "flex-start", // Posiciona el contenido arriba
+                                alignItems: "center",
+                                paddingTop: "2rem",
+                                transition: "background-color 0.3s",
+                                cursor: "pointer",
+                                "&:hover": {
+                                    backgroundColor: theme.palette.primary.main,
+                                },
+                            }}
+                        >
+                            <Typography
+                                variant="h4" // Título más grande
+                                sx={{
+                                    fontWeight: "700",
+                                    fontFamily: "'Spicy Rice', cursive", // Fuente Spicy Rice
+                                    marginBottom: "1rem",
+                                    textAlign: "center",
+                                }}
+                            >
+                                {section.title}
+                            </Typography>
+                            <Typography
+                                sx={{
+                                    fontSize: "1rem",
+                                    lineHeight: "1.5",
+                                    textAlign: "center",
+                                    marginTop: "2rem",
+                                    padding: "0 1rem",
+                                }}
+                            >
+                                {section.description}
+                            </Typography>
+                        </Paper>
+                    </Grid>
+                ))}
             </Grid>
+
+            {/* Definición de animación */}
+            <style>
+                {`
+                @keyframes slideIn {
+                    from {
+                        transform: translateY(-50px);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
+                }
+                `}
+            </style>
         </Box>
     );
 };

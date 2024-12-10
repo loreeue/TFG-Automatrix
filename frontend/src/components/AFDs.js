@@ -1,128 +1,118 @@
 import React from "react";
-import { Box, Typography, Button, Grid } from "@mui/material";
+import { Box, Typography, Grid, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import { useTheme } from "@mui/material/styles";
-import {purple} from "@mui/material/colors";
 
 const AFDs = () => {
     const navigate = useNavigate();
     const theme = useTheme();
-    const gradientAnimation = {
-        background: `linear-gradient(-45deg, white, ${purple[300]})`,
-        backgroundSize: "400% 400%",
-        animation: "gradient 15s ease infinite",
-        "@keyframes gradient": {
-            "0%": { backgroundPosition: "0% 50%" },
-            "50%": { backgroundPosition: "100% 50%" },
-            "100%": { backgroundPosition: "0% 50%" },
-        },
-    };
 
     return (
         <Box
             sx={{
-                ...gradientAnimation,
+                backgroundColor: "#1A1A1A",
                 minHeight: "100vh",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-start",
                 alignItems: "center",
-                backgroundColor: "#f5f5f5",
-                padding: 3,
+                padding: "2rem",
+                color: "#FFFFFF",
             }}
         >
-            {/* Título */}
-            <Box
+            {/* Título principal */}
+            <Typography
+                variant="h3"
                 sx={{
-                    marginTop: "3rem",
-                    marginBottom: "2rem",
-                    animation: "fadeIn 1s ease-out",
-                    "@keyframes fadeIn": {
-                        from: { opacity: 0 },
-                        to: { opacity: 1 },
-                    },
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    marginBottom: "3rem",
+                    fontFamily: "'Spicy Rice', cursive",
+                    animation: "slideIn 0.8s ease-out",
                 }}
             >
-                <Typography
-                    variant="h3"
-                    sx={{
-                        fontWeight: "bold",
-                        textAlign: "center",
-                        color: "#333",
-                    }}
-                >
-                    <CompareArrowsIcon
-                        sx={{
-                            fontSize: "3rem",
-                            verticalAlign: "middle",
-                            marginRight: "0.5rem",
-                            color: theme.palette.primary.main,
-                        }}
-                    />
-                    AFDs
-                </Typography>
-            </Box>
+                AFDs: Operaciones y Transformaciones
+            </Typography>
 
-            {/* Botones */}
+            {/* Lista de operaciones */}
             <Grid
                 container
-                spacing={2}
+                spacing={3}
                 sx={{
-                    width: "80%",
-                    justifyContent: "center",
-                    animation: "slideIn 0.8s ease-out",
-                    "@keyframes slideIn": {
-                        from: { transform: "translateY(50px)", opacity: 0 },
-                        to: { transform: "translateY(0)", opacity: 1 },
-                    },
+                    maxWidth: "1200px",
+                    alignItems: "stretch", // Asegura que todos los elementos del grid tengan la misma altura
                 }}
             >
-                <Grid item>
-                    <Button
-                        variant="contained"
-                        size="large"
-                        onClick={() => navigate("/minimize-afd")}
+                {[
+                    { label: "AFD → AFD Mínimo", path: "/minimize-afd" },
+                    { label: "AFDs Equivalentes", path: "/equivalent-afds" },
+                ].map((operation, index) => (
+                    <Grid
+                        item
+                        xs={12}
+                        sm={6}
                         sx={{
-                            padding: "1.5rem 3rem",
-                            fontSize: "1.2rem",
-                            backgroundColor: theme.palette.secondary.main,
-                            color: "white",
-                            borderRadius: "12px",
-                            transition: "transform 0.3s, background-color 0.3s",
-                            "&:hover": {
-                                backgroundColor: theme.palette.primary.main,
-                                transform: "scale(1.05)",
-                            },
-                            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+                            display: "flex", // Asegura que los elementos ocupen toda la altura
                         }}
+                        key={index}
                     >
-                        AFD → AFD Mínimo
-                    </Button>
-                </Grid>
-                <Grid item>
-                    <Button
-                        variant="contained"
-                        size="large"
-                        onClick={() => navigate("/equivalent-afds")}
-                        sx={{
-                            padding: "1.5rem 3rem",
-                            fontSize: "1.2rem",
-                            backgroundColor: theme.palette.secondary.main,
-                            color: "white",
-                            borderRadius: "12px",
-                            transition: "transform 0.3s, background-color 0.3s",
-                            "&:hover": {
-                                backgroundColor: theme.palette.primary.main,
-                                transform: "scale(1.05)",
-                            },
-                            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-                        }}
-                    >
-                        AFDs Equivalentes
-                    </Button>
-                </Grid>
+                        <Paper
+                            elevation={3}
+                            sx={{
+                                padding: "1.5rem 2rem",
+                                backgroundColor: theme.palette.secondary.main,
+                                color: "#FFFFFF",
+                                textAlign: "center",
+                                borderRadius: "12px",
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "center",
+                                cursor: "pointer",
+                                width: "100%", // Ocupa todo el ancho de la celda
+                                "&:hover": {
+                                    backgroundColor: theme.palette.primary.main,
+                                },
+                            }}
+                            onClick={() => navigate(operation.path)}
+                        >
+                            <Typography
+                                variant="h4"
+                                sx={{
+                                    fontFamily: "'Spicy Rice', cursive",
+                                    marginBottom: "1rem",
+                                }}
+                            >
+                                {operation.label}
+                            </Typography>
+                            <Typography
+                                sx={{
+                                    fontSize: "1rem",
+                                    lineHeight: "1.5",
+                                }}
+                            >
+                                {index === 0
+                                    ? "Convierte un AFD en su versión mínima optimizando estados redundantes."
+                                    : "Compara dos AFDs para verificar si aceptan el mismo lenguaje."}
+                            </Typography>
+                        </Paper>
+                    </Grid>
+                ))}
             </Grid>
+
+            <style>
+                {`
+                @keyframes slideIn {
+                    from {
+                        transform: translateY(-50px);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
+                }
+                `}
+            </style>
         </Box>
     );
 };

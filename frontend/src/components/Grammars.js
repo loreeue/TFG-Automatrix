@@ -1,104 +1,87 @@
 import React from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import BookIcon from "@mui/icons-material/Book";
 import { useTheme } from "@mui/material/styles";
-import {purple} from "@mui/material/colors";
 
 const Grammars = () => {
     const navigate = useNavigate();
     const theme = useTheme();
-    const gradientAnimation = {
-        background: `linear-gradient(-45deg, white, ${purple[300]})`,
-        backgroundSize: "400% 400%",
-        animation: "gradient 15s ease infinite",
-        "@keyframes gradient": {
-            "0%": { backgroundPosition: "0% 50%" },
-            "50%": { backgroundPosition: "100% 50%" },
-            "100%": { backgroundPosition: "0% 50%" },
-        },
-    };
 
     return (
         <Box
             sx={{
-                ...gradientAnimation,
+                backgroundColor: "#1A1A1A",
                 minHeight: "100vh",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-start",
                 alignItems: "center",
-                backgroundColor: "#f5f5f5",
-                padding: 3,
+                padding: "2rem",
+                color: "#FFFFFF",
             }}
         >
-            {/* Título */}
-            <Box
+            {/* Título principal */}
+            <Typography
+                variant="h3"
                 sx={{
-                    marginTop: "3rem",
-                    marginBottom: "2rem",
-                    animation: "fadeIn 1s ease-out",
-                    "@keyframes fadeIn": {
-                        from: { opacity: 0 },
-                        to: { opacity: 1 },
-                    },
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    marginBottom: "3rem",
+                    fontFamily: "'Spicy Rice', cursive",
+                    animation: "slideIn 0.8s ease-out",
                 }}
+            >
+                Gramáticas
+            </Typography>
+
+            {/* Caja principal */}
+            <Paper
+                elevation={3}
+                sx={{
+                    padding: "2rem",
+                    backgroundColor: theme.palette.secondary.main,
+                    color: "#FFFFFF",
+                    textAlign: "center",
+                    borderRadius: "20px",
+                    width: "80%",
+                    maxWidth: "800px",
+                    cursor: "pointer",
+                    transition: "background-color 0.3s",
+                    "&:hover": {
+                        backgroundColor: theme.palette.primary.main,
+                    },
+                    animation: "slideIn 0.8s ease-out",
+                }}
+                onClick={() => navigate("/equivalent-grammars")}
             >
                 <Typography
-                    variant="h3"
+                    variant="h4"
                     sx={{
-                        fontWeight: "bold",
-                        textAlign: "center",
-                        color: "#333",
-                    }}
-                >
-                    <BookIcon
-                        sx={{
-                            fontSize: "3rem",
-                            verticalAlign: "middle",
-                            marginRight: "0.5rem",
-                            color: "primary.main",
-                        }}
-                    />
-                    Gramáticas
-                </Typography>
-            </Box>
-
-            {/* Botón */}
-            <Box
-                sx={{
-                    width: "80%",
-                    display: "flex",
-                    justifyContent: "center",
-                    animation: "slideIn 0.8s ease-out",
-                    "@keyframes slideIn": {
-                        from: { transform: "translateY(50px)", opacity: 0 },
-                        to: { transform: "translateY(0)", opacity: 1 },
-                    },
-                }}
-            >
-                <Button
-                    variant="contained"
-                    size="large"
-                    onClick={() => navigate("/equivalent-grammars")}
-                    startIcon={<BookIcon />}
-                    sx={{
-                        padding: "1.5rem 3rem",
-                        fontSize: "1.2rem",
-                        backgroundColor: theme.palette.secondary.main,
-                        color: "white",
-                        borderRadius: "12px",
-                        transition: "transform 0.3s, background-color 0.3s",
-                        "&:hover": {
-                            backgroundColor: theme.palette.primary.main,
-                            transform: "scale(1.05)",
-                        },
-                        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+                        fontFamily: "'Spicy Rice', cursive",
+                        marginBottom: "1rem",
                     }}
                 >
                     Gramáticas Equivalentes
-                </Button>
-            </Box>
+                </Typography>
+                <Typography>
+                    Compara gramáticas para determinar si generan el mismo lenguaje.
+                </Typography>
+            </Paper>
+
+            <style>
+                {`
+                @keyframes slideIn {
+                    from {
+                        transform: translateY(-50px);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
+                }
+                `}
+            </style>
         </Box>
     );
 };
