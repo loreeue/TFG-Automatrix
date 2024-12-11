@@ -48,24 +48,44 @@ const EquivalentAFDs = () => {
     return (
         <Box
             sx={{
-                minHeight: "100vh",
+                height: "100vh",
+                backgroundColor: "#1A1A1A",
+                padding: 3,
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "flex-start",
                 alignItems: "center",
-                backgroundColor: "#f5f5f5",
-                padding: 3,
+                color: "#FFFFFF",
             }}
         >
-            <Typography variant="h4" gutterBottom>
+            {/* Título principal */}
+            <Typography
+                variant="h3"
+                sx={{
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    marginBottom: 3,
+                    fontFamily: "'Spicy Rice', cursive",
+                }}
+            >
                 Verificar Equivalencia de AFDs
             </Typography>
-            <form onSubmit={handleSubmit}>
+
+            {/* Formulario */}
+            <form onSubmit={handleSubmit} style={{ width: "100%", maxWidth: "800px" }}>
+                {/* Botón para subir archivo 1 */}
                 <Button
                     variant="contained"
                     component="label"
                     fullWidth
-                    sx={{ marginBottom: 2 }}
+                    sx={{
+                        marginBottom: 2,
+                        padding: "1rem",
+                        borderRadius: "8px",
+                        backgroundColor: "#694D75",
+                        "&:hover": {
+                            backgroundColor: "#331832",
+                        },
+                    }}
                 >
                     Subir Archivo AFD 1 (.jff)
                     <input
@@ -75,17 +95,35 @@ const EquivalentAFDs = () => {
                         onChange={handleFile1Change}
                     />
                 </Button>
+
+                {/* Nombre del archivo 1 */}
                 {file1 && (
-                    <Typography variant="body2" sx={{ marginBottom: 2 }}>
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            marginBottom: 2,
+                            textAlign: "center",
+                            fontFamily: "'Spicy Rice', cursive",
+                        }}
+                    >
                         Archivo seleccionado 1: {file1.name}
                     </Typography>
                 )}
 
+                {/* Botón para subir archivo 2 */}
                 <Button
                     variant="contained"
                     component="label"
                     fullWidth
-                    sx={{ marginBottom: 2 }}
+                    sx={{
+                        marginBottom: 2,
+                        padding: "1rem",
+                        borderRadius: "8px",
+                        backgroundColor: "#694D75",
+                        "&:hover": {
+                            backgroundColor: "#331832",
+                        },
+                    }}
                 >
                     Subir Archivo AFD 2 (.jff)
                     <input
@@ -95,27 +133,49 @@ const EquivalentAFDs = () => {
                         onChange={handleFile2Change}
                     />
                 </Button>
+
+                {/* Nombre del archivo 2 */}
                 {file2 && (
-                    <Typography variant="body2" sx={{ marginBottom: 2 }}>
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            marginBottom: 2,
+                            textAlign: "center",
+                            fontFamily: "'Spicy Rice', cursive",
+                        }}
+                    >
                         Archivo seleccionado 2: {file2.name}
                     </Typography>
                 )}
 
+                {/* Botón para comparar */}
                 <Button
                     type="submit"
                     variant="contained"
-                    color="primary"
                     fullWidth
                     disabled={loading}
+                    sx={{
+                        padding: "1rem",
+                        borderRadius: "8px",
+                        backgroundColor: "#694D75",
+                        "&:hover": {
+                            backgroundColor: "#331832",
+                        },
+                    }}
                 >
                     {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Comparar AFDs"}
                 </Button>
             </form>
+
+            {/* Resultado */}
             {result && (
                 <Typography
                     variant="h6"
-                    color={result.startsWith("Error") ? "error" : "primary"}
-                    sx={{ marginTop: 3 }}
+                    sx={{
+                        marginTop: 3,
+                        textAlign: "center",
+                        color: "#FFFFFF", // Cambiado a blanco
+                    }}
                 >
                     {result}
                 </Typography>

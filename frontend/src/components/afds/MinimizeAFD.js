@@ -47,16 +47,46 @@ const MinimizeAFD = () => {
     };
 
     return (
-        <Box sx={{ padding: 3 }}>
-            <Typography variant="h4" gutterBottom>
+        <Box
+            sx={{
+                height: "100vh",
+                backgroundColor: "#1A1A1A",
+                padding: 3,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                color: "#FFFFFF",
+            }}
+        >
+            {/* Título principal */}
+            <Typography
+                variant="h3"
+                sx={{
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    marginBottom: 3,
+                    fontFamily: "'Spicy Rice', cursive",
+                }}
+            >
                 Minimizar AFD
             </Typography>
-            <form onSubmit={handleSubmit}>
+
+            {/* Formulario */}
+            <form onSubmit={handleSubmit} style={{ width: "100%", maxWidth: "800px" }}>
+                {/* Botón para subir archivo */}
                 <Button
                     variant="contained"
                     component="label"
                     fullWidth
-                    sx={{ marginBottom: 2 }}
+                    sx={{
+                        marginBottom: 2,
+                        padding: "1rem",
+                        borderRadius: "8px",
+                        backgroundColor: "#694D75",
+                        "&:hover": {
+                            backgroundColor: "#331832",
+                        },
+                    }}
                 >
                     Subir Archivo AFD (.jff)
                     <input
@@ -66,17 +96,35 @@ const MinimizeAFD = () => {
                         onChange={handleFileChange}
                     />
                 </Button>
+
+                {/* Nombre del archivo seleccionado */}
                 {file && (
-                    <Typography variant="body2" sx={{ marginBottom: 2 }}>
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            marginBottom: 2,
+                            textAlign: "center",
+                            fontFamily: "'Spicy Rice', cursive",
+                        }}
+                    >
                         Archivo seleccionado: {file.name}
                     </Typography>
                 )}
+
+                {/* Botón para minimizar */}
                 <Button
                     type="submit"
                     variant="contained"
-                    color="primary"
                     fullWidth
                     disabled={loading}
+                    sx={{
+                        padding: "1rem",
+                        borderRadius: "8px",
+                        backgroundColor: "#694D75",
+                        "&:hover": {
+                            backgroundColor: "#331832",
+                        },
+                    }}
                 >
                     {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Minimizar AFD"}
                 </Button>

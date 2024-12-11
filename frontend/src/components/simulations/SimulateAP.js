@@ -5,11 +5,10 @@ import {
     Typography,
     TextField,
     Button,
-    Card,
-    CardContent,
-    Grid,
     CircularProgress,
 } from "@mui/material";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SimulateAP = () => {
     const [file, setFile] = useState(null);
@@ -29,11 +28,11 @@ const SimulateAP = () => {
         event.preventDefault();
 
         if (!file) {
-            setResult("Por favor selecciona un archivo.");
+            toast.error("Por favor selecciona un archivo.", { position: "top-right" });
             return;
         }
         if (!input) {
-            setResult("Por favor ingresa una cadena de entrada.");
+            toast.error("Por favor ingresa una cadena de entrada.", { position: "top-right" });
             return;
         }
 
@@ -43,15 +42,9 @@ const SimulateAP = () => {
         formData.append("input", input);
 
         try {
-            const response = await axios.post(
-                "/api/validate/ap",
-                formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
+            const response = await axios.post("/api/validate/ap", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
             setResult(response.data);
         } catch (error) {
             console.error(error);
@@ -64,96 +57,119 @@ const SimulateAP = () => {
     return (
         <Box
             sx={{
-                minHeight: "100vh",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#f5f5f5",
+                height: "100vh",
+                backgroundColor: "#1A1A1A",
                 padding: 3,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                color: "#FFFFFF",
             }}
         >
-            <Card sx={{ width: 500, padding: 3 }}>
-                <CardContent>
-                    <Typography variant="h4" align="center" gutterBottom>
-                        Simular AP
+            <ToastContainer />
+            <Typography
+                variant="h3"
+                sx={{
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    marginBottom: 3,
+                    fontFamily: "'Spicy Rice', cursive",
+                }}
+            >
+                Simular AP
+            </Typography>
+
+            <form onSubmit={handleSubmit} style={{ width: "100%", maxWidth: "800px" }}>
+                <Typography
+                    variant="h6"
+                    sx={{
+                        fontFamily: "'Spicy Rice', cursive",
+                        textAlign: "center",
+                        marginBottom: 1,
+                    }}
+                >
+                    Subir Archivo AP (.jff)
+                </Typography>
+                <Button
+                    variant="contained"
+                    component="label"
+                    fullWidth
+                    sx={{
+                        marginBottom: 2,
+                        backgroundColor: "#694D75",
+                        "&:hover": { backgroundColor: "#331832" },
+                    }}
+                >
+                    Seleccionar Archivo
+                    <input type="file" hidden accept=".jff" onChange={handleFileChange} />
+                </Button>
+                {file && (
+                    <Typography variant="body2" sx={{ marginBottom: 2 }}>
+                        Archivo seleccionado: {file.name}
                     </Typography>
-                    <form onSubmit={handleSubmit}>
-                        <Grid container spacing={2}>
-                            {/* Archivo */}
-                            <Grid item xs={12}>
-                                <Button
-                                    variant="contained"
-                                    component="label"
-                                    fullWidth
-                                >
-                                    Subir Archivo AP (.jff)
-                                    <input
-                                        type="file"
-                                        hidden
-                                        accept=".jff"
-                                        onChange={handleFileChange}
-                                    />
-                                </Button>
-                                {file && (
-                                    <Typography
-                                        variant="body2"
-                                        color="text.secondary"
-                                        sx={{ marginTop: 1 }}
-                                    >
-                                        Archivo seleccionado: {file.name}
-                                    </Typography>
-                                )}
-                            </Grid>
+                )}
+                <Typography
+                    variant="h6"
+                    sx={{
+                        fontFamily: "'Spicy Rice', cursive",
+                        textAlign: "center",
+                        marginBottom: 1,
+                    }}
+                >
+                    Cadena de Entrada
+                </Typography>
+                <TextField
+                    label=""
+                    variant="outlined"
+                    fullWidth
+                    value={input}
+                    onChange={handleInputChange}
+                    sx={{
+                        backgroundColor: "#2C2C2C",
+                        borderRadius: "8px",
+                        input: { color: "#FFFFFF" },
+                    }}
+                />
+                <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    disabled={loading}
+                    sx={{
+                        marginTop: 3,
+                        padding: "1rem",
+                        borderRadius: "8px",
+                        backgroundColor: "#694D75",
+                        "&:hover": { backgroundColor: "#331832" },
+                    }}
+                >
+                    {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Simular"}
+                </Button>
+            </form>
 
-                            {/* Cadena de Entrada */}
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="Cadena de Entrada"
-                                    variant="outlined"
-                                    fullWidth
-                                    value={input}
-                                    onChange={handleInputChange}
-                                />
-                            </Grid>
-
-                            {/* Botón de Simulación */}
-                            <Grid item xs={12}>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    color="primary"
-                                    fullWidth
-                                    disabled={loading}
-                                >
-                                    {loading ? (
-                                        <CircularProgress
-                                            size={24}
-                                            sx={{
-                                                color: "white",
-                                            }}
-                                        />
-                                    ) : (
-                                        "Simular"
-                                    )}
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </form>
-
-                    {/* Resultado */}
-                    {result && (
-                        <Box sx={{ marginTop: 3 }}>
-                            <Typography
-                                variant="h6"
-                                color={result.startsWith("Error") ? "error" : "primary"}
-                                align="center"
-                            >
-                                {result}
-                            </Typography>
-                        </Box>
-                    )}
-                </CardContent>
-            </Card>
+            {result && (
+                <Box
+                    sx={{
+                        marginTop: 3,
+                        padding: 2,
+                        border: "1px solid #444444",
+                        borderRadius: "8px",
+                        backgroundColor: "#2C2C2C",
+                        width: "100%",
+                        maxWidth: "800px",
+                        minHeight: "100px",
+                        maxHeight: "300px",
+                        overflowY: "auto",
+                        fontFamily: "monospace",
+                        color: "#FFFFFF",
+                    }}
+                >
+                    <Typography variant="h6" gutterBottom>
+                        Resultado:
+                    </Typography>
+                    {result}
+                </Box>
+            )}
         </Box>
     );
 };

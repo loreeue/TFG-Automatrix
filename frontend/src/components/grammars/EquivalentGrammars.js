@@ -1,7 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Box, Typography, TextField, Button, CircularProgress, IconButton } from "@mui/material";
+import {
+    Box,
+    Typography,
+    TextField,
+    Button,
+    CircularProgress,
+    IconButton,
+    Grid,
+} from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const EquivalentGrammars = () => {
     const [grammar1, setGrammar1] = useState("");
@@ -13,7 +23,14 @@ const EquivalentGrammars = () => {
 
     const handleCopyExample = () => {
         navigator.clipboard.writeText(exampleGrammar);
-        alert("Ejemplo copiado al portapapeles!");
+        toast.success("Ejemplo copiado al portapapeles!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+        });
     };
 
     const handleSubmit = async (event) => {
@@ -41,38 +58,56 @@ const EquivalentGrammars = () => {
         <Box
             sx={{
                 height: "100vh",
-                overflowY: "auto",
+                backgroundColor: "#1A1A1A",
                 padding: 3,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                color: "#FFFFFF",
             }}
         >
-            <Typography variant="h4" gutterBottom>
+            {/* Contenedor para Toast */}
+            <ToastContainer />
+
+            {/* Título principal */}
+            <Typography
+                variant="h3"
+                sx={{
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    marginBottom: 3,
+                    fontFamily: "'Spicy Rice', cursive",
+                }}
+            >
                 Verificar Equivalencia de Gramáticas
             </Typography>
-            {/* Explicación */}
+
+            {/* Instrucciones */}
             <Box
                 sx={{
+                    width: "100%",
+                    maxWidth: "800px",
                     marginBottom: 3,
-                    padding: 2,
-                    border: "1px solid #ccc",
-                    borderRadius: "8px",
-                    backgroundColor: "#f9f9f9",
+                    padding: 3,
+                    borderRadius: "12px",
+                    backgroundColor: "#2C2C2C",
                 }}
             >
                 <Typography variant="h6" gutterBottom>
                     Instrucciones:
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                    Introduzca cada gramática en formato JSON, con sus producciones enumeradas como se muestra a
-                    continuación:
+                    Introduzca cada gramática en formato JSON, con sus producciones enumeradas como se muestra a continuación:
                 </Typography>
                 <Box
                     sx={{
                         display: "flex",
                         alignItems: "center",
-                        backgroundColor: "#e0e0e0",
+                        backgroundColor: "#333333",
                         padding: 2,
                         borderRadius: "8px",
                         fontFamily: "monospace",
+                        color: "#FFFFFF",
                     }}
                 >
                     <Box sx={{ flex: 1 }}>{exampleGrammar}</Box>
@@ -80,9 +115,10 @@ const EquivalentGrammars = () => {
                         onClick={handleCopyExample}
                         sx={{
                             marginLeft: 1,
-                            backgroundColor: "#d6d6d6",
+                            backgroundColor: "#444444",
+                            color: "#FFFFFF",
                             "&:hover": {
-                                backgroundColor: "#cfcfcf",
+                                backgroundColor: "#555555",
                             },
                         }}
                     >
@@ -91,42 +127,96 @@ const EquivalentGrammars = () => {
                 </Box>
             </Box>
 
-            <form onSubmit={handleSubmit}>
-                <TextField
-                    label="Gramática 1"
-                    variant="outlined"
-                    fullWidth
-                    multiline
-                    rows={4}
-                    value={grammar1}
-                    onChange={(e) => setGrammar1(e.target.value)}
-                    sx={{ marginBottom: 2 }}
-                />
-                <TextField
-                    label="Gramática 2"
-                    variant="outlined"
-                    fullWidth
-                    multiline
-                    rows={4}
-                    value={grammar2}
-                    onChange={(e) => setGrammar2(e.target.value)}
-                    sx={{ marginBottom: 2 }}
-                />
+            {/* Formulario */}
+            <form onSubmit={handleSubmit} style={{ width: "100%", maxWidth: "800px" }}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} md={6}>
+                        <Typography
+                            variant="h6"
+                            sx={{
+                                fontFamily: "'Spicy Rice', cursive",
+                                textAlign: "center",
+                                marginBottom: 1,
+                                color: "#FFFFFF",
+                            }}
+                        >
+                            Gramática 1
+                        </Typography>
+                        <TextField
+                            label=""
+                            variant="outlined"
+                            fullWidth
+                            multiline
+                            rows={6}
+                            value={grammar1}
+                            onChange={(e) => setGrammar1(e.target.value)}
+                            sx={{
+                                backgroundColor: "#2C2C2C",
+                                borderRadius: "8px",
+                                input: {
+                                    color: "#FFFFFF", // Texto blanco
+                                },
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Typography
+                            variant="h6"
+                            sx={{
+                                fontFamily: "'Spicy Rice', cursive",
+                                textAlign: "center",
+                                marginBottom: 1,
+                                color: "#FFFFFF",
+                            }}
+                        >
+                            Gramática 2
+                        </Typography>
+                        <TextField
+                            label=""
+                            variant="outlined"
+                            fullWidth
+                            multiline
+                            rows={6}
+                            value={grammar2}
+                            onChange={(e) => setGrammar2(e.target.value)}
+                            sx={{
+                                backgroundColor: "#2C2C2C",
+                                borderRadius: "8px",
+                                input: {
+                                    color: "#FFFFFF", // Texto blanco
+                                },
+                            }}
+                        />
+                    </Grid>
+                </Grid>
                 <Button
                     type="submit"
                     variant="contained"
-                    color="primary"
                     fullWidth
                     disabled={loading}
+                    sx={{
+                        marginTop: 3,
+                        padding: "1rem",
+                        borderRadius: "8px",
+                        backgroundColor: "#694D75",
+                        "&:hover": {
+                            backgroundColor: "#331832",
+                        },
+                    }}
                 >
                     {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Verificar"}
                 </Button>
             </form>
+
+            {/* Resultado */}
             {result && (
                 <Typography
                     variant="h6"
-                    color={result.includes("error") ? "error" : "primary"}
-                    sx={{ marginTop: 3 }}
+                    sx={{
+                        marginTop: 3,
+                        textAlign: "center",
+                        color: "#FFFFFF", // Cambiado a blanco
+                    }}
                 >
                     {result}
                 </Typography>

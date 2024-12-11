@@ -47,16 +47,43 @@ const AFNDToAFD = () => {
     };
 
     return (
-        <Box sx={{ padding: 3 }}>
-            <Typography variant="h4" gutterBottom>
+        <Box
+            sx={{
+                height: "100vh",
+                backgroundColor: "#1A1A1A",
+                padding: 3,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                color: "#FFFFFF",
+            }}
+        >
+            <Typography
+                variant="h3"
+                sx={{
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    marginBottom: 3,
+                    fontFamily: "'Spicy Rice', cursive",
+                }}
+            >
                 Convertir AFND a AFD
             </Typography>
-            <form onSubmit={handleSubmit}>
+
+            <form onSubmit={handleSubmit} style={{ width: "100%", maxWidth: "800px" }}>
                 <Button
                     variant="contained"
                     component="label"
                     fullWidth
-                    sx={{ marginBottom: 2 }}
+                    sx={{
+                        marginBottom: 2,
+                        padding: "1rem",
+                        borderRadius: "8px",
+                        backgroundColor: "#694D75",
+                        "&:hover": {
+                            backgroundColor: "#331832",
+                        },
+                    }}
                 >
                     Subir Archivo AFND (.jff)
                     <input
@@ -66,8 +93,16 @@ const AFNDToAFD = () => {
                         onChange={handleFileChange}
                     />
                 </Button>
+
                 {file && (
-                    <Typography variant="body2" sx={{ marginBottom: 2 }}>
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            marginBottom: 2,
+                            textAlign: "center",
+                            fontFamily: "'Spicy Rice', cursive",
+                        }}
+                    >
                         Archivo seleccionado: {file.name}
                     </Typography>
                 )}
@@ -75,9 +110,16 @@ const AFNDToAFD = () => {
                 <Button
                     type="submit"
                     variant="contained"
-                    color="primary"
                     fullWidth
                     disabled={loading}
+                    sx={{
+                        padding: "1rem",
+                        borderRadius: "8px",
+                        backgroundColor: "#694D75",
+                        "&:hover": {
+                            backgroundColor: "#331832",
+                        },
+                    }}
                 >
                     {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Convertir AFND a AFD"}
                 </Button>

@@ -46,16 +46,43 @@ const AFDToER = () => {
     };
 
     return (
-        <Box sx={{ padding: 3 }}>
-            <Typography variant="h4" gutterBottom>
+        <Box
+            sx={{
+                height: "100vh",
+                backgroundColor: "#1A1A1A",
+                padding: 3,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                color: "#FFFFFF",
+            }}
+        >
+            <Typography
+                variant="h3"
+                sx={{
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    marginBottom: 3,
+                    fontFamily: "'Spicy Rice', cursive",
+                }}
+            >
                 Convertir AFD a Expresión Regular
             </Typography>
-            <form onSubmit={handleSubmit}>
+
+            <form onSubmit={handleSubmit} style={{ width: "100%", maxWidth: "800px" }}>
                 <Button
                     variant="contained"
                     component="label"
                     fullWidth
-                    sx={{ marginBottom: 2 }}
+                    sx={{
+                        marginBottom: 2,
+                        padding: "1rem",
+                        borderRadius: "8px",
+                        backgroundColor: "#694D75",
+                        "&:hover": {
+                            backgroundColor: "#331832",
+                        },
+                    }}
                 >
                     Subir Archivo AFD (.jff)
                     <input
@@ -65,8 +92,16 @@ const AFDToER = () => {
                         onChange={handleFileChange}
                     />
                 </Button>
+
                 {file && (
-                    <Typography variant="body2" sx={{ marginBottom: 2 }}>
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            marginBottom: 2,
+                            textAlign: "center",
+                            fontFamily: "'Spicy Rice', cursive",
+                        }}
+                    >
                         Archivo seleccionado: {file.name}
                     </Typography>
                 )}
@@ -74,18 +109,29 @@ const AFDToER = () => {
                 <Button
                     type="submit"
                     variant="contained"
-                    color="primary"
                     fullWidth
                     disabled={loading}
+                    sx={{
+                        padding: "1rem",
+                        borderRadius: "8px",
+                        backgroundColor: "#694D75",
+                        "&:hover": {
+                            backgroundColor: "#331832",
+                        },
+                    }}
                 >
                     {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Convertir AFD a ER"}
                 </Button>
             </form>
+
             {result && (
                 <Typography
                     variant="h6"
-                    color={result.startsWith("Error") || result.includes("no se puede convertir") ? "error" : "primary"}
-                    sx={{ marginTop: 3 }}
+                    sx={{
+                        marginTop: 3,
+                        textAlign: "center",
+                        color: "#FFFFFF", // Cambiado a blanco
+                    }}
                 >
                     {result}
                 </Typography>

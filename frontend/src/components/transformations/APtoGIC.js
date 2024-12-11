@@ -44,23 +44,41 @@ const APToGIC = () => {
     return (
         <Box
             sx={{
-                minHeight: "100vh",
+                height: "100vh",
+                backgroundColor: "#1A1A1A",
+                padding: 3,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                padding: 3,
-                backgroundColor: "#f5f5f5",
+                color: "#FFFFFF",
             }}
         >
-            <Typography variant="h4" gutterBottom>
+            <Typography
+                variant="h3"
+                sx={{
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    marginBottom: 3,
+                    fontFamily: "'Spicy Rice', cursive",
+                }}
+            >
                 Convertir AP a GIC
             </Typography>
-            <form onSubmit={handleSubmit} style={{ width: "100%", maxWidth: "600px" }}>
+
+            <form onSubmit={handleSubmit} style={{ width: "100%", maxWidth: "800px" }}>
                 <Button
                     variant="contained"
                     component="label"
                     fullWidth
-                    sx={{ marginBottom: 2 }}
+                    sx={{
+                        marginBottom: 2,
+                        padding: "1rem",
+                        borderRadius: "8px",
+                        backgroundColor: "#694D75",
+                        "&:hover": {
+                            backgroundColor: "#331832",
+                        },
+                    }}
                 >
                     Subir Archivo AP (.jff)
                     <input
@@ -70,17 +88,33 @@ const APToGIC = () => {
                         onChange={handleFileChange}
                     />
                 </Button>
+
                 {file && (
-                    <Typography variant="body2" sx={{ marginBottom: 2 }}>
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            marginBottom: 2,
+                            textAlign: "center",
+                            fontFamily: "'Spicy Rice', cursive",
+                        }}
+                    >
                         Archivo seleccionado: {file.name}
                     </Typography>
                 )}
+
                 <Button
                     type="submit"
                     variant="contained"
-                    color="primary"
                     fullWidth
                     disabled={loading}
+                    sx={{
+                        padding: "1rem",
+                        borderRadius: "8px",
+                        backgroundColor: "#694D75",
+                        "&:hover": {
+                            backgroundColor: "#331832",
+                        },
+                    }}
                 >
                     {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Convertir AP a GIC"}
                 </Button>
@@ -91,17 +125,21 @@ const APToGIC = () => {
                     sx={{
                         marginTop: 3,
                         padding: 2,
-                        border: "1px solid #ccc",
                         borderRadius: "8px",
-                        backgroundColor: "#f9f9f9",
+                        backgroundColor: "#2C2C2C",
                         width: "100%",
-                        maxWidth: "600px",
-                        overflowX: "auto",
-                        whiteSpace: "pre-wrap",
+                        maxWidth: "800px",
+                        color: "#FFFFFF",
                         fontFamily: "monospace",
                     }}
                 >
-                    <Typography variant="h6" gutterBottom>
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            marginBottom: 1,
+                            fontFamily: "'Spicy Rice', cursive",
+                        }}
+                    >
                         Gramática Independiente de Contexto:
                     </Typography>
                     {result}
