@@ -44,31 +44,40 @@ const AFDs = () => {
                 }}
             >
                 {[
-                    { label: "AFD → AFD Mínimo", path: "/minimize-afd" },
-                    { label: "AFDs Equivalentes", path: "/equivalent-afds" },
+                    {
+                        label: "AFD → AFD Mínimo",
+                        description: "Convierte un AFD en su versión mínima optimizando estados redundantes.",
+                        path: "/minimize-afd",
+                    },
+                    {
+                        label: "AFDs Equivalentes",
+                        description: "Compara dos AFDs para verificar si aceptan el mismo lenguaje.",
+                        path: "/equivalent-afds",
+                    },
                 ].map((operation, index) => (
                     <Grid
                         item
                         xs={12}
                         sm={6}
-                        sx={{
-                            display: "flex", // Asegura que los elementos ocupen toda la altura
-                        }}
                         key={index}
+                        sx={{
+                            animation: `slideIn 0.8s ease-out ${index * 0.2}s`,
+                        }}
                     >
                         <Paper
                             elevation={3}
                             sx={{
-                                padding: "1.5rem 2rem",
+                                padding: "2rem",
                                 backgroundColor: theme.palette.secondary.main,
                                 color: "#FFFFFF",
                                 textAlign: "center",
                                 borderRadius: "12px",
+                                height: "100%",
                                 display: "flex",
                                 flexDirection: "column",
                                 justifyContent: "center",
                                 cursor: "pointer",
-                                width: "100%", // Ocupa todo el ancho de la celda
+                                transition: "background-color 0.3s",
                                 "&:hover": {
                                     backgroundColor: theme.palette.primary.main,
                                 },
@@ -79,7 +88,7 @@ const AFDs = () => {
                                 variant="h4"
                                 sx={{
                                     fontFamily: "'Spicy Rice', cursive",
-                                    marginBottom: "1rem",
+                                    marginBottom: "0.5rem",
                                 }}
                             >
                                 {operation.label}
@@ -90,9 +99,7 @@ const AFDs = () => {
                                     lineHeight: "1.5",
                                 }}
                             >
-                                {index === 0
-                                    ? "Convierte un AFD en su versión mínima optimizando estados redundantes."
-                                    : "Compara dos AFDs para verificar si aceptan el mismo lenguaje."}
+                                {operation.description}
                             </Typography>
                         </Paper>
                     </Grid>
