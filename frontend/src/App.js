@@ -18,9 +18,13 @@ import APtoGIC from "./components/transformations/APtoGIC";
 import GICtoAP from "./components/transformations/GICtoAP";
 import GICtoChomsky from "./components/transformations/GICtoChomsky";
 import GLDtoAFD from "./components/transformations/GLDtoAFD";
-
+import DrawAutomataMenu from "./components/DrawAutomataMenu";
+import DrawAFD from "./components/draw_automatas/DrawAFD";
+import DrawAFND from "./components/draw_automatas/DrawAFND";
+import DrawAP from "./components/draw_automatas/DrawAP";
+import DrawMT from "./components/draw_automatas/DrawMT";
 import Header from "./components/Header";
-import Footer from "./components/Footer"
+import Footer from "./components/Footer";
 
 const App = () => {
     return (
@@ -45,6 +49,11 @@ const App = () => {
                 <Route path="/gic-to-ap" element={<GICtoAP />} />
                 <Route path="/gic-to-chomsky" element={<GICtoChomsky />} />
                 <Route path="/gld-to-afd" element={<GLDtoAFD />} />
+                <Route path="/draw_automata" element={<DrawAutomataMenu />} />
+                <Route path="/draw_automata/afd" element={<DrawAFD />} />
+                <Route path="/draw_automata/afnd" element={<DrawAFND />} />
+                <Route path="/draw_automata/ap" element={<DrawAP />} />
+                <Route path="/draw_automata/mt" element={<DrawMT />} />
             </Routes>
             <Footer />
         </Router>

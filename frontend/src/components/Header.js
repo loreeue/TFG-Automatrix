@@ -5,6 +5,7 @@ import BookIcon from "@mui/icons-material/Book";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import TransformIcon from "@mui/icons-material/Transform";
 import ValidationIcon from "@mui/icons-material/CheckCircle";
+import AutoGraphIcon from "@mui/icons-material/AutoGraph";
 import {useTheme} from "@mui/material/styles";
 
 const Header = () => {
@@ -90,6 +91,21 @@ const Header = () => {
                     }}
                 >
                     Validaciones
+                </Button>
+                <Button
+                    variant="text"
+                    component={Link}
+                    to="/draw_automata"
+                    startIcon={<AutoGraphIcon />}
+                    sx={{
+                        color: "#FFFFFF",
+                        fontWeight: "bold",
+                        fontSize: "1rem",
+                        textTransform: "none",
+                        "&:hover": { color: theme.palette.primary.main },
+                    }}
+                >
+                    Dibujar Autómata
                 </Button>
             </Box>
 
