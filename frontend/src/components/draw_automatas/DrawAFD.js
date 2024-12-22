@@ -64,13 +64,42 @@ const DrawAFD = () => {
         );
     };
 
-    // Crear una nueva transición (con modal)
+    // Crear una nueva transición (con validación para evitar duplicados)
     const confirmAddTransition = () => {
         if (!transitionLetter) {
             toast.error("Debes introducir una letra para la transición.");
             return;
         }
-        setTransitions([...transitions, { from: transitionNodes.from, to: transitionNodes.to, letter: transitionLetter }]);
+
+        // Verificar si ya existe una transición entre los dos estados
+        const existingTransitionIndex = transitions.findIndex(
+            (t) =>
+                t.from.id === transitionNodes.from.id &&
+                t.to.id === transitionNodes.to.id
+        );
+
+        if (existingTransitionIndex !== -1) {
+            // Si ya existe, concatenar la letra nueva a las existentes
+            const existingTransition = transitions[existingTransitionIndex];
+            const updatedLetter = `${existingTransition.letter},${transitionLetter}`;
+
+            // Actualizar la transición con las nuevas letras concatenadas
+            const updatedTransitions = [...transitions];
+            updatedTransitions[existingTransitionIndex] = {
+                ...existingTransition,
+                letter: updatedLetter,
+            };
+
+            setTransitions(updatedTransitions);
+        } else {
+            // Si no existe, agregar una nueva transición
+            setTransitions([
+                ...transitions,
+                { from: transitionNodes.from, to: transitionNodes.to, letter: transitionLetter },
+            ]);
+        }
+
+        // Resetear los valores
         setShowTransitionModal(false);
         setTransitionLetter("");
         setTransitionNodes({ from: null, to: null });
@@ -84,7 +113,19 @@ const DrawAFD = () => {
     };
 
     // Asignar tipo de estado (Inicial/Final)
+    // Asignar tipo de estado (Inicial/Final)
     const setStateType = (type) => {
+        if (type === "initial") {
+            // Comprobar si ya existe un estado inicial
+            const existingInitial = nodes.find((node) => node.isInitial);
+            if (existingInitial) {
+                toast.error("Solo puede haber un estado inicial.");
+                setShowStateTypeModal(false);
+                setTargetNode(null);
+                return;
+            }
+        }
+
         let isInitial = false;
         let isFinal = false;
         if (type === "initial") {
@@ -119,38 +160,38 @@ const DrawAFD = () => {
         }
     };
 
-    // Dibujar transición
     const renderTransition = (t, index) => {
         const isLoop = t.from.id === t.to.id;
+
         if (isLoop) {
             const x = t.from.x;
             const y = t.from.y;
-            // Curva de loop más vistosa: formamos un arco sobre el nodo
-            // Creamos varios puntos para generar un arco suave sobre el estado
+            const radius = 30; // Radio de la media circunferencia
+            const offset = 20;
+
+            // Puntos para la media circunferencia (semi-arco)
             const points = [
-                x, y,
-                x - 50, y - 50,
-                x - 50, y - 100,
-                x,     y - 110, // punto más alto del arco
-                x + 50, y - 100,
-                x + 50, y - 50,
-                x, y
+                x - radius, y - offset, // Inicio del arco
+                x, y - radius * 2, // Punto más alto
+                x + radius, y - offset // Final del arco
             ];
 
-            // Texto en la parte superior de la curva (cerca del punto más alto)
+            // Posición del texto de la transición
             const textX = x - 10;
-            const textY = y - 130;
+            const textY = y - radius * 1.5 - offset - 15;
 
             return (
                 <React.Fragment key={index}>
+                    {/* Arco (media circunferencia) */}
                     <Arrow
                         points={points}
-                        stroke="#333"
-                        fill="#333"
+                        stroke="#333" // Color del borde
+                        fill="#333" // Color del relleno
+                        tension={0.8}
                         pointerLength={10}
                         pointerWidth={10}
-                        tension={0.8}
                     />
+                    {/* Texto para la transición */}
                     <Text
                         text={t.letter}
                         x={textX}
@@ -163,20 +204,32 @@ const DrawAFD = () => {
             );
         } else {
             // Transición normal
-            const points = [t.from.x, t.from.y, t.to.x, t.to.y];
-            const textX = (t.from.x + t.to.x) / 2 - 10;
-            const textY = (t.from.y + t.to.y) / 2 - 20;
+            const dx = t.to.x - t.from.x;
+            const dy = t.to.y - t.from.y;
+            const distance = Math.sqrt(dx * dx + dy * dy); // Distancia entre los nodos
+            const shortenBy = 30; // Acortar la flecha (ajusta este valor según el radio del estado)
+
+            // Calcular los nuevos puntos para acortar la flecha
+            const startX = t.from.x + (dx / distance) * shortenBy;
+            const startY = t.from.y + (dy / distance) * shortenBy;
+            const endX = t.to.x - (dx / distance) * shortenBy;
+            const endY = t.to.y - (dy / distance) * shortenBy;
+
+            const points = [startX, startY, endX, endY];
+            const textX = (startX + endX) / 2 - 10;
+            const textY = (startY + endY) / 2 - 20;
 
             return (
                 <React.Fragment key={index}>
                     <Arrow
                         points={points}
-                        stroke="#333"
-                        fill="#333"
-                        pointerLength={10}
-                        pointerWidth={10}
+                        stroke="#333" // Color del borde
+                        fill="#333" // Color del relleno
+                        pointerLength={10} // Longitud de la punta
+                        pointerWidth={10} // Ancho de la punta
                         tension={0}
                     />
+                    {/* Texto para la transición */}
                     <Text
                         text={t.letter}
                         x={textX}
