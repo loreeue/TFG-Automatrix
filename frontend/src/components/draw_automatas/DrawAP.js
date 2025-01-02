@@ -73,16 +73,36 @@ const DrawAP = () => {
         const consume = stackSymbolConsume.trim() === "" ? "λ" : stackSymbolConsume;
         const push = stackSymbolPush.trim() === "" ? "λ" : stackSymbolPush;
 
-        setTransitions([
-            ...transitions,
-            {
-                from: transitionNodes.from,
-                to: transitionNodes.to,
-                letter,
-                stackConsume: consume,
-                stackPush: push,
-            },
-        ]);
+        setTransitions((prevTransitions) => {
+            const existingTransitionIndex = prevTransitions.findIndex(
+                (t) => t.from.id === transitionNodes.from.id && t.to.id === transitionNodes.to.id
+            );
+
+            if (existingTransitionIndex !== -1) {
+                // Si ya existe una transición, añadimos la nueva información separada por coma
+                const updatedTransitions = [...prevTransitions];
+                const existingTransition = updatedTransitions[existingTransitionIndex];
+                updatedTransitions[existingTransitionIndex] = {
+                    ...existingTransition,
+                    letter: `${existingTransition.letter},${letter}`,
+                    stackConsume: `${existingTransition.stackConsume},${consume}`,
+                    stackPush: `${existingTransition.stackPush},${push}`,
+                };
+                return updatedTransitions;
+            } else {
+                // Si no existe, agregamos una nueva transición
+                return [
+                    ...prevTransitions,
+                    {
+                        from: transitionNodes.from,
+                        to: transitionNodes.to,
+                        letter,
+                        stackConsume: consume,
+                        stackPush: push,
+                    },
+                ];
+            }
+        });
 
         setShowTransitionModal(false);
         setTransitionLetter("");
@@ -158,8 +178,10 @@ const DrawAP = () => {
     };
 
     const renderTransition = (t, index) => {
+        if (!t || !t.from || !t.to) return null;
+
         const isLoop = t.from.id === t.to.id;
-        const transitionText = `${t.letter}, ${t.stackConsume}/${t.stackPush}`;
+        const transitionText = `(${t.letter}, ${t.stackConsume}, ${t.stackPush})`;
 
         if (isLoop) {
             const x = t.from.x;
@@ -176,8 +198,22 @@ const DrawAP = () => {
 
             return (
                 <React.Fragment key={index}>
-                    <Arrow points={points} stroke="#333" fill="#333" tension={0.8} pointerLength={10} pointerWidth={10} />
-                    <Text text={transitionText} x={textX} y={textY} fontSize={16} fill="#000" fontFamily="'Spicy Rice', cursive" />
+                    <Arrow
+                        points={points}
+                        stroke="#333"
+                        fill="#333"
+                        tension={0.8}
+                        pointerLength={10}
+                        pointerWidth={10}
+                    />
+                    <Text
+                        text={transitionText}
+                        x={textX}
+                        y={textY}
+                        fontSize={16}
+                        fill="#000"
+                        fontFamily="'Spicy Rice', cursive"
+                    />
                 </React.Fragment>
             );
         } else {
@@ -195,8 +231,22 @@ const DrawAP = () => {
 
             return (
                 <React.Fragment key={index}>
-                    <Arrow points={points} stroke="#333" fill="#333" pointerLength={10} pointerWidth={10} tension={0} />
-                    <Text text={transitionText} x={textX} y={textY} fontSize={16} fill="#000" fontFamily="'Spicy Rice', cursive" />
+                    <Arrow
+                        points={points}
+                        stroke="#333"
+                        fill="#333"
+                        pointerLength={10}
+                        pointerWidth={10}
+                        tension={0}
+                    />
+                    <Text
+                        text={transitionText}
+                        x={textX}
+                        y={textY}
+                        fontSize={16}
+                        fill="#000"
+                        fontFamily="'Spicy Rice', cursive"
+                    />
                 </React.Fragment>
             );
         }

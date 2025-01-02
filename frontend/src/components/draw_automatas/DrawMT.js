@@ -149,6 +149,15 @@ const DrawMT = () => {
         }
     };
 
+    const handleTransitionMoveChange = (event) => {
+        const value = event.target.value.toUpperCase();
+        if (value === "R" || value === "L" || value === "") {
+            setTransitionMove(value);
+        } else {
+            toast.error("Solo se permite 'R' o 'L' en el movimiento.");
+        }
+    };
+
     const renderTransition = (t, index) => {
         if (!t || !t.from || !t.to) return null;
 
@@ -450,11 +459,13 @@ const DrawMT = () => {
                         />
                         <TextField
                             margin="dense"
-                            label="Movimiento (R/L)"
+                            label="Movimiento (R o L)"
                             type="text"
                             variant="standard"
                             value={transitionMove}
-                            onChange={(e) => setTransitionMove(e.target.value.toUpperCase())}
+                            onChange={handleTransitionMoveChange}
+                            error={transitionMove && transitionMove !== "R" && transitionMove !== "L"}
+                            helperText={transitionMove && transitionMove !== "R" && transitionMove !== "L" ? "El valor debe ser 'R' o 'L'." : ""}
                             sx={{ fontFamily: "'Spicy Rice', cursive" }}
                         />
                     </Box>
