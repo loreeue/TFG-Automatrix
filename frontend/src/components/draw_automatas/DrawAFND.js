@@ -66,16 +66,32 @@ const DrawAFND = () => {
 
     // Crear una nueva transición (sin restricciones de duplicados para AFND)
     const confirmAddTransition = () => {
-        // Si no se introduce una letra, usar 'λ' por defecto
-        const letter = transitionLetter.trim() === "" ? "λ" : transitionLetter;
+        setTransitions((prevTransitions) => {
+            const existingTransitionIndex = prevTransitions.findIndex(
+                (t) => t.from.id === transitionNodes.from.id && t.to.id === transitionNodes.to.id
+            );
 
-        // Agregar una nueva transición sin restricciones
-        setTransitions([
-            ...transitions,
-            { from: transitionNodes.from, to: transitionNodes.to, letter },
-        ]);
+            if (existingTransitionIndex !== -1) {
+                // Si ya existe una transición, añadimos la nueva letra separada por coma
+                const updatedTransitions = [...prevTransitions];
+                updatedTransitions[existingTransitionIndex] = {
+                    ...updatedTransitions[existingTransitionIndex],
+                    letter: `${updatedTransitions[existingTransitionIndex].letter},${transitionLetter}`,
+                };
+                return updatedTransitions;
+            } else {
+                // Si no existe, agregamos una nueva transición
+                return [
+                    ...prevTransitions,
+                    {
+                        from: transitionNodes.from,
+                        to: transitionNodes.to,
+                        letter: transitionLetter,
+                    },
+                ];
+            }
+        });
 
-        // Resetear los valores
         setShowTransitionModal(false);
         setTransitionLetter("");
         setTransitionNodes({ from: null, to: null });
@@ -138,38 +154,33 @@ const DrawAFND = () => {
 
     const renderTransition = (t, index) => {
         const isLoop = t.from.id === t.to.id;
+        const letters = t.letter.split(',');
 
         if (isLoop) {
             const x = t.from.x;
             const y = t.from.y;
-            const radius = 30; // Radio de la media circunferencia
-            const offset = 20 + index * 10; // Ajustar el offset para evitar superposición de múltiples transiciones
-
-            // Puntos para la media circunferencia (semi-arco)
+            const radius = 30;
+            const offset = 20 + index * 10;
             const points = [
-                x - radius, y - offset, // Inicio del arco
-                x, y - radius * 2 - index * 10, // Punto más alto
-                x + radius, y - offset // Final del arco
+                x - radius, y - offset,
+                x, y - radius * 2 - index * 10,
+                x + radius, y - offset,
             ];
-
-            // Posición del texto de la transición
             const textX = x - 10;
             const textY = y - radius * 1.5 - offset - 15;
 
             return (
                 <React.Fragment key={index}>
-                    {/* Arco (media circunferencia) */}
                     <Arrow
                         points={points}
-                        stroke="#333" // Color del borde
-                        fill="#333" // Color del relleno
+                        stroke="#333"
+                        fill="#333"
                         tension={0.8}
                         pointerLength={10}
                         pointerWidth={10}
                     />
-                    {/* Texto para la transición */}
                     <Text
-                        text={t.letter}
+                        text={letters.join(',')}
                         x={textX}
                         y={textY}
                         fontSize={16}
@@ -179,35 +190,30 @@ const DrawAFND = () => {
                 </React.Fragment>
             );
         } else {
-            // Transición normal
             const dx = t.to.x - t.from.x;
             const dy = t.to.y - t.from.y;
-            const distance = Math.sqrt(dx * dx + dy * dy); // Distancia entre los nodos
-            const shortenBy = 30; // Acortar la flecha (ajusta este valor según el radio del estado)
-
-            // Calcular los nuevos puntos para acortar la flecha
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const shortenBy = 30;
             const startX = t.from.x + (dx / distance) * shortenBy;
             const startY = t.from.y + (dy / distance) * shortenBy;
             const endX = t.to.x - (dx / distance) * shortenBy;
             const endY = t.to.y - (dy / distance) * shortenBy;
-
             const points = [startX, startY, endX, endY];
-            const textX = (startX + endX) / 2 - 10 + index * 5; // Separar texto para múltiples transiciones
+            const textX = (startX + endX) / 2 - 10 + index * 5;
             const textY = (startY + endY) / 2 - 20 - index * 5;
 
             return (
                 <React.Fragment key={index}>
                     <Arrow
                         points={points}
-                        stroke="#333" // Color del borde
-                        fill="#333" // Color del relleno
-                        pointerLength={10} // Longitud de la punta
-                        pointerWidth={10} // Ancho de la punta
+                        stroke="#333"
+                        fill="#333"
+                        pointerLength={10}
+                        pointerWidth={10}
                         tension={0}
                     />
-                    {/* Texto para la transición */}
                     <Text
-                        text={t.letter}
+                        text={letters.join(',')}
                         x={textX}
                         y={textY}
                         fontSize={16}
