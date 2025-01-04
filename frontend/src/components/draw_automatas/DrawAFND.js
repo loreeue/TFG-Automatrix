@@ -17,6 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
+import ClearIcon from "@mui/icons-material/Clear";
 import { saveAs } from 'file-saver';
 
 const DrawAFND = () => {
@@ -33,6 +34,8 @@ const DrawAFND = () => {
 
     const [showExportModal, setShowExportModal] = useState(false);
     const [exportFilename, setExportFilename] = useState("automata");
+
+    const [deleteTransitionMode, setDeleteTransitionMode] = useState(false);
 
     const theme = useTheme();
 
@@ -66,27 +69,26 @@ const DrawAFND = () => {
 
     // Crear una nueva transición (sin restricciones de duplicados para AFND)
     const confirmAddTransition = () => {
+        const transitionSymbol = transitionLetter.trim() === "" ? "λ" : transitionLetter;
+
         setTransitions((prevTransitions) => {
             const existingTransitionIndex = prevTransitions.findIndex(
                 (t) => t.from.id === transitionNodes.from.id && t.to.id === transitionNodes.to.id
             );
-
             if (existingTransitionIndex !== -1) {
-                // Si ya existe una transición, añadimos la nueva letra separada por coma
                 const updatedTransitions = [...prevTransitions];
                 updatedTransitions[existingTransitionIndex] = {
                     ...updatedTransitions[existingTransitionIndex],
-                    letter: `${updatedTransitions[existingTransitionIndex].letter},${transitionLetter}`,
+                    letter: `${updatedTransitions[existingTransitionIndex].letter},${transitionSymbol}`,
                 };
                 return updatedTransitions;
             } else {
-                // Si no existe, agregamos una nueva transición
                 return [
                     ...prevTransitions,
                     {
                         from: transitionNodes.from,
                         to: transitionNodes.to,
-                        letter: transitionLetter,
+                        letter: transitionSymbol,
                     },
                 ];
             }
@@ -141,6 +143,8 @@ const DrawAFND = () => {
 
     // Manejar clics en los estados para crear transiciones
     const handleNodeClick = (node) => {
+        if (deleteTransitionMode)
+            return ;
         if (selectedNode) {
             // Seleccionamos el segundo estado
             setTransitionNodes({ from: selectedNode, to: node });
@@ -154,7 +158,7 @@ const DrawAFND = () => {
 
     const renderTransition = (t, index) => {
         const isLoop = t.from.id === t.to.id;
-        const letters = t.letter.split(',');
+        const letters = t.letter.split(',').map(letter => letter === "λ" ? "λ" : letter);
 
         if (isLoop) {
             const x = t.from.x;
@@ -178,6 +182,7 @@ const DrawAFND = () => {
                         tension={0.8}
                         pointerLength={10}
                         pointerWidth={10}
+                        onClick={() => handleTransitionClick(t)}
                     />
                     <Text
                         text={letters.join(',')}
@@ -211,6 +216,7 @@ const DrawAFND = () => {
                         pointerLength={10}
                         pointerWidth={10}
                         tension={0}
+                        onClick={() => handleTransitionClick(t)}
                     />
                     <Text
                         text={letters.join(',')}
@@ -283,6 +289,22 @@ const DrawAFND = () => {
 
         setShowExportModal(false);
         setExportFilename("automata");
+    };
+
+    // Eliminar transición
+    const handleDeleteTransitionClick = () => {
+        setDeleteTransitionMode(!deleteTransitionMode);
+        if (!deleteTransitionMode) {
+            toast.info("Modo de eliminación de transiciones activado. Haz clic en una transición para eliminarla.");
+        } else {
+            toast.info("Modo de eliminación de transiciones desactivado.");
+        }
+    };
+    const handleTransitionClick = (transition) => {
+        if (deleteTransitionMode) {
+            setTransitions(prevTransitions => prevTransitions.filter(t => t !== transition));
+            toast.success("Transición eliminada.");
+        }
     };
 
     return (
@@ -409,7 +431,8 @@ const DrawAFND = () => {
                             "Clic derecho en un estado: Establecerlo como inicial/final.\n" +
                             "Clic en un estado y luego en otro: Crear transición.\n" +
                             "Clic en un estado y luego en el mismo estado: Crear loop.\n" +
-                            "Arrastrar estados para moverlos."
+                            "Arrastrar estados para moverlos.\n" +
+                            "Botón de eliminar transición: Activar modo de eliminación y luego clic en la flehca de la transición para eliminarla."
                         )
                     }
                 >
@@ -460,6 +483,26 @@ const DrawAFND = () => {
                     onClick={handleExportClick}
                 >
                     <SaveAltIcon />
+                </Button>
+            </Tooltip>
+
+            {/* Botón de eliminar transición */}
+            <Tooltip title="Eliminar transición" placement="left">
+                <Button
+                    variant="contained"
+                    sx={{
+                        position: "absolute",
+                        right: "1rem",
+                        top: "22rem",
+                        borderRadius: "50%",
+                        minWidth: "3rem",
+                        height: "3rem",
+                        backgroundColor: theme.palette.secondary.main,
+                        "&:hover": { backgroundColor: theme.palette.primary.main },
+                    }}
+                    onClick={handleDeleteTransitionClick}
+                >
+                    <ClearIcon />
                 </Button>
             </Tooltip>
 
