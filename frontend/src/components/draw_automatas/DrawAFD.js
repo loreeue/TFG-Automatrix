@@ -17,6 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
+import ClearIcon from "@mui/icons-material/Clear";
 import { saveAs } from 'file-saver';
 
 const DrawAFD = () => {
@@ -33,6 +34,8 @@ const DrawAFD = () => {
 
     const [showExportModal, setShowExportModal] = useState(false);
     const [exportFilename, setExportFilename] = useState("automata");
+
+    const [deleteTransitionMode, setDeleteTransitionMode] = useState(false);
 
     const theme = useTheme();
 
@@ -149,6 +152,8 @@ const DrawAFD = () => {
 
     // Manejar clics en los estados para crear transiciones
     const handleNodeClick = (node) => {
+        if (deleteTransitionMode)
+            return ;
         if (selectedNode) {
             // Seleccionamos el segundo estado
             setTransitionNodes({ from: selectedNode, to: node });
@@ -190,6 +195,7 @@ const DrawAFD = () => {
                         tension={0.8}
                         pointerLength={10}
                         pointerWidth={10}
+                        onClick={() => handleTransitionClick(t)}
                     />
                     {/* Texto para la transición */}
                     <Text
@@ -228,6 +234,7 @@ const DrawAFD = () => {
                         pointerLength={10} // Longitud de la punta
                         pointerWidth={10} // Ancho de la punta
                         tension={0}
+                        onClick={() => handleTransitionClick(t)}
                     />
                     {/* Texto para la transición */}
                     <Text
@@ -301,6 +308,23 @@ const DrawAFD = () => {
 
         setShowExportModal(false);
         setExportFilename("automata");
+    };
+
+    // Eliminar transición
+    const handleDeleteTransitionClick = () => {
+        setDeleteTransitionMode(!deleteTransitionMode);
+        if (!deleteTransitionMode) {
+            toast.info("Modo de eliminación de transiciones activado. Haz clic en una transición para eliminarla.");
+        } else {
+            toast.info("Modo de eliminación de transiciones desactivado.");
+        }
+    };
+
+    const handleTransitionClick = (transition) => {
+        if (deleteTransitionMode) {
+            setTransitions(prevTransitions => prevTransitions.filter(t => t !== transition));
+            toast.success("Transición eliminada.");
+        }
     };
 
     return (
@@ -427,7 +451,8 @@ const DrawAFD = () => {
                             "Clic derecho en un estado: Establecerlo como inicial/final.\n" +
                             "Clic en un estado y luego en otro: Crear transición.\n" +
                             "Clic en un estado y luego en el mismo estado: Crear loop.\n" +
-                            "Arrastrar estados para moverlos."
+                            "Arrastrar estados para moverlos.\n" +
+                            "Botón de eliminar transición: Activar modo de eliminación y luego clic en la flehca de la transición para eliminarla."
                         )
                     }
                 >
@@ -478,6 +503,26 @@ const DrawAFD = () => {
                     onClick={handleExportClick}
                 >
                     <SaveAltIcon />
+                </Button>
+            </Tooltip>
+
+            {/* Botón de eliminar transición */}
+            <Tooltip title="Eliminar transición" placement="left">
+                <Button
+                    variant="contained"
+                    sx={{
+                        position: "absolute",
+                        right: "1rem",
+                        top: "22rem",
+                        borderRadius: "50%",
+                        minWidth: "3rem",
+                        height: "3rem",
+                        backgroundColor: theme.palette.secondary.main,
+                        "&:hover": { backgroundColor: theme.palette.primary.main },
+                    }}
+                    onClick={handleDeleteTransitionClick}
+                >
+                    <ClearIcon />
                 </Button>
             </Tooltip>
 
