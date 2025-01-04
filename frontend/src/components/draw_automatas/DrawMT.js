@@ -17,6 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
+import ClearIcon from "@mui/icons-material/Clear";
 import { saveAs } from 'file-saver';
 
 const DrawMT = () => {
@@ -36,6 +37,8 @@ const DrawMT = () => {
     const [transitionRead, setTransitionRead] = useState("");
     const [transitionWrite, setTransitionWrite] = useState("");
     const [transitionMove, setTransitionMove] = useState("");
+
+    const [deleteTransitionMode, setDeleteTransitionMode] = useState(false);
 
     const theme = useTheme();
 
@@ -138,6 +141,8 @@ const DrawMT = () => {
 
     // Manejar clics en los estados para crear transiciones
     const handleNodeClick = (node) => {
+        if (deleteTransitionMode)
+            return ;
         if (selectedNode) {
             // Seleccionamos el segundo estado
             setTransitionNodes({ from: selectedNode, to: node });
@@ -186,6 +191,7 @@ const DrawMT = () => {
                         tension={0.8}
                         pointerLength={10}
                         pointerWidth={10}
+                        onClick={() => handleTransitionClick(t)}
                     />
                     <Text
                         text={transitionText}
@@ -219,6 +225,7 @@ const DrawMT = () => {
                         pointerLength={10}
                         pointerWidth={10}
                         tension={0}
+                        onClick={() => handleTransitionClick(t)}
                     />
                     <Text
                         text={transitionText}
@@ -295,6 +302,22 @@ const DrawMT = () => {
         setExportFilename("turing_machine");
     };
 
+    // Eliminar transición
+    const handleDeleteTransitionClick = () => {
+        setDeleteTransitionMode(!deleteTransitionMode);
+        if (!deleteTransitionMode) {
+            toast.info("Modo de eliminación de transiciones activado. Haz clic en una transición para eliminarla.");
+        } else {
+            toast.info("Modo de eliminación de transiciones desactivado.");
+        }
+    };
+    const handleTransitionClick = (transition) => {
+        if (deleteTransitionMode) {
+            setTransitions(prevTransitions => prevTransitions.filter(t => t !== transition));
+            toast.success("Transición eliminada.");
+        }
+    };
+
     return (
         <Box sx={{ backgroundColor: "#1A1A1A", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", padding: "2rem" }}>
             <ToastContainer />
@@ -347,7 +370,8 @@ const DrawMT = () => {
                         "Clic derecho en un estado: Establecerlo como inicial/final.\n" +
                         "Clic en un estado y luego en otro: Crear transición.\n" +
                         "Clic en un estado y luego en el mismo estado: Crear loop.\n" +
-                        "Arrastrar estados para moverlos."
+                        "Arrastrar estados para moverlos.\n" +
+                        "Botón de eliminar transición: Activar modo de eliminación y luego clic en la flehca de la transición para eliminarla."
                     )}
                 >
                     <HelpOutlineIcon />
@@ -393,6 +417,25 @@ const DrawMT = () => {
                     onClick={handleExportClick}
                 >
                     <SaveAltIcon />
+                </Button>
+            </Tooltip>
+            {/* Botón de eliminar transición */}
+            <Tooltip title="Eliminar transición" placement="left">
+                <Button
+                    variant="contained"
+                    sx={{
+                        position: "absolute",
+                        right: "1rem",
+                        top: "22rem",
+                        borderRadius: "50%",
+                        minWidth: "3rem",
+                        height: "3rem",
+                        backgroundColor: theme.palette.secondary.main,
+                        "&:hover": { backgroundColor: theme.palette.primary.main },
+                    }}
+                    onClick={handleDeleteTransitionClick}
+                >
+                    <ClearIcon />
                 </Button>
             </Tooltip>
             <Dialog open={showStateTypeModal} onClose={() => setShowStateTypeModal(false)}>
