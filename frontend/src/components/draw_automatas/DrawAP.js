@@ -134,9 +134,8 @@ const DrawAP = () => {
         }
 
         if (type === "initial") {
-            // Comprobar si ya existe un estado inicial
             const existingInitial = nodes.find((node) => node.isInitial);
-            if (existingInitial && existingInitial.id !== targetNode.id) {
+            if (existingInitial) {
                 // Si ya hay un estado inicial diferente, desmarcarlo
                 setNodes((prevNodes) =>
                     prevNodes.map((n) =>
@@ -146,6 +145,9 @@ const DrawAP = () => {
                     )
                 );
             }
+
+            // Abrir el modal para el símbolo de pila
+            setShowStackSymbolModal(true);
         }
 
         // Actualizar el estado seleccionado como inicial o final
@@ -162,7 +164,6 @@ const DrawAP = () => {
         );
 
         setShowStateTypeModal(false);
-        setTargetNode(null);
 
         if (type === "initial") {
             toast.success("Estado marcado como inicial.");

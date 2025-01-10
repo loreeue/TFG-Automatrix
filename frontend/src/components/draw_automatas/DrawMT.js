@@ -72,7 +72,7 @@ const DrawMT = () => {
 
     // Crear una nueva transición
     const confirmAddTransition = () => {
-        const read = transitionRead.trim() === "" ? "." : transitionRead;
+        const read = transitionRead.trim() === "" ? "\u2022" : transitionRead;
         const write = transitionWrite.trim() === "" ? "\u2022" : transitionWrite;
 
         if (!transitionMove) {
