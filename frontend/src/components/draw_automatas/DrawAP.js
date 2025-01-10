@@ -71,48 +71,6 @@ const DrawAP = () => {
         );
     };
 
-    /*const confirmAddTransition = () => {
-        const letter = transitionLetter.trim() === "" ? "λ" : transitionLetter;
-        const consume = stackSymbolConsume.trim() === "" ? "λ" : stackSymbolConsume;
-        const push = stackSymbolPush.trim() === "" ? "λ" : stackSymbolPush;
-
-        setTransitions((prevTransitions) => {
-            const existingTransitionIndex = prevTransitions.findIndex(
-                (t) => t.from.id === transitionNodes.from.id && t.to.id === transitionNodes.to.id
-            );
-
-            if (existingTransitionIndex !== -1) {
-                // Si ya existe una transición, añadimos la nueva información separada por coma
-                const updatedTransitions = [...prevTransitions];
-                const existingTransition = updatedTransitions[existingTransitionIndex];
-                updatedTransitions[existingTransitionIndex] = {
-                    ...existingTransition,
-                    letter: `${existingTransition.letter},${letter}`,
-                    stackConsume: `${existingTransition.stackConsume},${consume}`,
-                    stackPush: `${existingTransition.stackPush},${push}`,
-                };
-                return updatedTransitions;
-            } else {
-                // Si no existe, agregamos una nueva transición
-                return [
-                    ...prevTransitions,
-                    {
-                        from: transitionNodes.from,
-                        to: transitionNodes.to,
-                        letter,
-                        stackConsume: consume,
-                        stackPush: push,
-                    },
-                ];
-            }
-        });
-
-        setShowTransitionModal(false);
-        setTransitionLetter("");
-        setStackSymbolConsume("");
-        setStackSymbolPush("");
-        setTransitionNodes({ from: null, to: null });
-    };*/
     const confirmAddTransition = () => {
         const letter = transitionLetter.trim() === "" ? "λ" : transitionLetter;
         const consume = stackSymbolConsume.trim() === "" ? "λ" : stackSymbolConsume;
@@ -233,7 +191,6 @@ const DrawAP = () => {
         if (!t || !t.from || !t.to) return null;
 
         const isLoop = t.from.id === t.to.id;
-        //const transitionText = `(${t.letter}, ${t.stackConsume}, ${t.stackPush})`;
         const transitionText = t.transitionsData?.map(({ letter, consume, push }) =>
             `(${letter}, ${consume}, ${push})`
             ).join(", ") || "";
