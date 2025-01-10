@@ -71,7 +71,7 @@ const DrawAP = () => {
         );
     };
 
-    const confirmAddTransition = () => {
+    /*const confirmAddTransition = () => {
         const letter = transitionLetter.trim() === "" ? "λ" : transitionLetter;
         const consume = stackSymbolConsume.trim() === "" ? "λ" : stackSymbolConsume;
         const push = stackSymbolPush.trim() === "" ? "λ" : stackSymbolPush;
@@ -102,6 +102,54 @@ const DrawAP = () => {
                         letter,
                         stackConsume: consume,
                         stackPush: push,
+                    },
+                ];
+            }
+        });
+
+        setShowTransitionModal(false);
+        setTransitionLetter("");
+        setStackSymbolConsume("");
+        setStackSymbolPush("");
+        setTransitionNodes({ from: null, to: null });
+    };*/
+    const confirmAddTransition = () => {
+        const letter = transitionLetter.trim() === "" ? "λ" : transitionLetter;
+        const consume = stackSymbolConsume.trim() === "" ? "λ" : stackSymbolConsume;
+        const push = stackSymbolPush.trim() === "" ? "λ" : stackSymbolPush;
+
+        setTransitions((prevTransitions) => {
+            const existingTransitionIndex = prevTransitions.findIndex(
+                (t) =>
+                    t.from.id === transitionNodes.from.id &&
+                    t.to.id === transitionNodes.to.id
+            );
+
+            if (existingTransitionIndex !== -1) {
+                // Ya existe una transición entre esos nodos
+                const updatedTransitions = [...prevTransitions];
+                const existingTransition = updatedTransitions[existingTransitionIndex];
+
+                updatedTransitions[existingTransitionIndex] = {
+                    ...existingTransition,
+                    // Si no existe, inicializamos transitionsData como array vacío
+                    transitionsData: [
+                        ...(existingTransition.transitionsData || []),
+                        { letter, consume, push },
+                    ],
+                };
+
+                return updatedTransitions;
+            } else {
+                // Si no hay transición previa, creamos una nueva con su array transitionsData
+                return [
+                    ...prevTransitions,
+                    {
+                        from: transitionNodes.from,
+                        to: transitionNodes.to,
+                        transitionsData: [
+                            { letter, consume, push },
+                        ],
                     },
                 ];
             }
@@ -149,7 +197,6 @@ const DrawAP = () => {
         );
 
         setShowStateTypeModal(false);
-        setTargetNode(null);
     };
 
     const confirmStackSymbol = () => {
@@ -186,7 +233,10 @@ const DrawAP = () => {
         if (!t || !t.from || !t.to) return null;
 
         const isLoop = t.from.id === t.to.id;
-        const transitionText = `(${t.letter}, ${t.stackConsume}, ${t.stackPush})`;
+        //const transitionText = `(${t.letter}, ${t.stackConsume}, ${t.stackPush})`;
+        const transitionText = t.transitionsData?.map(({ letter, consume, push }) =>
+            `(${letter}, ${consume}, ${push})`
+            ).join(", ") || "";
 
         if (isLoop) {
             const x = t.from.x;
