@@ -80,16 +80,42 @@ const DrawMT = () => {
             return;
         }
 
-        setTransitions([
-            ...transitions,
-            {
-                from: transitionNodes.from,
-                to: transitionNodes.to,
-                read: read,
-                write: write,
-                move: transitionMove,
-            },
-        ]);
+        setTransitions((prevTransitions) => {
+            const existingTransitionIndex = prevTransitions.findIndex(
+                (t) =>
+                    t.from.id === transitionNodes.from.id &&
+                    t.to.id === transitionNodes.to.id
+            );
+
+            if (existingTransitionIndex !== -1) {
+                // Si ya existe una transición entre estos nodos
+                const updatedTransitions = [...prevTransitions];
+                const existingTransition = updatedTransitions[existingTransitionIndex];
+
+                updatedTransitions[existingTransitionIndex] = {
+                    ...existingTransition,
+                    // Añadir la nueva transición al array transitionsData
+                    transitionsData: [
+                        ...(existingTransition.transitionsData || []),
+                        { read, write, move: transitionMove },
+                    ],
+                };
+
+                return updatedTransitions;
+            } else {
+                // Si no hay una transición previa, creamos una nueva con su array transitionsData
+                return [
+                    ...prevTransitions,
+                    {
+                        from: transitionNodes.from,
+                        to: transitionNodes.to,
+                        transitionsData: [
+                            { read, write, move: transitionMove },
+                        ],
+                    },
+                ];
+            }
+        });
 
         setShowTransitionModal(false);
         setTransitionRead("");
@@ -97,6 +123,7 @@ const DrawMT = () => {
         setTransitionMove("");
         setTransitionNodes({ from: null, to: null });
     };
+
 
     // Manejar clic derecho para marcar inicial/final (con modal)
     const handleContextMenu = (e, node) => {
@@ -167,7 +194,11 @@ const DrawMT = () => {
         if (!t || !t.from || !t.to) return null;
 
         const isLoop = t.from.id === t.to.id;
-        const transitionText = `(${t.read}, ${t.write}, ${t.move})`;
+
+        // Generar el texto combinando todas las transiciones en transitionsData
+        const transitionText = t.transitionsData
+            .map(({ read, write, move }) => `(${read}, ${write}, ${move})`)
+            .join(", ");
 
         if (isLoop) {
             const x = t.from.x;
