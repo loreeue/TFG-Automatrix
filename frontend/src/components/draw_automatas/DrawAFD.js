@@ -209,17 +209,28 @@ const DrawAFD = () => {
                 </React.Fragment>
             );
         } else {
+            // Calcular si hay una transición opuesta
+            const hasOppositeTransition = transitions.some(
+                (other) =>
+                    other.from.id === t.to.id &&
+                    other.to.id === t.from.id
+            );
+
             // Transición normal
             const dx = t.to.x - t.from.x;
             const dy = t.to.y - t.from.y;
             const distance = Math.sqrt(dx * dx + dy * dy); // Distancia entre los nodos
             const shortenBy = 30; // Acortar la flecha (ajusta este valor según el radio del estado)
 
+            // Offset para separar flechas en direcciones opuestas
+            const offsetX = hasOppositeTransition ? dy / distance * 14 : 0;
+            const offsetY = hasOppositeTransition ? -dx / distance * 14 : 0;
+
             // Calcular los nuevos puntos para acortar la flecha
-            const startX = t.from.x + (dx / distance) * shortenBy;
-            const startY = t.from.y + (dy / distance) * shortenBy;
-            const endX = t.to.x - (dx / distance) * shortenBy;
-            const endY = t.to.y - (dy / distance) * shortenBy;
+            const startX = t.from.x + (dx / distance) * shortenBy + offsetX;
+            const startY = t.from.y + (dy / distance) * shortenBy + offsetY;
+            const endX = t.to.x - (dx / distance) * shortenBy + offsetX;
+            const endY = t.to.y - (dy / distance) * shortenBy + offsetY;
 
             const points = [startX, startY, endX, endY];
             const textX = (startX + endX) / 2 - 10;
