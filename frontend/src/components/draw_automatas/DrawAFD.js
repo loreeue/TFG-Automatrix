@@ -116,38 +116,49 @@ const DrawAFD = () => {
     };
 
     // Asignar tipo de estado (Inicial/Final)
-    // Asignar tipo de estado (Inicial/Final)
     const setStateType = (type) => {
+        if (!targetNode) {
+            toast.error("No se puede asignar un tipo de estado porque no hay un nodo seleccionado.");
+            setShowStateTypeModal(false);
+            return;
+        }
+
         if (type === "initial") {
             // Comprobar si ya existe un estado inicial
             const existingInitial = nodes.find((node) => node.isInitial);
-            if (existingInitial) {
-                toast.error("Solo puede haber un estado inicial.");
-                setShowStateTypeModal(false);
-                setTargetNode(null);
-                return;
+            if (existingInitial && existingInitial.id !== targetNode.id) {
+                // Si ya hay un estado inicial diferente, desmarcarlo
+                setNodes((prevNodes) =>
+                    prevNodes.map((n) =>
+                        n.id === existingInitial.id
+                            ? { ...n, isInitial: false }
+                            : n
+                    )
+                );
             }
         }
 
-        let isInitial = false;
-        let isFinal = false;
-        if (type === "initial") {
-            isInitial = true;
-            isFinal = false;
-        } else if (type === "final") {
-            isFinal = true;
-            isInitial = false;
-        }
-
+        // Actualizar el estado seleccionado como inicial o final
         setNodes((prevNodes) =>
             prevNodes.map((n) =>
                 n.id === targetNode.id
-                    ? { ...n, isInitial, isFinal }
+                    ? {
+                        ...n,
+                        isInitial: type === "initial" ? true : n.isInitial,
+                        isFinal: type === "final" ? true : n.isFinal,
+                    }
                     : n
             )
         );
+
         setShowStateTypeModal(false);
         setTargetNode(null);
+
+        if (type === "initial") {
+            toast.success("Estado marcado como inicial.");
+        } else if (type === "final") {
+            toast.success("Estado marcado como final.");
+        }
     };
 
     // Manejar clics en los estados para crear transiciones
