@@ -40,6 +40,8 @@ const DrawMT = () => {
 
     const [deleteTransitionMode, setDeleteTransitionMode] = useState(false);
 
+    const [showHelpModal, setShowHelpModal] = useState(false);
+
     const theme = useTheme();
 
     // Agregar un nuevo estado
@@ -418,6 +420,8 @@ const DrawMT = () => {
                     </Layer>
                 </Stage>
             </Box>
+
+            {/* Botón de ayuda */}
             <Tooltip title="¿Cómo usar el editor?" placement="left">
                 <Button
                     variant="contained"
@@ -429,20 +433,15 @@ const DrawMT = () => {
                         minWidth: "3rem",
                         height: "3rem",
                         backgroundColor: theme.palette.secondary.main,
-                        "&:hover": { backgroundColor: theme.palette.primary.main }
+                        "&:hover": { backgroundColor: theme.palette.primary.main },
                     }}
-                    onClick={() => toast.info(
-                        "Doble clic en el lienzo: Crear un estado.\n" +
-                        "Clic derecho en un estado: Establecerlo como inicial/final.\n" +
-                        "Clic en un estado y luego en otro: Crear transición.\n" +
-                        "Clic en un estado y luego en el mismo estado: Crear loop.\n" +
-                        "Arrastrar estados para moverlos.\n" +
-                        "Botón de eliminar transición: Activar modo de eliminación y luego clic en la flehca de la transición para eliminarla."
-                    )}
+                    onClick={() => setShowHelpModal(true)} // Abre el modal
                 >
                     <HelpOutlineIcon />
                 </Button>
             </Tooltip>
+
+            {/* Botón de eliminar */}
             <Tooltip title="Eliminar todo" placement="left">
                 <Button
                     variant="contained"
@@ -626,6 +625,67 @@ const DrawMT = () => {
                         onClick={exportToJFF}
                     >
                         Guardar
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Modal para la ayuda */}
+            <Dialog
+                open={showHelpModal}
+                onClose={() => setShowHelpModal(false)} // Cierra el modal
+                maxWidth="sm"
+                fullWidth
+            >
+                <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: "center" }}>
+                    ¿Cómo usar el editor?
+                </DialogTitle>
+                <DialogContent>
+                    <Typography variant="body1" sx={{ marginBottom: "1rem" }}>
+                        Usa este editor para crear y editar autómatas de manera interactiva. Aquí tienes algunas instrucciones:
+                    </Typography>
+                    <ul>
+                        <li>
+                            <Typography variant="body1">
+                                <b>Doble clic</b> en el lienzo: Crear un nuevo estado.
+                            </Typography>
+                        </li>
+                        <li>
+                            <Typography variant="body1">
+                                <b>Clic derecho</b> en un estado: Marcar como inicial o final.
+                            </Typography>
+                        </li>
+                        <li>
+                            <Typography variant="body1">
+                                <b>Clic</b> en un estado y luego en otro: Crear una transición.
+                            </Typography>
+                        </li>
+                        <li>
+                            <Typography variant="body1">
+                                <b>Clic</b> en un estado y luego en el mismo estado: Crear un loop.
+                            </Typography>
+                        </li>
+                        <li>
+                            <Typography variant="body1">
+                                <b>Arrastrar</b> estados: Moverlos en el lienzo.
+                            </Typography>
+                        </li>
+                        <li>
+                            <Typography variant="body1">
+                                <b>Botón de eliminar transición</b>: Activar modo de eliminación y hacer clic en una flecha para eliminarla.
+                            </Typography>
+                        </li>
+                    </ul>
+                </DialogContent>
+                <DialogActions sx={{ justifyContent: "center" }}>
+                    <Button
+                        variant="contained"
+                        sx={{
+                            backgroundColor: theme.palette.secondary.main,
+                            "&:hover": { backgroundColor: theme.palette.primary.main },
+                        }}
+                        onClick={() => setShowHelpModal(false)} // Cierra el modal
+                    >
+                        Cerrar
                     </Button>
                 </DialogActions>
             </Dialog>
