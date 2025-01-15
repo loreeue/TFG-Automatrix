@@ -334,21 +334,27 @@ const DrawAP = () => {
             const fromIndex = nodes.findIndex(n => n.id === t.from.id);
             const toIndex = nodes.findIndex(n => n.id === t.to.id);
 
-            return `
+            if (fromIndex === -1 || toIndex === -1) {
+                console.warn(`Transición inválida: ${JSON.stringify(t)}`);
+                return ""; // Omitir transiciones inválidas
+            }
+
+            // Construir XML para cada transición individual en transitionsData
+            return t.transitionsData.map(({ letter, consume, push }) => `
         <transition>
             <from>${fromIndex}</from>
             <to>${toIndex}</to>
-            <read>${t.letter}</read>
-            <pop>${t.stackConsume}</pop>
-            <push>${t.stackPush}</push>
-        </transition>`;
-        }).join("\n");
+            <read>${letter}</read>
+            <pop>${consume}</pop>
+            <push>${push}</push>
+        </transition>`).join("\n");
+        }).filter(Boolean).join("\n"); // Filtrar transiciones vacías
 
         const fullXML = `${xmlHeader}
-        ${structureOpen}
-        ${statesXML}
-        ${transitionsXML}
-        ${structureClose}`;
+    ${structureOpen}
+    ${statesXML}
+    ${transitionsXML}
+    ${structureClose}`;
 
         const blob = new Blob([fullXML], { type: "application/xml;charset=utf-8" });
         saveAs(blob, `${exportFilename || "automata"}.jff`);
