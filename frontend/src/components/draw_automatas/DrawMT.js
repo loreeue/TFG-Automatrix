@@ -72,11 +72,12 @@ const DrawMT = () => {
 
     // Crear una nueva transición
     const confirmAddTransition = () => {
-        const read = transitionRead.trim() === "" ? "\u2022" : transitionRead;
-        const write = transitionWrite.trim() === "" ? "\u2022" : transitionWrite;
+        const read = transitionRead.trim() || "λ"; // Por defecto, "λ" si está vacío
+        const write = transitionWrite.trim() || "λ"; // Por defecto, "λ" si está vacío
+        const move = transitionMove.trim(); // Mantener movimiento válido ("R" o "L")
 
-        if (!transitionMove) {
-            toast.error("Debes especificar el movimiento (R o L).");
+        if (!["R", "L"].includes(move)) {
+            toast.error("Movimiento inválido. Debe ser 'R' o 'L'.");
             return;
         }
 
@@ -88,42 +89,39 @@ const DrawMT = () => {
             );
 
             if (existingTransitionIndex !== -1) {
-                // Si ya existe una transición entre estos nodos
+                // Actualizar transición existente
                 const updatedTransitions = [...prevTransitions];
                 const existingTransition = updatedTransitions[existingTransitionIndex];
 
                 updatedTransitions[existingTransitionIndex] = {
                     ...existingTransition,
-                    // Añadir la nueva transición al array transitionsData
                     transitionsData: [
                         ...(existingTransition.transitionsData || []),
-                        { read, write, move: transitionMove },
+                        { read, write, move },
                     ],
                 };
 
                 return updatedTransitions;
             } else {
-                // Si no hay una transición previa, creamos una nueva con su array transitionsData
+                // Crear nueva transición
                 return [
                     ...prevTransitions,
                     {
                         from: transitionNodes.from,
                         to: transitionNodes.to,
-                        transitionsData: [
-                            { read, write, move: transitionMove },
-                        ],
+                        transitionsData: [{ read, write, move }],
                     },
                 ];
             }
         });
 
+        // Reiniciar valores de entrada
         setShowTransitionModal(false);
         setTransitionRead("");
         setTransitionWrite("");
         setTransitionMove("");
         setTransitionNodes({ from: null, to: null });
     };
-
 
     // Manejar clic derecho para marcar inicial/final (con modal)
     const handleContextMenu = (e, node) => {
@@ -323,6 +321,7 @@ const DrawMT = () => {
         const structureOpen = `<structure>\n<type>turing</type>\n<automaton>\n`;
         const structureClose = `</automaton>\n</structure>`;
 
+        // Construcción de estados
         const statesXML = nodes.map((node, i) => {
             return `
         <state id="${i}" name="${node.label}">
@@ -333,29 +332,38 @@ const DrawMT = () => {
         </state>`;
         }).join("\n");
 
+        // Construcción de transiciones
         const transitionsXML = transitions.map(t => {
             const fromIndex = nodes.findIndex(n => n.id === t.from.id);
             const toIndex = nodes.findIndex(n => n.id === t.to.id);
 
-            return `
+            if (fromIndex === -1 || toIndex === -1) {
+                console.warn(`Transición inválida: ${JSON.stringify(t)}`);
+                return ""; // Omitir transiciones inválidas
+            }
+
+            return t.transitionsData.map(({ read, write, move }) => `
         <transition>
             <from>${fromIndex}</from>
             <to>${toIndex}</to>
-            <read>${t.read}</read>
-            <write>${t.write}</write>
-            <move>${t.move}</move>
-        </transition>`;
-        }).join("\n");
+            <read>${read || "λ"}</read>
+            <write>${write || "λ"}</write>
+            <move>${["R", "L"].includes(move) ? move : "S"}</move>
+        </transition>`).join("\n");
+        }).filter(Boolean).join("\n"); // Filtrar transiciones vacías
 
+        // Construcción del archivo XML completo
         const fullXML = `${xmlHeader}
-        ${structureOpen}
-        ${statesXML}
-        ${transitionsXML}
-        ${structureClose}`;
+    ${structureOpen}
+    ${statesXML}
+    ${transitionsXML}
+    ${structureClose}`;
 
+        // Crear y guardar el archivo
         const blob = new Blob([fullXML], { type: "application/xml;charset=utf-8" });
         saveAs(blob, `${exportFilename || "turing_machine"}.jff`);
 
+        // Reiniciar estado del modal y nombre del archivo
         setShowExportModal(false);
         setExportFilename("turing_machine");
     };
