@@ -3,9 +3,10 @@ package org.example.Entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "app_user")
+@Table(name = "users")
 public class User {
 
     @Id

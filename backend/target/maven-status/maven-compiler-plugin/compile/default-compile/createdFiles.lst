@@ -1,0 +1,15 @@
+org/example/Entities/AutomatonUtils.class
+org/example/Main.class
+org/example/Controllers/AuthController.class
+org/example/Controllers/AutomataSimulatorRESTController.class
+org/example/Services/UserService.class
+org/example/Services/AutomataService.class
+org/example/Controllers/AutomataTransformerRESTController.class
+org/example/Config/SecurityConfig.class
+org/example/Controllers/AutomataExtraRESTController.class
+org/example/Controllers/GrammarRESTController.class
+org/example/Entities/User.class
+org/example/Entities/GrammarRequest.class
+org/example/Entities/Grammar2Request.class
+org/example/Repositories/UserRepository.class
+org/example/Services/GrammarService.class

@@ -20,11 +20,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .requestMatchers("/api/auth/register", "/api/auth/login") // Acceso público
-                .permitAll() // Permitir sin autenticación
-                .anyRequest().authenticated(); // Otras rutas requieren autenticación
-
+                .csrf(csrf -> csrf.disable()) // Nuevo enfoque
+                .authorizeRequests(auth -> auth
+                        .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/users").permitAll()
+                        .anyRequest().authenticated()
+                );
         return http.build();
     }
 }
