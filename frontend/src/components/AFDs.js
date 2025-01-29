@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Typography, Grid, Paper } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
+import "@fontsource/josefin-sans";
 
 const AFDs = () => {
     const navigate = useNavigate();
@@ -97,6 +98,7 @@ const AFDs = () => {
                                 sx={{
                                     fontSize: "1rem",
                                     lineHeight: "1.5",
+                                    fontFamily: "'Josefin Sans', sans-serif",
                                 }}
                             >
                                 {operation.description}

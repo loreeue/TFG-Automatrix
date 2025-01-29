@@ -83,6 +83,7 @@ const AFNDToAFD = () => {
                         "&:hover": {
                             backgroundColor: "#331832",
                         },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     Subir Archivo AFND (.jff)
@@ -100,7 +101,7 @@ const AFNDToAFD = () => {
                         sx={{
                             marginBottom: 2,
                             textAlign: "center",
-                            fontFamily: "'Spicy Rice', cursive",
+                            fontFamily: "'Josefin Sans', sans-serif",
                         }}
                     >
                         Archivo seleccionado: {file.name}
@@ -119,6 +120,7 @@ const AFNDToAFD = () => {
                         "&:hover": {
                             backgroundColor: "#331832",
                         },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Convertir AFND a AFD"}

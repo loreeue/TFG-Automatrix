@@ -63,7 +63,11 @@ const Grammars = () => {
                 >
                     Gramáticas Equivalentes
                 </Typography>
-                <Typography>
+                <Typography
+                    sx={{
+                        fontFamily: "'Josefin Sans', sans-serif",
+                    }}
+                >
                     Compara gramáticas para determinar si generan el mismo lenguaje.
                 </Typography>
             </Paper>

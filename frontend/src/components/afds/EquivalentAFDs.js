@@ -85,6 +85,7 @@ const EquivalentAFDs = () => {
                         "&:hover": {
                             backgroundColor: "#331832",
                         },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     Subir Archivo AFD 1 (.jff)
@@ -103,7 +104,7 @@ const EquivalentAFDs = () => {
                         sx={{
                             marginBottom: 2,
                             textAlign: "center",
-                            fontFamily: "'Spicy Rice', cursive",
+                            fontFamily: "'Josefin Sans', sans-serif",
                         }}
                     >
                         Archivo seleccionado 1: {file1.name}
@@ -123,6 +124,7 @@ const EquivalentAFDs = () => {
                         "&:hover": {
                             backgroundColor: "#331832",
                         },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     Subir Archivo AFD 2 (.jff)
@@ -141,7 +143,7 @@ const EquivalentAFDs = () => {
                         sx={{
                             marginBottom: 2,
                             textAlign: "center",
-                            fontFamily: "'Spicy Rice', cursive",
+                            fontFamily: "'Josefin Sans', sans-serif",
                         }}
                     >
                         Archivo seleccionado 2: {file2.name}
@@ -161,6 +163,7 @@ const EquivalentAFDs = () => {
                         "&:hover": {
                             backgroundColor: "#331832",
                         },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Comparar AFDs"}
@@ -175,6 +178,7 @@ const EquivalentAFDs = () => {
                         marginTop: 3,
                         textAlign: "center",
                         color: "#FFFFFF", // Cambiado a blanco
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     {result}

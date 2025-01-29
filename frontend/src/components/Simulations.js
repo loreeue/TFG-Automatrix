@@ -97,6 +97,7 @@ const Simulations = () => {
                                 sx={{
                                     fontSize: "1rem",
                                     lineHeight: "1.5",
+                                    fontFamily: "'Josefin Sans', sans-serif",
                                 }}
                             >
                                 {simulation.description}
@@ -172,6 +173,7 @@ const Simulations = () => {
                                 sx={{
                                     fontSize: "1rem",
                                     lineHeight: "1.5",
+                                    fontFamily: "'Josefin Sans', sans-serif",
                                 }}
                             >
                                 {simulation.description}

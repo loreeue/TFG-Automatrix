@@ -82,6 +82,7 @@ const AFDToER = () => {
                         "&:hover": {
                             backgroundColor: "#331832",
                         },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     Subir Archivo AFD (.jff)
@@ -99,7 +100,7 @@ const AFDToER = () => {
                         sx={{
                             marginBottom: 2,
                             textAlign: "center",
-                            fontFamily: "'Spicy Rice', cursive",
+                            fontFamily: "'Josefin Sans', sans-serif",
                         }}
                     >
                         Archivo seleccionado: {file.name}
@@ -118,6 +119,7 @@ const AFDToER = () => {
                         "&:hover": {
                             backgroundColor: "#331832",
                         },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Convertir AFD a ER"}
@@ -131,6 +133,7 @@ const AFDToER = () => {
                         marginTop: 3,
                         textAlign: "center",
                         color: "#FFFFFF", // Cambiado a blanco
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     {result}

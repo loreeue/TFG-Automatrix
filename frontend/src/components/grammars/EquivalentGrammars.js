@@ -93,10 +93,18 @@ const EquivalentGrammars = () => {
                     backgroundColor: "#2C2C2C",
                 }}
             >
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" gutterBottom
+                    sx={{
+                        fontFamily: "'Josefin Sans', sans-serif",
+                    }}
+                >
                     Instrucciones:
                 </Typography>
-                <Typography variant="body1" gutterBottom>
+                <Typography variant="body1" gutterBottom
+                    sx={{
+                        fontFamily: "'Josefin Sans', sans-serif",
+                    }}
+                >
                     Introduzca cada gramática en formato JSON, con sus producciones enumeradas como se muestra a continuación:
                 </Typography>
                 <Box
@@ -106,8 +114,8 @@ const EquivalentGrammars = () => {
                         backgroundColor: "#333333",
                         padding: 2,
                         borderRadius: "8px",
-                        fontFamily: "monospace",
                         color: "#FFFFFF",
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     <Box sx={{ flex: 1 }}>{exampleGrammar}</Box>
@@ -216,6 +224,7 @@ const EquivalentGrammars = () => {
                         marginTop: 3,
                         textAlign: "center",
                         color: "#FFFFFF", // Cambiado a blanco
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     {result}

@@ -86,6 +86,7 @@ const MainMenu = () => {
                                     textAlign: "center",
                                     marginTop: "2rem",
                                     padding: "0 1rem",
+                                    fontFamily: "'Josefin Sans', sans-serif",
                                 }}
                             >
                                 {section.description}

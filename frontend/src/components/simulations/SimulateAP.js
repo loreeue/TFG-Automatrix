@@ -98,13 +98,19 @@ const SimulateAP = () => {
                         marginBottom: 2,
                         backgroundColor: "#694D75",
                         "&:hover": { backgroundColor: "#331832" },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     Seleccionar Archivo
                     <input type="file" hidden accept=".jff" onChange={handleFileChange} />
                 </Button>
                 {file && (
-                    <Typography variant="body2" sx={{ marginBottom: 2 }}>
+                    <Typography variant="body2"
+                        sx={{
+                            marginBottom: 2,
+                            fontFamily: "'Josefin Sans', sans-serif",
+                        }}
+                    >
                         Archivo seleccionado: {file.name}
                     </Typography>
                 )}
@@ -141,6 +147,7 @@ const SimulateAP = () => {
                         borderRadius: "8px",
                         backgroundColor: "#694D75",
                         "&:hover": { backgroundColor: "#331832" },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Simular"}
@@ -164,7 +171,11 @@ const SimulateAP = () => {
                         color: "#FFFFFF",
                     }}
                 >
-                    <Typography variant="h6" gutterBottom>
+                    <Typography variant="h6" gutterBottom
+                        sx={{
+                            fontFamily: "'Josefin Sans', sans-serif",
+                        }}
+                    >
                         Resultado:
                     </Typography>
                     {result}

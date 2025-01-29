@@ -108,10 +108,18 @@ const GICToChomsky = () => {
                     maxWidth: "800px",
                 }}
             >
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" gutterBottom
+                    sx={{
+                        fontFamily: "'Josefin Sans', sans-serif",
+                    }}
+                >
                     Instrucciones:
                 </Typography>
-                <Typography variant="body1" gutterBottom>
+                <Typography variant="body1" gutterBottom
+                    sx={{
+                        fontFamily: "'Josefin Sans', sans-serif",
+                    }}
+                >
                     Introduzca la gramática en formato JSON, siguiendo este ejemplo:
                 </Typography>
                 <Box
@@ -181,6 +189,7 @@ const GICToChomsky = () => {
                         "&:hover": {
                             backgroundColor: "#331832",
                         },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     {loading ? (
@@ -209,7 +218,11 @@ const GICToChomsky = () => {
                         color: "#FFFFFF",
                     }}
                 >
-                    <Typography variant="h6" gutterBottom>
+                    <Typography variant="h6" gutterBottom
+                        sx={{
+                            fontFamily: "'Josefin Sans', sans-serif",
+                        }}
+                    >
                         Gramática en Forma Normal de Chomsky:
                     </Typography>
                     {result}

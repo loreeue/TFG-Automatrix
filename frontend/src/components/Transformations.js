@@ -84,6 +84,7 @@ const Transformations = () => {
                                 sx={{
                                     fontSize: "1rem",
                                     lineHeight: "1.5",
+                                    fontFamily: "'Josefin Sans', sans-serif",
                                 }}
                             >
                                 {transformation.description}
@@ -143,6 +144,7 @@ const Transformations = () => {
                                 sx={{
                                     fontSize: "1rem",
                                     lineHeight: "1.5",
+                                    fontFamily: "'Josefin Sans', sans-serif",
                                 }}
                             >
                                 {transformation.description}
