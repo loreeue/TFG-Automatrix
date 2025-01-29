@@ -3,31 +3,31 @@
 	<automaton>
 		<!--The list of states.-->
 		<state id="0" name="q0">
-			<x>147.0</x>
-			<y>92.0</y>
+			<x>55.0</x>
+			<y>354.0</y>
 			<label>A</label>
 			<initial/>
 		</state>
 		<state id="1" name="q1">
-			<x>370.0</x>
-			<y>386.0</y>
+			<x>87.0</x>
+			<y>407.0</y>
 			<label>S</label>
 		</state>
 		<state id="2" name="q2">
-			<x>166.0</x>
-			<y>454.0</y>
+			<x>243.0</x>
+			<y>438.0</y>
 			<final/>
 		</state>
 		<!--The list of transitions.-->
 		<transition>
-			<from>1</from>
-			<to>0</to>
-			<read>a</read>
-		</transition>
-		<transition>
 			<from>0</from>
 			<to>2</to>
 			<read>b</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>0</to>
+			<read>a</read>
 		</transition>
 	</automaton>
 </structure>

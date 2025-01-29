@@ -25,10 +25,15 @@
 			<final/>
 		</state>
 		<state id="5" name="q5">
-			<x>508.0</x>
-			<y>411.0</y>
+			<x>65.0</x>
+			<y>556.0</y>
 		</state>
 		<!--The list of transitions.-->
+		<transition>
+			<from>0</from>
+			<to>4</to>
+			<read>c</read>
+		</transition>
 		<transition>
 			<from>1</from>
 			<to>1</to>
@@ -76,48 +81,43 @@
 		</transition>
 		<transition>
 			<from>2</from>
+			<to>4</to>
+			<read>c</read>
+		</transition>
+		<transition>
+			<from>2</from>
 			<to>0</to>
+			<read>b</read>
+		</transition>
+		<transition>
+			<from>2</from>
+			<to>3</to>
+			<read>a</read>
+		</transition>
+		<transition>
+			<from>4</from>
+			<to>5</to>
 			<read>b</read>
 		</transition>
 		<transition>
 			<from>0</from>
 			<to>1</to>
+			<read>a</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>4</to>
+			<read>c</read>
+		</transition>
+		<transition>
+			<from>4</from>
+			<to>5</to>
 			<read>a</read>
 		</transition>
 		<transition>
 			<from>1</from>
 			<to>2</to>
 			<read>b</read>
-		</transition>
-		<transition>
-			<from>1</from>
-			<to>4</to>
-			<read>c</read>
-		</transition>
-		<transition>
-			<from>4</from>
-			<to>5</to>
-			<read>b</read>
-		</transition>
-		<transition>
-			<from>4</from>
-			<to>5</to>
-			<read>a</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>4</to>
-			<read>c</read>
-		</transition>
-		<transition>
-			<from>2</from>
-			<to>3</to>
-			<read>a</read>
-		</transition>
-		<transition>
-			<from>2</from>
-			<to>4</to>
-			<read>c</read>
 		</transition>
 	</automaton>
 </structure>
