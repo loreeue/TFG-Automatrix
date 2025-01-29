@@ -114,10 +114,18 @@ const GICToAP = () => {
                     maxWidth: "800px",
                 }}
             >
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" gutterBottom
+                    sx={{
+                        fontFamily: "'Josefin Sans', sans-serif",
+                    }}
+                >
                     Instrucciones:
                 </Typography>
-                <Typography variant="body1" gutterBottom>
+                <Typography variant="body1" gutterBottom
+                    sx={{
+                        fontFamily: "'Josefin Sans', sans-serif",
+                    }}
+                >
                     Introduzca la gramática en formato JSON, siguiendo este ejemplo:
                 </Typography>
                 <Box
@@ -188,6 +196,7 @@ const GICToAP = () => {
                         "&:hover": {
                             backgroundColor: "#331832",
                         },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Convertir GIC a AP"}

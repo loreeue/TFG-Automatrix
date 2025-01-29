@@ -14,6 +14,7 @@ const Footer = () => {
                 position: "fixed",
                 bottom: 0,
                 width: "100%",
+                fontFamily: "'Josefin Sans', sans-serif",
             }}
         >
             <p>&copy; {new Date().getFullYear()} - Automatrix. Todos los derechos reservados.</p>
@@ -23,7 +24,11 @@ const Footer = () => {
                     href="https://github.com/loreeue"
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ color: "white", textDecoration: "underline" }}
+                    style={{
+                        color: "white",
+                        textDecoration: "underline",
+                        fontFamily: "'Josefin Sans', sans-serif",
+                    }}
                 >
                     Loreto Uzquiano Esteban
                 </a>

@@ -90,6 +90,7 @@ const Header = () => {
                         fontSize: "1rem",
                         textTransform: "none",
                         "&:hover": { color: theme.palette.primary.main },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     Gramáticas
@@ -105,6 +106,7 @@ const Header = () => {
                         fontSize: "1rem",
                         textTransform: "none",
                         "&:hover": { color: theme.palette.primary.main },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     AFDs
@@ -120,6 +122,7 @@ const Header = () => {
                         fontSize: "1rem",
                         textTransform: "none",
                         "&:hover": { color: theme.palette.primary.main },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     Transformaciones
@@ -135,6 +138,7 @@ const Header = () => {
                         fontSize: "1rem",
                         textTransform: "none",
                         "&:hover": { color: theme.palette.primary.main },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     Validaciones
@@ -150,6 +154,7 @@ const Header = () => {
                         fontSize: "1rem",
                         textTransform: "none",
                         "&:hover": { color: theme.palette.primary.main },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     Dibujar Autómata
@@ -169,6 +174,7 @@ const Header = () => {
                         fontWeight: "bold",
                         textTransform: "none",
                         "&:hover": { borderColor: theme.palette.secondary.main, color: theme.palette.primary.main },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     Inicio
@@ -184,6 +190,7 @@ const Header = () => {
                         fontWeight: "bold",
                         textTransform: "none",
                         "&:hover": { borderColor: theme.palette.secondary.main, color: theme.palette.primary.main },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                     onClick={() => navigate(-1)}
                 >
@@ -208,6 +215,7 @@ const Header = () => {
                                 fontWeight: "bold",
                                 textTransform: "none",
                                 "&:hover": { backgroundColor: theme.palette.secondary.main },
+                                fontFamily: "'Josefin Sans', sans-serif",
                             }}
                             onClick={() => handleClickOpenDialog(true)} // Iniciar sesión
                         >
@@ -221,6 +229,7 @@ const Header = () => {
                                 fontWeight: "bold",
                                 textTransform: "none",
                                 "&:hover": { backgroundColor: theme.palette.secondary.main },
+                                fontFamily: "'Josefin Sans', sans-serif",
                             }}
                             onClick={() => handleClickOpenDialog(false)} // Registro
                         >

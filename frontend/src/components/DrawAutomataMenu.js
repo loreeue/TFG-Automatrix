@@ -69,7 +69,15 @@ const DrawAutomataMenu = () => {
                             >
                                 {item.label}
                             </Typography>
-                            <Typography>{item.description}</Typography>
+                            <Typography
+                                sx={{
+                                    fontFamily: "'Josefin Sans', sans-serif",
+                                    fontSize: "1rem",
+                                    lineHeight: "1.5",
+                                }}
+                            >
+                                {item.description}
+                            </Typography>
                         </Paper>
                     </Grid>
                 ))}

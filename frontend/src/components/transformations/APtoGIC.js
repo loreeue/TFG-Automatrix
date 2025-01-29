@@ -78,6 +78,7 @@ const APToGIC = () => {
                         "&:hover": {
                             backgroundColor: "#331832",
                         },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     Subir Archivo AP (.jff)
@@ -95,7 +96,7 @@ const APToGIC = () => {
                         sx={{
                             marginBottom: 2,
                             textAlign: "center",
-                            fontFamily: "'Spicy Rice', cursive",
+                            fontFamily: "'Josefin Sans', sans-serif",
                         }}
                     >
                         Archivo seleccionado: {file.name}
@@ -114,6 +115,7 @@ const APToGIC = () => {
                         "&:hover": {
                             backgroundColor: "#331832",
                         },
+                        fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Convertir AP a GIC"}
@@ -137,7 +139,7 @@ const APToGIC = () => {
                         variant="h6"
                         sx={{
                             marginBottom: 1,
-                            fontFamily: "'Spicy Rice', cursive",
+                            fontFamily: "'Josefin Sans', sans-serif",
                         }}
                     >
                         Gramática Independiente de Contexto:
