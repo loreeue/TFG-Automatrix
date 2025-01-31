@@ -519,7 +519,8 @@ const DrawMT = () => {
                         variant="contained"
                         sx={{
                             backgroundColor: theme.palette.secondary.main,
-                            '&:hover': { backgroundColor: theme.palette.primary.main }
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
                         }}
                         onClick={() => {
                             setShowStateTypeModal(false);
@@ -532,7 +533,8 @@ const DrawMT = () => {
                         variant="contained"
                         sx={{
                             backgroundColor: theme.palette.secondary.main,
-                            '&:hover': { backgroundColor: theme.palette.primary.main }
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
                         }}
                         onClick={() => setStateType("initial")}
                     >
@@ -542,7 +544,8 @@ const DrawMT = () => {
                         variant="contained"
                         sx={{
                             backgroundColor: theme.palette.secondary.main,
-                            '&:hover': { backgroundColor: theme.palette.primary.main }
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
                         }}
                         onClick={() => setStateType("final")}
                     >
@@ -562,7 +565,13 @@ const DrawMT = () => {
                             variant="standard"
                             value={transitionRead}
                             onChange={(e) => setTransitionRead(e.target.value)}
-                            sx={{ fontFamily: "'Spicy Rice', cursive" }}
+                            sx={{
+                                fontFamily: "'Josefin Sans', sans-serif",
+                                "& .MuiInputBase-input": {
+                                    color: "#111111",
+                                    fontFamily: "'Josefin Sans', sans-serif",
+                                },
+                            }}
                         />
                         <TextField
                             margin="dense"
@@ -571,7 +580,13 @@ const DrawMT = () => {
                             variant="standard"
                             value={transitionWrite}
                             onChange={(e) => setTransitionWrite(e.target.value)}
-                            sx={{ fontFamily: "'Spicy Rice', cursive" }}
+                            sx={{
+                                fontFamily: "'Josefin Sans', sans-serif",
+                                "& .MuiInputBase-input": {
+                                    color: "#111111",
+                                    fontFamily: "'Josefin Sans', sans-serif",
+                                },
+                            }}
                         />
                         <TextField
                             margin="dense"
@@ -582,15 +597,37 @@ const DrawMT = () => {
                             onChange={handleTransitionMoveChange}
                             error={transitionMove && transitionMove !== "R" && transitionMove !== "L"}
                             helperText={transitionMove && transitionMove !== "R" && transitionMove !== "L" ? "El valor debe ser 'R' o 'L'." : ""}
-                            sx={{ fontFamily: "'Spicy Rice', cursive" }}
+                            sx={{
+                                fontFamily: "'Josefin Sans', sans-serif",
+                                "& .MuiInputBase-input": {
+                                    color: "#111111",
+                                    fontFamily: "'Josefin Sans', sans-serif",
+                                },
+                            }}
                         />
                     </Box>
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'space-around' }}>
-                    <Button /* ... propiedades existentes ... */ onClick={() => setShowTransitionModal(false)}>
+                    <Button
+                        sx={{
+                            backgroundColor: theme.palette.secondary.main,
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
+                            color: "#FFFFFF"
+                        }}
+                        onClick={() => setShowTransitionModal(false)}
+                    >
                         Cancelar
                     </Button>
-                    <Button /* ... propiedades existentes ... */ onClick={confirmAddTransition}>
+                    <Button
+                        sx={{
+                            backgroundColor: theme.palette.secondary.main,
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
+                            color: "#FFFFFF"
+                        }}
+                        onClick={confirmAddTransition}
+                    >
                         Confirmar
                     </Button>
                 </DialogActions>
@@ -607,7 +644,13 @@ const DrawMT = () => {
                         variant="standard"
                         value={exportFilename}
                         onChange={(e) => setExportFilename(e.target.value)}
-                        sx={{ fontFamily: "'Spicy Rice', cursive" }}
+                        sx={{
+                            fontFamily: "'Josefin Sans', sans-serif",
+                            "& .MuiInputBase-input": {
+                                color: "#111111",
+                                fontFamily: "'Josefin Sans', sans-serif",
+                            },
+                        }}
                     />
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'space-around' }}>
@@ -615,7 +658,8 @@ const DrawMT = () => {
                         variant="contained"
                         sx={{
                             backgroundColor: theme.palette.secondary.main,
-                            '&:hover': { backgroundColor: theme.palette.primary.main }
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
                         }}
                         onClick={() => {
                             setShowExportModal(false);
@@ -628,7 +672,8 @@ const DrawMT = () => {
                         variant="contained"
                         sx={{
                             backgroundColor: theme.palette.secondary.main,
-                            '&:hover': { backgroundColor: theme.palette.primary.main }
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
                         }}
                         onClick={exportToJFF}
                     >
@@ -648,48 +693,56 @@ const DrawMT = () => {
                     ¿Cómo usar el editor?
                 </DialogTitle>
                 <DialogContent>
-                    <Typography variant="body1" sx={{ marginBottom: "1rem" }}>
-                        Usa este editor para crear y editar autómatas de manera interactiva. Aquí tienes algunas instrucciones:
+                    <Typography variant="body1"
+                                sx={{
+                                    marginBottom: "1rem",
+                                    fontFamily: "'Josefin Sans', sans-serif",
+                                }}
+                    >
+                        Usa este editor para crear y editar autómatas de manera interactiva. Aquí tienes algunas
+                        instrucciones:
                     </Typography>
-                    <ul>
+                    <ul style={{fontFamily: "'Josefin Sans', sans-serif"}}>
                         <li>
-                            <Typography variant="body1">
+                            <Typography variant="body1" sx={{fontFamily: "'Josefin Sans', sans-serif"}}>
                                 <b>Doble clic</b> en el lienzo: Crear un nuevo estado.
                             </Typography>
                         </li>
                         <li>
-                            <Typography variant="body1">
+                            <Typography variant="body1" sx={{fontFamily: "'Josefin Sans', sans-serif"}}>
                                 <b>Clic derecho</b> en un estado: Marcar como inicial o final.
                             </Typography>
                         </li>
                         <li>
-                            <Typography variant="body1">
+                            <Typography variant="body1" sx={{fontFamily: "'Josefin Sans', sans-serif"}}>
                                 <b>Clic</b> en un estado y luego en otro: Crear una transición.
                             </Typography>
                         </li>
                         <li>
-                            <Typography variant="body1">
+                            <Typography variant="body1" sx={{fontFamily: "'Josefin Sans', sans-serif"}}>
                                 <b>Clic</b> en un estado y luego en el mismo estado: Crear un loop.
                             </Typography>
                         </li>
                         <li>
-                            <Typography variant="body1">
+                            <Typography variant="body1" sx={{fontFamily: "'Josefin Sans', sans-serif"}}>
                                 <b>Arrastrar</b> estados: Moverlos en el lienzo.
                             </Typography>
                         </li>
                         <li>
-                            <Typography variant="body1">
-                                <b>Botón de eliminar transición</b>: Activar modo de eliminación y hacer clic en una flecha para eliminarla.
+                            <Typography variant="body1" sx={{fontFamily: "'Josefin Sans', sans-serif"}}>
+                                <b>Botón de eliminar transición</b>: Activar modo de eliminación y hacer clic en una
+                                flecha para eliminarla.
                             </Typography>
                         </li>
                     </ul>
                 </DialogContent>
-                <DialogActions sx={{ justifyContent: "center" }}>
+                <DialogActions sx={{justifyContent: "center"}}>
                     <Button
                         variant="contained"
                         sx={{
                             backgroundColor: theme.palette.secondary.main,
-                            "&:hover": { backgroundColor: theme.palette.primary.main },
+                            "&:hover": {backgroundColor: theme.palette.primary.main},
+                            fontFamily: "'Josefin Sans', sans-serif",
                         }}
                         onClick={() => setShowHelpModal(false)} // Cierra el modal
                     >

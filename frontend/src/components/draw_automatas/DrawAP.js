@@ -502,13 +502,34 @@ const DrawAP = () => {
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}>Elige el tipo de estado:</DialogContent>
                 <DialogActions sx={{ justifyContent: 'space-around' }}>
-                    <Button variant="contained" sx={{ backgroundColor: theme.palette.secondary.main, '&:hover': { backgroundColor: theme.palette.primary.main } }} onClick={() => { setShowStateTypeModal(false); setTargetNode(null); }}>
+                    <Button variant="contained"
+                        sx={{
+                            backgroundColor: theme.palette.secondary.main,
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
+                        }}
+                        onClick={() => { setShowStateTypeModal(false); setTargetNode(null); }}
+                    >
                         Cancelar
                     </Button>
-                    <Button variant="contained" sx={{ backgroundColor: theme.palette.secondary.main, '&:hover': { backgroundColor: theme.palette.primary.main } }} onClick={() => setStateType("initial")}>
+                    <Button variant="contained"
+                        sx={{
+                            backgroundColor: theme.palette.secondary.main,
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
+                        }}
+                        onClick={() => setStateType("initial")}
+                    >
                         Estado Inicial
                     </Button>
-                    <Button variant="contained" sx={{ backgroundColor: theme.palette.secondary.main, '&:hover': { backgroundColor: theme.palette.primary.main } }} onClick={() => setStateType("final")}>
+                    <Button variant="contained"
+                        sx={{
+                            backgroundColor: theme.palette.secondary.main,
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
+                        }}
+                        onClick={() => setStateType("final")}
+                    >
                         Estado Final
                     </Button>
                 </DialogActions>
@@ -517,13 +538,41 @@ const DrawAP = () => {
             <Dialog open={showStackSymbolModal} onClose={() => setShowStackSymbolModal(false)}>
                 <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: 'center' }}>Símbolo de pila inicial</DialogTitle>
                 <DialogContent>
-                    <TextField autoFocus margin="dense" label="Símbolo de pila" type="text" fullWidth variant="standard" value={initialStackSymbol} onChange={(e) => setInitialStackSymbol(e.target.value)} sx={{ fontFamily: "'Spicy Rice', cursive" }} />
+                    <TextField
+                        autoFocus margin="dense"
+                        label="Símbolo de pila"
+                        type="text"
+                        fullWidth variant="standard"
+                        value={initialStackSymbol}
+                        onChange={(e) => setInitialStackSymbol(e.target.value)}
+                        sx={{
+                            fontFamily: "'Josefin Sans', sans-serif",
+                            "& .MuiInputBase-input": {
+                                color: "#111111",
+                                fontFamily: "'Josefin Sans', sans-serif",
+                            },
+                        }}
+                    />
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'space-around' }}>
-                    <Button variant="contained" sx={{ backgroundColor: theme.palette.secondary.main, '&:hover': { backgroundColor: theme.palette.primary.main } }} onClick={() => setShowStackSymbolModal(false)}>
+                    <Button variant="contained"
+                        sx={{
+                            backgroundColor: theme.palette.secondary.main,
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
+                        }}
+                        onClick={() => setShowStackSymbolModal(false)}
+                    >
                         Cancelar
                     </Button>
-                    <Button variant="contained" sx={{ backgroundColor: theme.palette.secondary.main, '&:hover': { backgroundColor: theme.palette.primary.main } }} onClick={confirmStackSymbol}>
+                    <Button variant="contained"
+                        sx={{
+                            backgroundColor: theme.palette.secondary.main,
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
+                        }}
+                        onClick={confirmStackSymbol}
+                    >
                         Confirmar
                     </Button>
                 </DialogActions>
@@ -533,31 +582,109 @@ const DrawAP = () => {
                 <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: 'center' }}>Nueva transición</DialogTitle>
                 <DialogContent>
                     <Box sx={{ display: 'flex', gap: '1rem' }}>
-                        <TextField autoFocus margin="dense" label="Letra" type="text" variant="standard" value={transitionLetter} onChange={(e) => setTransitionLetter(e.target.value)} sx={{ fontFamily: "'Spicy Rice', cursive" }} />
-                        <TextField margin="dense" label="Consume pila" type="text" variant="standard" value={stackSymbolConsume} onChange={(e) => setStackSymbolConsume(e.target.value)} sx={{ fontFamily: "'Spicy Rice', cursive" }} />
-                        <TextField margin="dense" label="Introduce pila" type="text" variant="standard" value={stackSymbolPush} onChange={(e) => setStackSymbolPush(e.target.value)} sx={{ fontFamily: "'Spicy Rice', cursive" }} />
+                        <TextField autoFocus margin="dense" label="Letra" type="text" variant="standard" value={transitionLetter} onChange={(e) => setTransitionLetter(e.target.value)}
+                           sx={{
+                               fontFamily: "'Josefin Sans', sans-serif",
+                               "& .MuiInputBase-input": {
+                                   color: "#111111",
+                                   fontFamily: "'Josefin Sans', sans-serif",
+                               },
+                           }}
+                        />
+                        <TextField margin="dense" label="Consume pila" type="text" variant="standard" value={stackSymbolConsume} onChange={(e) => setStackSymbolConsume(e.target.value)}
+                           sx={{
+                               fontFamily: "'Josefin Sans', sans-serif",
+                               "& .MuiInputBase-input": {
+                                   color: "#111111",
+                                   fontFamily: "'Josefin Sans', sans-serif",
+                               },
+                           }}
+                        />
+                        <TextField margin="dense" label="Introduce pila" type="text" variant="standard" value={stackSymbolPush} onChange={(e) => setStackSymbolPush(e.target.value)}
+                           sx={{
+                               fontFamily: "'Josefin Sans', sans-serif",
+                               "& .MuiInputBase-input": {
+                                   color: "#111111",
+                                   fontFamily: "'Josefin Sans', sans-serif",
+                               },
+                           }}
+                        />
                     </Box>
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'space-around' }}>
-                    <Button variant="contained" sx={{ backgroundColor: theme.palette.secondary.main, '&:hover': { backgroundColor: theme.palette.primary.main } }} onClick={() => setShowTransitionModal(false)}>
+                    <Button
+                        variant="contained"
+                        sx={{
+                            backgroundColor: theme.palette.secondary.main,
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
+                        }}
+                        onClick={() => setShowTransitionModal(false)}
+                    >
                         Cancelar
                     </Button>
-                    <Button variant="contained" sx={{ backgroundColor: theme.palette.secondary.main, '&:hover': { backgroundColor: theme.palette.primary.main } }} onClick={confirmAddTransition}>
+                    <Button
+                        variant="contained"
+                        sx={{
+                            backgroundColor: theme.palette.secondary.main,
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
+                        }}
+                        onClick={confirmAddTransition}
+                    >
                         Confirmar
                     </Button>
                 </DialogActions>
             </Dialog>
 
+            {/* Modal para el nombre del archivo al exportar */}
             <Dialog open={showExportModal} onClose={() => setShowExportModal(false)}>
-                <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: 'center' }}>Guardar archivo</DialogTitle>
+                <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: 'center' }}>
+                    Guardar archivo
+                </DialogTitle>
                 <DialogContent>
-                    <TextField autoFocus margin="dense" label="Nombre del archivo" type="text" fullWidth variant="standard" value={exportFilename} onChange={(e) => setExportFilename(e.target.value)} sx={{ fontFamily: "'Spicy Rice', cursive" }} />
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        label="Nombre del archivo"
+                        type="text"
+                        fullWidth
+                        variant="standard"
+                        value={exportFilename}
+                        onChange={(e) => setExportFilename(e.target.value)}
+                        sx={{
+                            fontFamily: "'Josefin Sans', sans-serif",
+                            "& .MuiInputBase-input": {
+                                color: "#111111",
+                                fontFamily: "'Josefin Sans', sans-serif",
+                            },
+                        }}
+                    />
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'space-around' }}>
-                    <Button variant="contained" sx={{ backgroundColor: theme.palette.secondary.main, '&:hover': { backgroundColor: theme.palette.primary.main } }} onClick={() => { setShowExportModal(false); setExportFilename("automata"); }}>
+                    <Button
+                        variant="contained"
+                        sx={{
+                            backgroundColor: theme.palette.secondary.main,
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
+                        }}
+                        onClick={() => {
+                            setShowExportModal(false);
+                            setExportFilename("automata");
+                        }}
+                    >
                         Cancelar
                     </Button>
-                    <Button variant="contained" sx={{ backgroundColor: theme.palette.secondary.main, '&:hover': { backgroundColor: theme.palette.primary.main } }} onClick={exportToJFF}>
+                    <Button
+                        variant="contained"
+                        sx={{
+                            backgroundColor: theme.palette.secondary.main,
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
+                        }}
+                        onClick={exportToJFF}
+                    >
                         Guardar
                     </Button>
                 </DialogActions>
@@ -574,48 +701,56 @@ const DrawAP = () => {
                     ¿Cómo usar el editor?
                 </DialogTitle>
                 <DialogContent>
-                    <Typography variant="body1" sx={{ marginBottom: "1rem" }}>
-                        Usa este editor para crear y editar autómatas de manera interactiva. Aquí tienes algunas instrucciones:
+                    <Typography variant="body1"
+                                sx={{
+                                    marginBottom: "1rem",
+                                    fontFamily: "'Josefin Sans', sans-serif",
+                                }}
+                    >
+                        Usa este editor para crear y editar autómatas de manera interactiva. Aquí tienes algunas
+                        instrucciones:
                     </Typography>
-                    <ul>
+                    <ul style={{fontFamily: "'Josefin Sans', sans-serif"}}>
                         <li>
-                            <Typography variant="body1">
+                            <Typography variant="body1" sx={{fontFamily: "'Josefin Sans', sans-serif"}}>
                                 <b>Doble clic</b> en el lienzo: Crear un nuevo estado.
                             </Typography>
                         </li>
                         <li>
-                            <Typography variant="body1">
+                            <Typography variant="body1" sx={{fontFamily: "'Josefin Sans', sans-serif"}}>
                                 <b>Clic derecho</b> en un estado: Marcar como inicial o final.
                             </Typography>
                         </li>
                         <li>
-                            <Typography variant="body1">
+                            <Typography variant="body1" sx={{fontFamily: "'Josefin Sans', sans-serif"}}>
                                 <b>Clic</b> en un estado y luego en otro: Crear una transición.
                             </Typography>
                         </li>
                         <li>
-                            <Typography variant="body1">
+                            <Typography variant="body1" sx={{fontFamily: "'Josefin Sans', sans-serif"}}>
                                 <b>Clic</b> en un estado y luego en el mismo estado: Crear un loop.
                             </Typography>
                         </li>
                         <li>
-                            <Typography variant="body1">
+                            <Typography variant="body1" sx={{fontFamily: "'Josefin Sans', sans-serif"}}>
                                 <b>Arrastrar</b> estados: Moverlos en el lienzo.
                             </Typography>
                         </li>
                         <li>
-                            <Typography variant="body1">
-                                <b>Botón de eliminar transición</b>: Activar modo de eliminación y hacer clic en una flecha para eliminarla.
+                            <Typography variant="body1" sx={{fontFamily: "'Josefin Sans', sans-serif"}}>
+                                <b>Botón de eliminar transición</b>: Activar modo de eliminación y hacer clic en una
+                                flecha para eliminarla.
                             </Typography>
                         </li>
                     </ul>
                 </DialogContent>
-                <DialogActions sx={{ justifyContent: "center" }}>
+                <DialogActions sx={{justifyContent: "center"}}>
                     <Button
                         variant="contained"
                         sx={{
                             backgroundColor: theme.palette.secondary.main,
-                            "&:hover": { backgroundColor: theme.palette.primary.main },
+                            "&:hover": {backgroundColor: theme.palette.primary.main},
+                            fontFamily: "'Josefin Sans', sans-serif",
                         }}
                         onClick={() => setShowHelpModal(false)} // Cierra el modal
                     >
