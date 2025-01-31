@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Box, Typography, Button, CircularProgress } from "@mui/material";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const EquivalentAFDs = () => {
     const [file1, setFile1] = useState(null);
@@ -20,7 +22,14 @@ const EquivalentAFDs = () => {
         event.preventDefault();
 
         if (!file1 || !file2) {
-            setResult("Por favor selecciona ambos archivos.");
+            toast.error("Por favor selecciona ambos archivos.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
             return;
         }
 
@@ -39,7 +48,14 @@ const EquivalentAFDs = () => {
             setResult(response.data);
         } catch (error) {
             console.error("Error al comparar AFDs:", error);
-            setResult("Error: No se pudo procesar la solicitud.");
+            toast.error("Error: No se pudo procesar la solicitud.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         } finally {
             setLoading(false);
         }
@@ -57,6 +73,9 @@ const EquivalentAFDs = () => {
                 color: "#FFFFFF",
             }}
         >
+            {/* Contenedor para Toast */}
+            <ToastContainer />
+
             {/* Título principal */}
             <Typography
                 variant="h3"

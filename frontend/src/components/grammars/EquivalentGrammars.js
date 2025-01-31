@@ -35,6 +35,20 @@ const EquivalentGrammars = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        // Validación para verificar que ambas gramáticas estén completas
+        if (!grammar1.trim() || !grammar2.trim()) {
+            toast.error("Por favor, introduce ambas gramáticas antes de verificar.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
         setLoading(true);
 
         try {
@@ -45,6 +59,7 @@ const EquivalentGrammars = () => {
                 grammar1: parsedGrammar1,
                 grammar2: parsedGrammar2,
             });
+
             setResult(response.data ? "Las gramáticas son equivalentes." : "Las gramáticas no son equivalentes.");
         } catch (error) {
             console.error("Error verificando equivalencia:", error);
