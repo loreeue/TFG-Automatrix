@@ -76,6 +76,12 @@ const GLDToAFD = () => {
         }
     };
 
+    const handlePaste = (event, setGrammar) => {
+        event.preventDefault(); // Evita que se pegue con formato predeterminado
+        const pastedText = (event.clipboardData || window.clipboardData).getData("text");
+        setGrammar(pastedText); // Establece el texto pegado correctamente
+    };
+
     return (
         <Box
             sx={{
@@ -139,7 +145,12 @@ const GLDToAFD = () => {
                         color: "#FFFFFF",
                     }}
                 >
-                    <Box sx={{ flex: 1 }}>{exampleGrammar}</Box>
+                    <Box
+                        sx={{
+                            flex: 1,
+                            fontFamily: "'Josefin Sans', sans-serif",
+                        }}
+                    >{exampleGrammar}</Box>
                     <IconButton
                         onClick={handleCopyExample}
                         sx={{
@@ -177,10 +188,17 @@ const GLDToAFD = () => {
                     rows={6}
                     value={grammar}
                     onChange={(e) => setGrammar(e.target.value)}
+                    onPaste={(e) => handlePaste(e, setGrammar)}
                     sx={{
                         backgroundColor: "#2C2C2C",
                         borderRadius: "8px",
-                        input: { color: "#FFFFFF" },
+                        "& .MuiInputBase-input": {
+                            color: "#FFFFFF",
+                            fontFamily: "'Josefin Sans', sans-serif",
+                        },
+                    }}
+                    InputProps={{
+                        style: { color: "#FFFFFF" }
                     }}
                 />
                 <Button

@@ -54,6 +54,12 @@ const EquivalentGrammars = () => {
         }
     };
 
+    const handlePaste = (event, setGrammar) => {
+        event.preventDefault(); // Evita que se pegue con formato predeterminado
+        const pastedText = (event.clipboardData || window.clipboardData).getData("text");
+        setGrammar(pastedText); // Establece el texto pegado correctamente
+    };
+
     return (
         <Box
             sx={{
@@ -158,12 +164,17 @@ const EquivalentGrammars = () => {
                             rows={6}
                             value={grammar1}
                             onChange={(e) => setGrammar1(e.target.value)}
+                            onPaste={(e) => handlePaste(e, setGrammar1)}
                             sx={{
                                 backgroundColor: "#2C2C2C",
                                 borderRadius: "8px",
-                                input: {
-                                    color: "#FFFFFF", // Texto blanco
+                                "& .MuiInputBase-input": {
+                                    color: "#FFFFFF",
+                                    fontFamily: "'Josefin Sans', sans-serif",
                                 },
+                            }}
+                            InputProps={{
+                                style: { color: "#FFFFFF" }
                             }}
                         />
                     </Grid>
@@ -187,12 +198,17 @@ const EquivalentGrammars = () => {
                             rows={6}
                             value={grammar2}
                             onChange={(e) => setGrammar2(e.target.value)}
+                            onPaste={(e) => handlePaste(e, setGrammar2)}
                             sx={{
                                 backgroundColor: "#2C2C2C",
                                 borderRadius: "8px",
-                                input: {
-                                    color: "#FFFFFF", // Texto blanco
+                                "& .MuiInputBase-input": {
+                                    color: "#FFFFFF",
+                                    fontFamily: "'Josefin Sans', sans-serif",
                                 },
+                            }}
+                            InputProps={{
+                                style: { color: "#FFFFFF" }
                             }}
                         />
                     </Grid>

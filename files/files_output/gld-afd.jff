@@ -3,19 +3,19 @@
 	<automaton>
 		<!--The list of states.-->
 		<state id="0" name="q0">
-			<x>55.0</x>
-			<y>354.0</y>
+			<x>518.0</x>
+			<y>192.0</y>
 			<label>A</label>
 			<initial/>
 		</state>
 		<state id="1" name="q1">
-			<x>87.0</x>
-			<y>407.0</y>
+			<x>123.0</x>
+			<y>554.0</y>
 			<label>S</label>
 		</state>
 		<state id="2" name="q2">
-			<x>243.0</x>
-			<y>438.0</y>
+			<x>406.0</x>
+			<y>384.0</y>
 			<final/>
 		</state>
 		<!--The list of transitions.-->
