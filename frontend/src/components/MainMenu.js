@@ -20,7 +20,7 @@ const MainMenu = () => {
             }}
         >
             {/* Secciones informativas */}
-            <Grid container spacing={3} sx={{ maxWidth: "1200px" }}>
+            <Grid container spacing={3} sx={{ maxWidth: "1200px", marginTop: "3rem" }}>
                 {[
                     {
                         title: "Automatización",
