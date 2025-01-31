@@ -35,7 +35,7 @@ const App = () => {
                 <Route path="/gramaticas" element={<Grammars />} />
                 <Route path="/afds" element={<AFDs />} />
                 <Route path="/transformaciones" element={<Transformations />} />
-                <Route path="/validaciones" element={<Simulations />} />
+                <Route path="/simulaciones" element={<Simulations />} />
                 <Route path="/simulate-afd" element={<SimulateAFD />} />
                 <Route path="/simulate-afnd" element={<SimulateAFND />} />
                 <Route path="/simulate-ap" element={<SimulateAP />} />

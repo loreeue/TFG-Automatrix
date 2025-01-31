@@ -31,7 +31,7 @@ const Simulations = () => {
                     animation: "slideIn 0.8s ease-out",
                 }}
             >
-                Validaciones
+                Simulaciones
             </Typography>
 
             {/* Primera fila de botones */}

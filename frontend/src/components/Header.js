@@ -130,7 +130,7 @@ const Header = () => {
                 <Button
                     variant="text"
                     component={Link}
-                    to="/validaciones"
+                    to="/simulaciones"
                     startIcon={<ValidationIcon />}
                     sx={{
                         color: "#FFFFFF",
@@ -141,7 +141,7 @@ const Header = () => {
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
-                    Validaciones
+                    Simulaciones
                 </Button>
                 <Button
                     variant="text"
