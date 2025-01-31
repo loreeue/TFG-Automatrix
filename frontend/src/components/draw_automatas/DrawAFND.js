@@ -446,7 +446,7 @@ const DrawAFND = () => {
                     sx={{
                         position: "absolute",
                         right: "1rem",
-                        top: "7rem",
+                        top: "15rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
                         height: "3rem",
@@ -466,7 +466,7 @@ const DrawAFND = () => {
                     sx={{
                         position: "absolute",
                         right: "1rem",
-                        top: "12rem",
+                        top: "20rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
                         height: "3rem",
@@ -492,7 +492,7 @@ const DrawAFND = () => {
                     sx={{
                         position: "absolute",
                         right: "1rem",
-                        top: "17rem",
+                        top: "25rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
                         height: "3rem",
@@ -512,7 +512,7 @@ const DrawAFND = () => {
                     sx={{
                         position: "absolute",
                         right: "1rem",
-                        top: "22rem",
+                        top: "30rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
                         height: "3rem",

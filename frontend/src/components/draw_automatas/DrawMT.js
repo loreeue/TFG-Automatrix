@@ -428,7 +428,7 @@ const DrawMT = () => {
                     sx={{
                         position: "absolute",
                         right: "1rem",
-                        top: "7rem",
+                        top: "15rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
                         height: "3rem",
@@ -448,12 +448,12 @@ const DrawMT = () => {
                     sx={{
                         position: "absolute",
                         right: "1rem",
-                        top: "12rem",
+                        top: "20rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
                         height: "3rem",
                         backgroundColor: theme.palette.secondary.main,
-                        "&:hover": { backgroundColor: theme.palette.primary.main }
+                        "&:hover": { backgroundColor: theme.palette.primary.main },
                     }}
                     onClick={() => {
                         setNodes([]);
@@ -466,24 +466,27 @@ const DrawMT = () => {
                     <DeleteOutlineIcon />
                 </Button>
             </Tooltip>
+
+            {/* Botón de exportar */}
             <Tooltip title="Exportar como JFF" placement="left">
                 <Button
                     variant="contained"
                     sx={{
                         position: "absolute",
                         right: "1rem",
-                        top: "17rem",
+                        top: "25rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
                         height: "3rem",
                         backgroundColor: theme.palette.secondary.main,
-                        "&:hover": { backgroundColor: theme.palette.primary.main }
+                        "&:hover": { backgroundColor: theme.palette.primary.main },
                     }}
                     onClick={handleExportClick}
                 >
                     <SaveAltIcon />
                 </Button>
             </Tooltip>
+
             {/* Botón de eliminar transición */}
             <Tooltip title="Eliminar transición" placement="left">
                 <Button
@@ -491,7 +494,7 @@ const DrawMT = () => {
                     sx={{
                         position: "absolute",
                         right: "1rem",
-                        top: "22rem",
+                        top: "30rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
                         height: "3rem",
@@ -503,6 +506,7 @@ const DrawMT = () => {
                     <ClearIcon />
                 </Button>
             </Tooltip>
+
             <Dialog open={showStateTypeModal} onClose={() => setShowStateTypeModal(false)}>
                 <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: 'center' }}>¿Cómo marcar el estado?</DialogTitle>
                 <DialogContent sx={{ textAlign: 'center' }}>Elige el tipo de estado:</DialogContent>
