@@ -530,7 +530,11 @@ const DrawAFND = () => {
                 <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: 'center' }}>
                     ¿Cómo marcar el estado?
                 </DialogTitle>
-                <DialogContent sx={{ textAlign: 'center' }}>
+                <DialogContent
+                    sx={{
+                        textAlign: 'center',
+                        fontFamily: "'Josefin Sans', sans-serif",
+                    }}>
                     Elige el tipo de estado:
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'space-around' }}>

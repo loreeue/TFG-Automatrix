@@ -496,7 +496,11 @@ const DrawAP = () => {
 
             <Dialog open={showStateTypeModal} onClose={() => setShowStateTypeModal(false)}>
                 <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: 'center' }}>¿Cómo marcar el estado?</DialogTitle>
-                <DialogContent sx={{ textAlign: 'center' }}>Elige el tipo de estado:</DialogContent>
+                <DialogContent
+                    sx={{
+                        textAlign: 'center',
+                        fontFamily: "'Josefin Sans', sans-serif",
+                    }}>Elige el tipo de estado:</DialogContent>
                 <DialogActions sx={{ justifyContent: 'space-around' }}>
                     <Button variant="contained" sx={{ backgroundColor: theme.palette.secondary.main, '&:hover': { backgroundColor: theme.palette.primary.main } }} onClick={() => { setShowStateTypeModal(false); setTargetNode(null); }}>
                         Cancelar
