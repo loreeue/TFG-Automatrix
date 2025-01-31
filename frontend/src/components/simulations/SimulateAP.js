@@ -148,7 +148,13 @@ const SimulateAP = () => {
                     sx={{
                         backgroundColor: "#2C2C2C",
                         borderRadius: "8px",
-                        input: { color: "#FFFFFF" },
+                        "& .MuiInputBase-input": {
+                            fontFamily: "'Josefin Sans', sans-serif",
+                            color: "#FFFFFF",
+                        },
+                    }}
+                    InputProps={{
+                        style: { fontFamily: "'Josefin Sans', sans-serif", color: "#FFFFFF" }
                     }}
                 />
                 <Button
