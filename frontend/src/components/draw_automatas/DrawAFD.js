@@ -217,7 +217,7 @@ const DrawAFD = () => {
                         y={textY}
                         fontSize={16}
                         fill="#000"
-                        fontFamily="'Spicy Rice', cursive"
+                        fontFamily="'Josefin Sans', sans-serif"
                     />
                 </React.Fragment>
             );
@@ -267,7 +267,7 @@ const DrawAFD = () => {
                         y={textY}
                         fontSize={16}
                         fill="#000"
-                        fontFamily="'Spicy Rice', cursive"
+                        fontFamily="'Josefin Sans', sans-serif"
                     />
                 </React.Fragment>
             );
