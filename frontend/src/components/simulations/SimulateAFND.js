@@ -27,10 +27,69 @@ const SimulateAFND = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        // Verificar si un archivo ha sido seleccionado
         if (!file) {
-            toast.error("Por favor selecciona un archivo.", { position: "top-right" });
+            toast.error("Por favor selecciona un archivo AFND (.jff).", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
             return;
         }
+
+        // Verificar que el archivo tenga la extensión .jff
+        if (!file.name.endsWith(".jff")) {
+            toast.error("El archivo seleccionado no es un AFND válido (.jff).", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
+        // Leer el archivo y verificar que sea un AFND
+        const readFileContent = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const content = e.target.result;
+
+                    // Verificar si el archivo tiene la estructura de un autómata finito
+                    if (!content.includes("<structure>") || !content.includes("<type>fa</type>") || !content.includes("<automaton>")) {
+                        resolve(false); // No es un autómata finito
+                        return;
+                    }
+
+                    // Verificar si hay transiciones vacías o múltiples transiciones con el mismo símbolo
+                    const isAFND = content.includes("<read/>") || (content.match(/<read>/g) || []).length > (content.match(/<state>/g) || []).length;
+
+                    resolve(isAFND);
+                };
+                reader.onerror = () => reject(false);
+                reader.readAsText(file);
+            });
+        };
+
+        const isValidAFND = await readFileContent(file);
+
+        if (!isValidAFND) {
+            toast.error("El archivo seleccionado no es un AFND válido. Por favor sube un archivo correcto.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
         if (!input) {
             toast.error("Por favor ingresa una cadena de entrada.", { position: "top-right" });
             return;
@@ -48,7 +107,14 @@ const SimulateAFND = () => {
             setResult(response.data);
         } catch (error) {
             console.error(error);
-            setResult("Error: " + error.message);
+            toast.error("Error en el servidor al procesar la simulación.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         } finally {
             setLoading(false);
         }

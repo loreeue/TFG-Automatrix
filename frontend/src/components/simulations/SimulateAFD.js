@@ -27,10 +27,63 @@ const SimulateAFD = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        // Verificar si un archivo ha sido seleccionado
         if (!file) {
-            toast.error("Por favor selecciona un archivo.", { position: "top-right" });
+            toast.error("Por favor selecciona un archivo AFD (.jff).", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
             return;
         }
+
+        // Verificar que el archivo tenga la extensión .jff
+        if (!file.name.endsWith(".jff")) {
+            toast.error("El archivo seleccionado no es un AFD válido (.jff).", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
+        // Leer el archivo y verificar que sea un AFD
+        const readFileContent = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const content = e.target.result;
+                    if (content.includes("<type>fa</type>")) {
+                        resolve(true); // Es un AFD
+                    } else {
+                        resolve(false); // No es un AFD
+                    }
+                };
+                reader.onerror = () => reject(false);
+                reader.readAsText(file);
+            });
+        };
+
+        const isValidAFD = await readFileContent(file);
+
+        if (!isValidAFD) {
+            toast.error("El archivo seleccionado no es un AFD válido. Por favor sube un archivo correcto.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
         if (!input) {
             toast.error("Por favor ingresa una cadena de entrada.", { position: "top-right" });
             return;
@@ -48,7 +101,14 @@ const SimulateAFD = () => {
             setResult(response.data);
         } catch (error) {
             console.error(error);
-            setResult("Error: " + error.message);
+            toast.error("Error en el servidor al procesar la simulación.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         } finally {
             setLoading(false);
         }

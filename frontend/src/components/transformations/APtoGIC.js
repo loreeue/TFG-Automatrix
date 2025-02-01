@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Box, Typography, Button, CircularProgress } from "@mui/material";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const APToGIC = () => {
     const [file, setFile] = useState(null);
@@ -16,7 +18,60 @@ const APToGIC = () => {
         event.preventDefault();
 
         if (!file) {
-            alert("Por favor selecciona un archivo.");
+            toast.error("Por favor selecciona un archivo AP (.jff).", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
+        if (!file.name.endsWith(".jff")) {
+            toast.error("El archivo seleccionado no es un AP válido (.jff).", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
+        // Leer el archivo y verificar que sea un AP
+        const readFileContent = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const content = e.target.result;
+
+                    // Verificar si tiene la estructura de un autómata y es un AP
+                    if (!content.includes("<structure>") || !content.includes("<type>pda</type>") || !content.includes("<automaton>")) {
+                        resolve(false);
+                        return;
+                    }
+
+                    resolve(true); // Si cumple con los requisitos, es un AP
+                };
+                reader.onerror = () => reject(false);
+                reader.readAsText(file);
+            });
+        };
+
+        const isValidAP = await readFileContent(file);
+
+        if (!isValidAP) {
+            toast.error("El archivo seleccionado no es un AP válido. Por favor sube un archivo correcto.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
             return;
         }
 
@@ -35,7 +90,14 @@ const APToGIC = () => {
             setResult(response.data);
         } catch (error) {
             console.error("Error al convertir AP a GIC:", error);
-            setResult("Error: No se pudo procesar la solicitud.");
+            toast.error("Error en el servidor al procesar la conversión.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         } finally {
             setLoading(false);
         }
@@ -53,6 +115,8 @@ const APToGIC = () => {
                 color: "#FFFFFF",
             }}
         >
+            <ToastContainer />
+
             <Typography
                 variant="h3"
                 sx={{
@@ -75,9 +139,7 @@ const APToGIC = () => {
                         padding: "1rem",
                         borderRadius: "8px",
                         backgroundColor: "#694D75",
-                        "&:hover": {
-                            backgroundColor: "#331832",
-                        },
+                        "&:hover": { backgroundColor: "#331832" },
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
@@ -112,9 +174,7 @@ const APToGIC = () => {
                         padding: "1rem",
                         borderRadius: "8px",
                         backgroundColor: "#694D75",
-                        "&:hover": {
-                            backgroundColor: "#331832",
-                        },
+                        "&:hover": { backgroundColor: "#331832" },
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >

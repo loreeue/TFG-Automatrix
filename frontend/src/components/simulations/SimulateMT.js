@@ -45,10 +45,66 @@ const SimulateMT = () => {
     const handleSubmit = async (event) => {
         if (event) event.preventDefault();
 
+        // Verificar si un archivo ha sido seleccionado
         if (!file) {
-            toast.error("Por favor selecciona un archivo.", { position: "top-right" });
+            toast.error("Por favor selecciona un archivo MT (.jff).", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
             return;
         }
+
+        // Verificar que el archivo tenga la extensión .jff
+        if (!file.name.endsWith(".jff")) {
+            toast.error("El archivo seleccionado no es una Máquina de Turing válida (.jff).", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
+        // Leer el archivo y verificar que sea una Máquina de Turing (MT)
+        const readFileContent = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const content = e.target.result;
+
+                    // Verificar si el archivo tiene la estructura de una Máquina de Turing
+                    if (!content.includes("<structure>") || !content.includes("<type>turing</type>") || !content.includes("<automaton>")) {
+                        resolve(false); // No es una MT
+                        return;
+                    }
+
+                    resolve(true);
+                };
+                reader.onerror = () => reject(false);
+                reader.readAsText(file);
+            });
+        };
+
+        const isValidMT = await readFileContent(file);
+
+        if (!isValidMT) {
+            toast.error("El archivo seleccionado no es una Máquina de Turing válida. Por favor sube un archivo correcto.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
         if (!input) {
             toast.error("Por favor ingresa una cadena de entrada.", { position: "top-right" });
             return;
@@ -66,7 +122,14 @@ const SimulateMT = () => {
             setResult(response.data);
         } catch (error) {
             console.error(error);
-            setResult("Error: " + error.message);
+            toast.error("Error en el servidor al procesar la simulación.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         } finally {
             setLoading(false);
         }

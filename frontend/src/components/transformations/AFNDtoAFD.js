@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Box, Typography, Button, CircularProgress } from "@mui/material";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AFNDToAFD = () => {
     const [file, setFile] = useState(null);
@@ -13,13 +15,70 @@ const AFNDToAFD = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        // Verificar si un archivo ha sido seleccionado
         if (!file) {
-            alert("Por favor selecciona un archivo.");
+            toast.error("Por favor selecciona un archivo AFND (.jff).", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
+        // Verificar que el archivo tenga la extensión .jff
+        if (!file.name.endsWith(".jff")) {
+            toast.error("El archivo seleccionado no es un AFND válido (.jff).", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
+        // Leer el archivo y verificar que sea un AFND
+        const readFileContent = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const content = e.target.result;
+
+                    // Verificar si el archivo tiene la estructura de un autómata finito
+                    if (!content.includes("<structure>") || !content.includes("<type>fa</type>") || !content.includes("<automaton>")) {
+                        resolve(false); // No es un autómata finito
+                        return;
+                    }
+
+                    // Verificar si hay transiciones vacías o múltiples transiciones con el mismo símbolo (característica de un AFND)
+                    const isAFND = content.includes("<read/>") || (content.match(/<read>/g) || []).length > (content.match(/<state>/g) || []).length;
+
+                    resolve(isAFND);
+                };
+                reader.onerror = () => reject(false);
+                reader.readAsText(file);
+            });
+        };
+
+        const isValidAFND = await readFileContent(file);
+
+        if (!isValidAFND) {
+            toast.error("El archivo seleccionado no es un AFND válido. Por favor sube un archivo correcto.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
             return;
         }
 
         setLoading(true);
-
         const formData = new FormData();
         formData.append("file", file);
 
@@ -40,7 +99,14 @@ const AFNDToAFD = () => {
             document.body.removeChild(link);
         } catch (error) {
             console.error("Error al convertir AFND a AFD:", error);
-            alert("Error: No se pudo procesar la solicitud.");
+            toast.error("Error en el servidor al procesar la conversión.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         } finally {
             setLoading(false);
         }
@@ -58,6 +124,7 @@ const AFNDToAFD = () => {
                 color: "#FFFFFF",
             }}
         >
+            <ToastContainer />
             <Typography
                 variant="h3"
                 sx={{

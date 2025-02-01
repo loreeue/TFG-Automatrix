@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Box, Typography, Button, CircularProgress } from "@mui/material";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AFDToER = () => {
     const [file, setFile] = useState(null);
@@ -16,12 +18,66 @@ const AFDToER = () => {
         event.preventDefault();
 
         if (!file) {
-            setResult("Por favor selecciona un archivo.");
+            toast.error("Por favor selecciona un archivo AFD (.jff).", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
+        if (!file.name.endsWith(".jff")) {
+            toast.error("El archivo seleccionado no es un AFD válido (.jff).", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
+        // Leer el archivo y verificar que sea un AFD
+        const readFileContent = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const content = e.target.result;
+
+                    // Verificar si tiene la estructura de un autómata finito
+                    if (!content.includes("<structure>") || !content.includes("<type>fa</type>") || !content.includes("<automaton>")) {
+                        resolve(false);
+                        return;
+                    }
+
+                    // Comprobación mejorada para detectar AFND
+                    const isAFND = content.includes("<read/>") || content.match(/<transition>/g)?.length > content.match(/<state>/g)?.length;
+                    resolve(!isAFND); // Si es AFND, se rechaza
+                };
+                reader.onerror = () => reject(false);
+                reader.readAsText(file);
+            });
+        };
+
+        const isValidAFD = await readFileContent(file);
+
+        if (!isValidAFD) {
+            toast.error("El archivo seleccionado no es un AFD válido. Sube un archivo correcto.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
             return;
         }
 
         setLoading(true);
-
         const formData = new FormData();
         formData.append("file", file);
 
@@ -33,13 +89,36 @@ const AFDToER = () => {
             });
 
             if (response.data.startsWith("Error") || response.data.includes("no se puede convertir")) {
+                toast.error("No se pudo convertir el AFD a Expresión Regular.", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                });
                 setResult(response.data);
             } else {
+                toast.success("Conversión exitosa. Expresión Regular generada.", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                });
                 setResult(`Expresión Regular Generada: ${response.data}`);
             }
         } catch (error) {
             console.error("Error al convertir AFD a ER:", error);
-            setResult("Error: No se pudo procesar la solicitud.");
+            toast.error("Error en el servidor al procesar la conversión.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         } finally {
             setLoading(false);
         }
@@ -57,6 +136,7 @@ const AFDToER = () => {
                 color: "#FFFFFF",
             }}
         >
+            <ToastContainer />
             <Typography
                 variant="h3"
                 sx={{

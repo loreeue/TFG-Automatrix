@@ -42,10 +42,66 @@ const SimulateAP = () => {
     const handleSubmit = async (event) => {
         if (event) event.preventDefault();
 
+        // Verificar si un archivo ha sido seleccionado
         if (!file) {
-            toast.error("Por favor selecciona un archivo.", { position: "top-right" });
+            toast.error("Por favor selecciona un archivo AP (.jff).", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
             return;
         }
+
+        // Verificar que el archivo tenga la extensión .jff
+        if (!file.name.endsWith(".jff")) {
+            toast.error("El archivo seleccionado no es un AP válido (.jff).", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
+        // Leer el archivo y verificar que sea un Autómata a Pila (AP)
+        const readFileContent = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const content = e.target.result;
+
+                    // Verificar si el archivo tiene la estructura de un AP
+                    if (!content.includes("<structure>") || !content.includes("<type>pda</type>") || !content.includes("<automaton>")) {
+                        resolve(false); // No es un AP
+                        return;
+                    }
+
+                    resolve(true);
+                };
+                reader.onerror = () => reject(false);
+                reader.readAsText(file);
+            });
+        };
+
+        const isValidAP = await readFileContent(file);
+
+        if (!isValidAP) {
+            toast.error("El archivo seleccionado no es un AP válido. Por favor sube un archivo correcto.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
         if (!input) {
             toast.error("Por favor ingresa una cadena de entrada.", { position: "top-right" });
             return;
@@ -63,7 +119,14 @@ const SimulateAP = () => {
             setResult(response.data);
         } catch (error) {
             console.error(error);
-            setResult("Error: " + error.message);
+            toast.error("Error en el servidor al procesar la simulación.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         } finally {
             setLoading(false);
         }
