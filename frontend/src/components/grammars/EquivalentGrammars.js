@@ -49,12 +49,26 @@ const EquivalentGrammars = () => {
             return;
         }
 
+        let parsedGrammar1, parsedGrammar2;
+
+        try {
+            parsedGrammar1 = JSON.parse(grammar1.trim());
+            parsedGrammar2 = JSON.parse(grammar2.trim());
+        } catch (error) {
+            toast.error("Error en el formato de la gramática. Asegúrate de seguir el ejemplo.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
         setLoading(true);
 
         try {
-            const parsedGrammar1 = JSON.parse(grammar1.trim());
-            const parsedGrammar2 = JSON.parse(grammar2.trim());
-
             const response = await axios.post("/api/grammar/equivalent", {
                 grammar1: parsedGrammar1,
                 grammar2: parsedGrammar2,
@@ -63,7 +77,14 @@ const EquivalentGrammars = () => {
             setResult(response.data ? "Las gramáticas son equivalentes." : "Las gramáticas no son equivalentes.");
         } catch (error) {
             console.error("Error verificando equivalencia:", error);
-            setResult("Formato de gramática inválido o error en el servidor.");
+            toast.error("Error en el servidor al verificar la equivalencia.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         } finally {
             setLoading(false);
         }

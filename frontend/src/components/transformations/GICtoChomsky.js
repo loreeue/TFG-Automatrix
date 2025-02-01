@@ -34,8 +34,25 @@ const GICToChomsky = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if (!grammar) {
-            toast.error("Por favor, introduce la gramática.", {
+        // Validación para verificar que la gramática esté completa
+        if (!grammar.trim()) {
+            toast.error("Por favor, introduce la gramática antes de continuar.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
+        let parsedGrammar;
+
+        try {
+            parsedGrammar = JSON.parse(grammar.trim());
+        } catch (error) {
+            toast.error("Error en el formato de la gramática. Asegúrate de seguir el ejemplo.", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: true,
@@ -51,13 +68,13 @@ const GICToChomsky = () => {
 
         try {
             const response = await axios.post("/api/convert/gic-to-chomsky", {
-                grammar: JSON.parse(grammar),
+                grammar: parsedGrammar,
             });
 
             setResult(response.data);
         } catch (error) {
             console.error("Error al convertir GIC a Forma Normal de Chomsky:", error);
-            toast.error("Error: No se pudo procesar la solicitud.", {
+            toast.error("Error en el servidor al procesar la conversión.", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: true,
