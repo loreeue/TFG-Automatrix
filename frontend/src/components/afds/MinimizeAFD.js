@@ -15,8 +15,22 @@ const MinimizeAFD = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        // Validar si hay un archivo seleccionado
         if (!file) {
-            toast.error("Por favor selecciona un archivo.", {
+            toast.error("Por favor selecciona un archivo AFD (.jff).", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
+        // Validar la extensión del archivo
+        if (!file.name.endsWith(".jff")) {
+            toast.error("El archivo seleccionado no es un AFD válido (.jff).", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: true,

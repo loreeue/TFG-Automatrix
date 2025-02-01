@@ -21,8 +21,54 @@ const EquivalentAFDs = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        // Verificar que ambos archivos han sido seleccionados
         if (!file1 || !file2) {
-            toast.error("Por favor selecciona ambos archivos.", {
+            toast.error("Por favor, selecciona ambos archivos AFD (.jff).", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
+        // Verificar que ambos archivos tengan la extensión .jff
+        if (!file1.name.endsWith(".jff") || !file2.name.endsWith(".jff")) {
+            toast.error("Ambos archivos deben ser AFD en formato .jff.", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            return;
+        }
+
+        // Leer los archivos y verificar que contienen un AFD válido
+        const readFileContent = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const content = e.target.result;
+                    if (content.includes("<structure>") && content.includes("<type>fa</type>") && content.includes("<automaton>")) {
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                };
+                reader.onerror = () => reject(false);
+                reader.readAsText(file);
+            });
+        };
+
+        const isFile1Valid = await readFileContent(file1);
+        const isFile2Valid = await readFileContent(file2);
+
+        if (!isFile1Valid || !isFile2Valid) {
+            toast.error("Uno o ambos archivos no parecen ser AFDs válidos. Verifica su contenido.", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: true,
@@ -48,7 +94,7 @@ const EquivalentAFDs = () => {
             setResult(response.data);
         } catch (error) {
             console.error("Error al comparar AFDs:", error);
-            toast.error("Error: No se pudo procesar la solicitud.", {
+            toast.error("Error en el servidor al procesar la comparación.", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: true,
