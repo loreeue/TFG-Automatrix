@@ -1,17 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import {
-    Box,
-    Typography,
-    TextField,
-    Button,
-    CircularProgress,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-} from "@mui/material";
+import { Box, Typography, TextField, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -30,47 +19,20 @@ const SimulateAP = () => {
         setInput(event.target.value);
     };
 
-    const handleSimulateClick = () => {
-        setOpenDialog(true);
-    };
-
-    const handleDialogClose = () => {
-        setOpenDialog(false);
-        handleSubmit();
-    };
-
-    const handleSubmit = async (event) => {
-        if (event) event.preventDefault();
-
-        // Verificar si un archivo ha sido seleccionado
+    const validateFile = async () => {
         if (!file) {
-            toast.error("Por favor selecciona un archivo AP (.jff).", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
-            return;
+            toast.error("Por favor selecciona un archivo AP (.jff).", { position: "top-right" });
+            return false;
         }
 
-        // Verificar que el archivo tenga la extensión .jff
         if (!file.name.endsWith(".jff")) {
-            toast.error("El archivo seleccionado no es un AP válido (.jff).", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
-            return;
+            toast.error("El archivo seleccionado no es un AP válido (.jff).", { position: "top-right" });
+            return false;
         }
 
         // Leer el archivo y verificar que sea un Autómata a Pila (AP)
         const readFileContent = (file) => {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const content = e.target.result;
@@ -80,10 +42,8 @@ const SimulateAP = () => {
                         resolve(false); // No es un AP
                         return;
                     }
-
                     resolve(true);
                 };
-                reader.onerror = () => reject(false);
                 reader.readAsText(file);
             });
         };
@@ -91,22 +51,32 @@ const SimulateAP = () => {
         const isValidAP = await readFileContent(file);
 
         if (!isValidAP) {
-            toast.error("El archivo seleccionado no es un AP válido. Por favor sube un archivo correcto.", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
-            return;
+            toast.error("El archivo seleccionado no es un AP válido. Por favor sube un archivo correcto.", { position: "top-right" });
+            return false;
         }
+
+        return true;
+    };
+
+    const handleSimulateClick = async () => {
+        const isValid = await validateFile();
+        if (!isValid) return; // No mostrar el mensaje si hay errores
 
         if (!input) {
             toast.error("Por favor ingresa una cadena de entrada.", { position: "top-right" });
             return;
         }
 
+        // Si  es válido, mostrar el mensaje y luego ejecutar la simulación
+        setOpenDialog(true);
+    };
+
+    const handleDialogClose = () => {
+        setOpenDialog(false);
+        handleSubmit();
+    };
+
+    const handleSubmit = async () => {
         setLoading(true);
         const formData = new FormData();
         formData.append("file", file);
@@ -119,14 +89,7 @@ const SimulateAP = () => {
             setResult(response.data);
         } catch (error) {
             console.error(error);
-            toast.error("Error en el servidor al procesar la simulación.", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
+            toast.error("Error en el servidor al procesar la simulación.", { position: "top-right" });
         } finally {
             setLoading(false);
         }
@@ -157,7 +120,7 @@ const SimulateAP = () => {
                 Simular AP
             </Typography>
 
-            <form onSubmit={handleSimulateClick} style={{ width: "100%", maxWidth: "800px" }}>
+            <form style={{ width: "100%", maxWidth: "800px" }}>
                 <Typography
                     variant="h6"
                     sx={{
