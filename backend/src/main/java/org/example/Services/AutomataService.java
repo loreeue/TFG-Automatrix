@@ -28,9 +28,17 @@ public class AutomataService {
     public AutomataService() {
     }
 
-    public FiniteStateAutomaton loadAFD(String filePath) throws Exception {
+    public FiniteStateAutomaton loadAFD(String filePath) {
         XMLCodec codec = new XMLCodec();
-        return (FiniteStateAutomaton) codec.decode(new File(filePath), null);
+        FiniteStateAutomaton automaton = null;
+
+        try {
+            automaton = (FiniteStateAutomaton) codec.decode(new File(filePath), null);
+        } catch (Exception e) {
+            System.out.println("El AFD no se pudo cargar o es incorrecto");
+            return null;
+        }
+        return automaton;
     }
 
     public boolean simulateAFD(FiniteStateAutomaton automaton, String input) throws Exception {
@@ -41,7 +49,15 @@ public class AutomataService {
 
     public FiniteStateAutomaton loadAFND(String filePath) throws Exception {
         XMLCodec codec = new XMLCodec();
-        return (FiniteStateAutomaton) codec.decode(new File(filePath), null);
+        FiniteStateAutomaton automaton = null;
+
+        try {
+            automaton = (FiniteStateAutomaton) codec.decode(new File(filePath), null);
+        } catch (Exception e) {
+            System.out.println("El AFD no se pudo cargar o es incorrecto");
+            return null;
+        }
+        return automaton;
     }
 
     public boolean simulateAFND(FiniteStateAutomaton automaton, String input) throws Exception {
@@ -52,7 +68,15 @@ public class AutomataService {
 
     public TuringMachine loadTuringMachine(String filePath) throws Exception {
         XMLCodec codec = new XMLCodec();
-        return (TuringMachine) codec.decode(new File(filePath), null);
+        TuringMachine automaton = null;
+
+        try {
+            automaton = (TuringMachine) codec.decode(new File(filePath), null);
+        } catch (Exception e) {
+            System.out.println("El AFD no se pudo cargar o es incorrecto");
+            return null;
+        }
+        return automaton;
     }
 
     public boolean simulateTuringMachine(TuringMachine automaton, String input) throws Exception {
@@ -63,7 +87,15 @@ public class AutomataService {
 
     public PushdownAutomaton loadAP(String filePath) throws Exception {
         XMLCodec codec = new XMLCodec();
-        return (PushdownAutomaton) codec.decode(new File(filePath), null);
+        PushdownAutomaton automaton = null;
+
+        try {
+            automaton = (PushdownAutomaton) codec.decode(new File(filePath), null);
+        } catch (Exception e) {
+            System.out.println("El AFD no se pudo cargar o es incorrecto");
+            return null;
+        }
+        return automaton;
     }
 
     public boolean simulateAP(PushdownAutomaton automaton, String input) throws Exception {

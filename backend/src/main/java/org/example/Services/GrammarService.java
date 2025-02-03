@@ -24,25 +24,33 @@ public class GrammarService {
     public GrammarService() {
     }
 
-    public Grammar parseGrammar(Map<String, String> grammarMap) throws Exception {
+    public Grammar parseGrammar(Map<String, String> grammarMap) {
         Grammar grammar = new RegularGrammar();
 
         for (String key : grammarMap.keySet()) {
             String productionStr = grammarMap.get(key);
 
-            // Divide production into left side (lhs) and right side (rhs)
+            // Dividir producción en lado izquierdo (lhs) y lado derecho (rhs)
             String[] parts = productionStr.split("->");
             if (parts.length != 2) {
-                throw new Exception("Formato de producción inválido: " + productionStr);
+                System.out.println("Formato de producción inválido");
+                return grammar;
             }
 
-            String lhs = parts[0].trim();  // Left
-            String rhs = parts[1].trim();  // Right
+            String lhs = parts[0].trim();  // Lado izquierdo
+            String rhs = parts[1].trim();  // Lado derecho
 
             Production production = new Production(lhs, rhs);
             grammar.addProduction(production);
         }
-        grammar.setStartVariable(grammar.getVariables()[0]);
+
+        // Asignar variable inicial si hay variables en la gramática
+        if (grammar.getVariables().length > 0) {
+            grammar.setStartVariable(grammar.getVariables()[0]);
+        } else {
+            System.out.println("No se pudo establecer variable inicial, no hay variables válidas.");
+        }
+
         return grammar;
     }
 

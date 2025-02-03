@@ -23,6 +23,9 @@ public class AutomataSimulatorRESTController {
             File tempFile = File.createTempFile("afd", ".jff");
             file.transferTo(tempFile);
             FiniteStateAutomaton automaton = automataService.loadAFD(tempFile.getAbsolutePath());
+            if (automaton == null) {
+                return "Error";
+            }
             // Simulate the input
             boolean result = automataService.simulateAFD(automaton, input);
             return result ? "Accepted" : "No accepted";
@@ -39,6 +42,9 @@ public class AutomataSimulatorRESTController {
             File tempFile = File.createTempFile("afnd", ".jff");
             file.transferTo(tempFile);
             FiniteStateAutomaton automaton = automataService.loadAFND(tempFile.getAbsolutePath());
+            if (automaton == null) {
+                return "Error";
+            }
             // Simulate the input
             boolean result = automataService.simulateAFND(automaton, input);
             return result ? "Accepted" : "No accepted";
@@ -55,6 +61,9 @@ public class AutomataSimulatorRESTController {
             File tempFile = File.createTempFile("turingMachine", ".jff");
             file.transferTo(tempFile);
             TuringMachine turingMachine = automataService.loadTuringMachine(tempFile.getAbsolutePath());
+            if (turingMachine == null) {
+                return "Error";
+            }
             // Simulate the input
             boolean result = automataService.simulateTuringMachine(turingMachine, input);
             return result ? "Accepted" : "No accepted";
@@ -71,6 +80,9 @@ public class AutomataSimulatorRESTController {
             File tempFile = File.createTempFile("pda", ".jff");
             file.transferTo(tempFile);
             PushdownAutomaton automaton = automataService.loadAP(tempFile.getAbsolutePath());
+            if (automaton == null) {
+                return "Error";
+            }
             // Simulate the input
             boolean result = automataService.simulateAP(automaton, input);
             return result ? "Accepted" : "No accepted";

@@ -28,6 +28,9 @@ public class AutomataExtraRESTController {
             // Load both AFDs
             FiniteStateAutomaton afd1 = automataService.loadAFD(tempFile1.getAbsolutePath());
             FiniteStateAutomaton afd2 = automataService.loadAFD(tempFile2.getAbsolutePath());
+            if (afd1 == null || afd2 == null) {
+                return "Error";
+            }
             // Minimize both AFDs
             FiniteStateAutomaton minimizedAfd1 = automataService.minimize(afd1);
             FiniteStateAutomaton minimizedAfd2 = automataService.minimize(afd2);

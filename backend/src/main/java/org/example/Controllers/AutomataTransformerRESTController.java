@@ -43,6 +43,10 @@ public class AutomataTransformerRESTController {
 
             // Load the AFND (NFA)
             FiniteStateAutomaton afnd = automataService.loadAFND(tempFile.getAbsolutePath());
+            if (afnd == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(null);
+            }
 
             // Convert AFND to AFD (DFA)
             FiniteStateAutomaton afd = automataService.convertAFNDToAFD(afnd);
@@ -77,6 +81,10 @@ public class AutomataTransformerRESTController {
 
             // Load the AFD
             FiniteStateAutomaton afd = automataService.loadAFD(tempFile.getAbsolutePath());
+            if (afd == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(null);
+            }
 
             // Minimize the AFD
             FiniteStateAutomaton minimizedAfd = automataService.minimize(afd);
@@ -111,6 +119,10 @@ public class AutomataTransformerRESTController {
 
             // Load the Pushdown Automaton from the file
             PushdownAutomaton automaton = automataService.loadAP(tempFile.getAbsolutePath());
+            if (automaton == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(null);
+            }
 
             // Convert the AP to a GIC (Grammar Independently Contextual)
             String gicRepresentation = automataService.convertAPToGIC(automaton);
@@ -200,6 +212,10 @@ public class AutomataTransformerRESTController {
 
             // Load the AFD from the temporary file
             FiniteStateAutomaton afd = automataService.loadAFND(tempFile.getAbsolutePath());
+            if (afd == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(null);
+            }
 
             // Ensure transitions are complete (auxiliary validation)
             AutomatonUtils.ensureCompleteTransitions(afd);
