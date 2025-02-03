@@ -74,11 +74,12 @@ const DrawAP = () => {
     };
 
     const confirmAddTransition = () => {
-        const letter = transitionLetter.trim() === "" ? "λ" : transitionLetter;
-        const consume = stackSymbolConsume.trim() === "" ? "λ" : stackSymbolConsume;
-        const push = stackSymbolPush.trim() === "" ? "λ" : stackSymbolPush;
+        const letter = transitionLetter.trim() === "" ? "λ" : transitionLetter.trim();
+        const consume = stackSymbolConsume.trim() === "" ? "λ" : stackSymbolConsume.trim();
+        const push = stackSymbolPush.trim() === "" ? "λ" : stackSymbolPush.trim();
 
         setTransitions((prevTransitions) => {
+            // 1) Buscar si existe la transición (mismo 'from' y 'to')
             const existingTransitionIndex = prevTransitions.findIndex(
                 (t) =>
                     t.from.id === transitionNodes.from.id &&
@@ -86,22 +87,39 @@ const DrawAP = () => {
             );
 
             if (existingTransitionIndex !== -1) {
-                // Ya existe una transición entre esos nodos
+                // 2) Si existe, revisamos su transitionsData
                 const updatedTransitions = [...prevTransitions];
                 const existingTransition = updatedTransitions[existingTransitionIndex];
 
+                const transitionsData = existingTransition.transitionsData || [];
+
+                // 3) Verificar si la tupla { letter, consume, push } ya existe
+                const isDuplicate = transitionsData.some(
+                    (data) =>
+                        data.letter === letter &&
+                        data.consume === consume &&
+                        data.push === push
+                );
+
+                if (isDuplicate) {
+                    // 4) Mostrar error y no agregar nada
+                    toast.error(
+                        `Ya existe una transición con (letra: ${letter}, consume: ${consume}, push: ${push}).`
+                    );
+                    return updatedTransitions; // No agregamos duplicados
+                }
+
+                // 5) Si no hay duplicado, lo agregamos
                 updatedTransitions[existingTransitionIndex] = {
                     ...existingTransition,
-                    // Si no existe, inicializamos transitionsData como array vacío
                     transitionsData: [
-                        ...(existingTransition.transitionsData || []),
+                        ...transitionsData,
                         { letter, consume, push },
                     ],
                 };
-
                 return updatedTransitions;
             } else {
-                // Si no hay transición previa, creamos una nueva con su array transitionsData
+                // Si no existe una transición entre esos estados, la creamos
                 return [
                     ...prevTransitions,
                     {
@@ -115,6 +133,7 @@ const DrawAP = () => {
             }
         });
 
+        // Restablecer campos y cerrar el modal
         setShowTransitionModal(false);
         setTransitionLetter("");
         setStackSymbolConsume("");

@@ -84,11 +84,24 @@ const DrawAFD = () => {
         );
 
         if (existingTransitionIndex !== -1) {
-            // Si ya existe, concatenar la letra nueva a las existentes
+            // Si ya existe, verificamos primero si el símbolo ya está en la transición
             const existingTransition = transitions[existingTransitionIndex];
+            // Dividir los símbolos existentes en un array
+            const existingSymbols = existingTransition.letter.split(",");
+
+            if (existingSymbols.includes(transitionLetter)) {
+                // Si el símbolo ya existe, mostramos un error y no modificamos la transición
+                toast.error(`El símbolo "${transitionLetter}" ya está en la transición.`);
+                // No olvides restablecer el estado y salir de la función
+                setShowTransitionModal(false);
+                setTransitionLetter("");
+                setTransitionNodes({ from: null, to: null });
+                return;
+            }
+
+            // Si el símbolo no existe, lo agregamos
             const updatedLetter = `${existingTransition.letter},${transitionLetter}`;
 
-            // Actualizar la transición con las nuevas letras concatenadas
             const updatedTransitions = [...transitions];
             updatedTransitions[existingTransitionIndex] = {
                 ...existingTransition,
@@ -97,14 +110,14 @@ const DrawAFD = () => {
 
             setTransitions(updatedTransitions);
         } else {
-            // Si no existe, agregar una nueva transición
+            // Si no existe la transición, crearla con la nueva letra
             setTransitions([
                 ...transitions,
                 { from: transitionNodes.from, to: transitionNodes.to, letter: transitionLetter },
             ]);
         }
 
-        // Resetear los valores
+        // Restablecer valores
         setShowTransitionModal(false);
         setTransitionLetter("");
         setTransitionNodes({ from: null, to: null });

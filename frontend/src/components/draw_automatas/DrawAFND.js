@@ -71,20 +71,37 @@ const DrawAFND = () => {
 
     // Crear una nueva transición (sin restricciones de duplicados para AFND)
     const confirmAddTransition = () => {
-        const transitionSymbol = transitionLetter.trim() === "" ? "λ" : transitionLetter;
+        // Si no hay letra, asumimos lambda
+        const transitionSymbol = transitionLetter.trim() === "" ? "λ" : transitionLetter.trim();
 
         setTransitions((prevTransitions) => {
             const existingTransitionIndex = prevTransitions.findIndex(
                 (t) => t.from.id === transitionNodes.from.id && t.to.id === transitionNodes.to.id
             );
+
             if (existingTransitionIndex !== -1) {
+                // Ya existe una transición de "from" a "to"
                 const updatedTransitions = [...prevTransitions];
+                const existingTransition = updatedTransitions[existingTransitionIndex];
+
+                // Separamos los símbolos actuales en un array
+                const existingSymbols = existingTransition.letter.split(",");
+
+                // Verificamos si el nuevo símbolo ya existe
+                if (existingSymbols.includes(transitionSymbol)) {
+                    toast.error(`El símbolo "${transitionSymbol}" ya está en la transición.`);
+                    return updatedTransitions; // Devolvemos el array sin modificaciones
+                }
+
+                // Si no existe, lo agregamos
                 updatedTransitions[existingTransitionIndex] = {
-                    ...updatedTransitions[existingTransitionIndex],
-                    letter: `${updatedTransitions[existingTransitionIndex].letter},${transitionSymbol}`,
+                    ...existingTransition,
+                    letter: existingTransition.letter + "," + transitionSymbol,
                 };
                 return updatedTransitions;
+
             } else {
+                // Si no existe la transición, la creamos
                 return [
                     ...prevTransitions,
                     {
@@ -96,6 +113,7 @@ const DrawAFND = () => {
             }
         });
 
+        // Reseteamos los valores y cerramos el modal
         setShowTransitionModal(false);
         setTransitionLetter("");
         setTransitionNodes({ from: null, to: null });

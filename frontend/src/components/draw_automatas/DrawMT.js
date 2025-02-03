@@ -74,9 +74,9 @@ const DrawMT = () => {
 
     // Crear una nueva transición
     const confirmAddTransition = () => {
-        const read = transitionRead.trim() || "λ"; // Por defecto, "λ" si está vacío
-        const write = transitionWrite.trim() || "λ"; // Por defecto, "λ" si está vacío
-        const move = transitionMove.trim(); // Mantener movimiento válido ("R" o "L")
+        const read = transitionRead.trim() || "λ";   // Si está vacío, usamos "λ"
+        const write = transitionWrite.trim() || "λ"; // Si está vacío, usamos "λ"
+        const move = transitionMove.trim();          // Debe ser 'R' o 'L'
 
         if (!["R", "L"].includes(move)) {
             toast.error("Movimiento inválido. Debe ser 'R' o 'L'.");
@@ -84,6 +84,7 @@ const DrawMT = () => {
         }
 
         setTransitions((prevTransitions) => {
+            // 1) Buscar si existe la transición (mismo 'from' y 'to')
             const existingTransitionIndex = prevTransitions.findIndex(
                 (t) =>
                     t.from.id === transitionNodes.from.id &&
@@ -91,21 +92,39 @@ const DrawMT = () => {
             );
 
             if (existingTransitionIndex !== -1) {
-                // Actualizar transición existente
+                // 2) Si existe, revisamos su transitionsData
                 const updatedTransitions = [...prevTransitions];
                 const existingTransition = updatedTransitions[existingTransitionIndex];
 
+                const transitionsData = existingTransition.transitionsData || [];
+
+                // 3) Verificar si la tupla { read, write, move } ya existe
+                const isDuplicate = transitionsData.some(
+                    (data) =>
+                        data.read === read &&
+                        data.write === write &&
+                        data.move === move
+                );
+
+                if (isDuplicate) {
+                    // 4) Mostrar error y no agregar nada
+                    toast.error(
+                        `Ya existe una transición con (read: ${read}, write: ${write}, move: ${move}).`
+                    );
+                    return updatedTransitions; // No agregamos duplicados
+                }
+
+                // 5) Agregamos la tupla si no hay duplicado
                 updatedTransitions[existingTransitionIndex] = {
                     ...existingTransition,
                     transitionsData: [
-                        ...(existingTransition.transitionsData || []),
+                        ...transitionsData,
                         { read, write, move },
                     ],
                 };
-
                 return updatedTransitions;
             } else {
-                // Crear nueva transición
+                // Si no existe la transición, creamos una nueva
                 return [
                     ...prevTransitions,
                     {
