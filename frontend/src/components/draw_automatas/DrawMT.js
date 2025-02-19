@@ -407,7 +407,15 @@ const DrawMT = () => {
     };
 
     return (
-        <Box sx={{ backgroundColor: "#1A1A1A", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", padding: "2rem" }}>
+        <Box
+            sx={{
+                backgroundColor: "#1A1A1A",
+                minHeight: "75vh",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                padding: "2rem"
+            }}>
             <ToastContainer />
             <Typography variant="h3" sx={{ fontFamily: "'Spicy Rice', cursive", color: "#FFFFFF", marginBottom: "1rem" }}>Editor de MT</Typography>
             <Box sx={{ width: "80%", height: "500px", border: "2px solid #ccc", backgroundColor: "#FFFFFF", borderRadius: "8px", position: "relative" }}>

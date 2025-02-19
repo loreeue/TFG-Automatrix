@@ -9,14 +9,14 @@ const MainMenu = () => {
         <Box
             sx={{
                 backgroundColor: "#1A1A1A",
-                minHeight: "100vh",
+                minHeight: "75vh",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-start",
                 alignItems: "center",
                 padding: "2rem",
                 color: "#FFFFFF",
-                fontFamily: "'Raleway', sans-serif", // Fuente global
+                fontFamily: "'Raleway', sans-serif"
             }}
         >
             {/* Secciones informativas */}

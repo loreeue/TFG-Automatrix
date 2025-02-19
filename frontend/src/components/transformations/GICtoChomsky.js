@@ -96,7 +96,7 @@ const GICToChomsky = () => {
     return (
         <Box
             sx={{
-                minHeight: "120vh", // Aumentamos la altura del contenedor principal
+                minHeight: "75vh",
                 backgroundColor: "#1A1A1A",
                 padding: 3,
                 display: "flex",

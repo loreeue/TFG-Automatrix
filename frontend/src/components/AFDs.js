@@ -12,7 +12,7 @@ const AFDs = () => {
         <Box
             sx={{
                 backgroundColor: "#1A1A1A",
-                minHeight: "100vh",
+                minHeight: "75vh",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-start",

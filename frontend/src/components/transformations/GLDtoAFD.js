@@ -102,7 +102,7 @@ const GLDToAFD = () => {
     return (
         <Box
             sx={{
-                height: "100vh",
+                minHeight: "75vh",
                 backgroundColor: "#1A1A1A",
                 padding: 3,
                 display: "flex",
