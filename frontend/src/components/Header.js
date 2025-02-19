@@ -6,7 +6,11 @@ import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import TransformIcon from "@mui/icons-material/Transform";
 import ValidationIcon from "@mui/icons-material/CheckCircle";
 import AutoGraphIcon from "@mui/icons-material/AutoGraph";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import LoginIcon from "@mui/icons-material/Login";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useTheme } from "@mui/material/styles";
+import "@fontsource/abril-fatface";
 
 const Header = () => {
     const theme = useTheme();
@@ -18,6 +22,15 @@ const Header = () => {
     const [userName, setUserName] = useState(""); // Nombre del usuario en el header
     const [email, setEmail] = useState(""); // Para los campos del login/registro
     const [password, setPassword] = useState(""); // Para los campos del login/registro
+    const [isClicked, setIsClicked] = useState(false);
+
+    const handleAutomatrixClick = () => {
+        setIsClicked(true);
+        setTimeout(() => {
+            setIsClicked(false);
+            navigate("/"); // Redirige después de la animación
+        }, 300);
+    };
 
     const usersDatabase = [
         { email: "test@user.com", password: "password123", name: "Test User" },
@@ -73,23 +86,38 @@ const Header = () => {
             }}
         >
             {/* Izquierda: Logo y botones */}
-            <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-        <span style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#FFFFFF" }}>
-          Automatrix
-        </span>
+            <Box sx={{display: "flex", alignItems: "center", gap: "1rem"}}>
+                {/* Automatrix como Link al inicio */}
+                <span
+                    onClick={handleAutomatrixClick}
+                    onMouseEnter={() => setIsClicked(true)}  // Cuando el mouse entra, agrandar
+                    onMouseLeave={() => setIsClicked(false)} // Cuando el mouse sale, volver al tamaño normal
+                    style={{
+                        fontSize: "1.5rem",
+                        fontFamily: "'Abril Fatface', cursive",
+                        color: "#FFFFFF",
+                        marginTop: "-5px",
+                        display: "inline-block",
+                        cursor: "pointer",
+                        transition: "transform 0.3s ease-in-out",
+                        transform: isClicked ? "scale(1.05)" : "scale(1)",  // Animación suave
+                    }}
+                >
+                    Automatrix
+                </span>
 
                 {/* Botones principales */}
                 <Button
                     variant="text"
                     component={Link}
                     to="/gramaticas"
-                    startIcon={<BookIcon />}
+                    startIcon={<BookIcon/>}
                     sx={{
                         color: "#FFFFFF",
                         fontWeight: "bold",
                         fontSize: "1rem",
                         textTransform: "none",
-                        "&:hover": { color: theme.palette.primary.main },
+                        "&:hover": {color: theme.palette.primary.main},
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
@@ -99,13 +127,13 @@ const Header = () => {
                     variant="text"
                     component={Link}
                     to="/afds"
-                    startIcon={<CompareArrowsIcon />}
+                    startIcon={<CompareArrowsIcon/>}
                     sx={{
                         color: "#FFFFFF",
                         fontWeight: "bold",
                         fontSize: "1rem",
                         textTransform: "none",
-                        "&:hover": { color: theme.palette.primary.main },
+                        "&:hover": {color: theme.palette.primary.main},
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
@@ -115,13 +143,13 @@ const Header = () => {
                     variant="text"
                     component={Link}
                     to="/transformaciones"
-                    startIcon={<TransformIcon />}
+                    startIcon={<TransformIcon/>}
                     sx={{
                         color: "#FFFFFF",
                         fontWeight: "bold",
                         fontSize: "1rem",
                         textTransform: "none",
-                        "&:hover": { color: theme.palette.primary.main },
+                        "&:hover": {color: theme.palette.primary.main},
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
@@ -131,13 +159,13 @@ const Header = () => {
                     variant="text"
                     component={Link}
                     to="/simulaciones"
-                    startIcon={<ValidationIcon />}
+                    startIcon={<ValidationIcon/>}
                     sx={{
                         color: "#FFFFFF",
                         fontWeight: "bold",
                         fontSize: "1rem",
                         textTransform: "none",
-                        "&:hover": { color: theme.palette.primary.main },
+                        "&:hover": {color: theme.palette.primary.main},
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
@@ -147,13 +175,13 @@ const Header = () => {
                     variant="text"
                     component={Link}
                     to="/draw_automata"
-                    startIcon={<AutoGraphIcon />}
+                    startIcon={<AutoGraphIcon/>}
                     sx={{
                         color: "#FFFFFF",
                         fontWeight: "bold",
                         fontSize: "1rem",
                         textTransform: "none",
-                        "&:hover": { color: theme.palette.primary.main },
+                        "&:hover": {color: theme.palette.primary.main},
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
@@ -161,29 +189,13 @@ const Header = () => {
                 </Button>
             </Box>
 
-            {/* Derecha: Botones adicionales (Inicio, Atrás, y Bienvenida) */}
-            <Box sx={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-                {/* Botón "Inicio" con el mismo estilo que el de Atrás */}
-                <Button
-                    variant="outlined" // Cambié el "contained" por "outlined"
-                    component={Link}
-                    to="/"
-                    sx={{
-                        color: "#FFFFFF",
-                        borderColor: "#FFFFFF",
-                        fontWeight: "bold",
-                        textTransform: "none",
-                        "&:hover": { borderColor: theme.palette.secondary.main, color: theme.palette.primary.main },
-                        fontFamily: "'Josefin Sans', sans-serif",
-                    }}
-                >
-                    Inicio
-                </Button>
-
+            {/* Derecha: Botones adicionales */}
+            <Box sx={{display: "flex", gap: "1rem", alignItems: "center"}}>
                 {/* Botón "Atrás" con el mismo estilo que "Inicio" */}
                 <Button
-                    variant="outlined" // Cambié el "contained" por "outlined"
+                    variant="outlined"
                     color="primary"
+                    startIcon={<ArrowBackIcon />}
                     sx={{
                         color: "#FFFFFF",
                         borderColor: "#FFFFFF",
@@ -193,15 +205,13 @@ const Header = () => {
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                     onClick={() => navigate(-1)}
-                >
-                    Atrás
-                </Button>
+                ></Button>
 
                 {/* Nombre del usuario en el header si está autenticado */}
                 {userName && (
                     <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
-            Bienvenid@, {userName}
-          </span>
+                        Bienvenid@, {userName}
+                    </span>
                 )}
 
                 {/* Botones de Iniciar sesión y Registrarse */}
@@ -210,6 +220,7 @@ const Header = () => {
                         <Button
                             variant="contained" // Ambos botones con "contained" para el mismo estilo
                             color="primary"
+                            startIcon={<LoginIcon />}
                             sx={{
                                 backgroundColor: theme.palette.primary.main,
                                 fontWeight: "bold",
@@ -224,6 +235,7 @@ const Header = () => {
                         <Button
                             variant="contained" // Ambos botones con "contained" para el mismo estilo
                             color="primary"
+                            startIcon={<PersonAddIcon />}
                             sx={{
                                 backgroundColor: theme.palette.primary.main,
                                 fontWeight: "bold",
