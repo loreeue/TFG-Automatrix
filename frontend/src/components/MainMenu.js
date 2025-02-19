@@ -61,11 +61,13 @@ const MainMenu = () => {
                                 justifyContent: "flex-start", // Posiciona el contenido arriba
                                 alignItems: "center",
                                 paddingTop: "2rem",
-                                transition: "background-color 0.3s",
                                 cursor: "pointer",
                                 "&:hover": {
                                     backgroundColor: theme.palette.primary.main,
+                                    transform: "scale(1.05)",
+                                    boxShadow: "0px 4px 15px rgba(255, 255, 255, 0.2)",
                                 },
+                                transition: "transform 0.3s ease, box-shadow 0.3s ease",
                             }}
                         >
                             <Typography
