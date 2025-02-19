@@ -38,6 +38,7 @@ const DrawAFND = () => {
     const [deleteTransitionMode, setDeleteTransitionMode] = useState(false);
 
     const [showHelpModal, setShowHelpModal] = useState(false);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
     const theme = useTheme();
 
@@ -491,13 +492,7 @@ const DrawAFND = () => {
                         backgroundColor: theme.palette.secondary.main,
                         "&:hover": { backgroundColor: theme.palette.primary.main },
                     }}
-                    onClick={() => {
-                        setNodes([]);
-                        setTransitions([]);
-                        setSelectedNode(null);
-                        setTransitionNodes({ from: null, to: null });
-                        toast.info("Todos los estados y transiciones han sido eliminados.");
-                    }}
+                    onClick={() => setShowDeleteConfirmation(true)}
                 >
                     <DeleteOutlineIcon />
                 </Button>
@@ -773,6 +768,49 @@ const DrawAFND = () => {
                         onClick={() => setShowHelpModal(false)} // Cierra el modal
                     >
                         Cerrar
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Modal de confirmación para eliminar to_do */}
+            <Dialog open={showDeleteConfirmation} onClose={() => setShowDeleteConfirmation(false)}>
+                <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: 'center' }}>
+                    ¿Está seguro de querer eliminarlo todo?
+                </DialogTitle>
+                <DialogContent>
+                    <Typography variant="body1" sx={{ textAlign: 'center', fontFamily: "'Josefin Sans', sans-serif" }}>
+                        Esta acción no se puede deshacer.
+                    </Typography>
+                </DialogContent>
+                <DialogActions sx={{ justifyContent: 'space-around' }}>
+                    <Button
+                        variant="contained"
+                        sx={{
+                            backgroundColor: theme.palette.secondary.main,
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
+                        }}
+                        onClick={() => setShowDeleteConfirmation(false)}
+                    >
+                        No
+                    </Button>
+                    <Button
+                        variant="contained"
+                        sx={{
+                            backgroundColor: theme.palette.secondary.main,
+                            '&:hover': { backgroundColor: theme.palette.primary.main },
+                            fontFamily: "'Josefin Sans', sans-serif",
+                        }}
+                        onClick={() => {
+                            setNodes([]);
+                            setTransitions([]);
+                            setSelectedNode(null);
+                            setTransitionNodes({ from: null, to: null });
+                            toast.info("Todos los estados y transiciones han sido eliminados.");
+                            setShowDeleteConfirmation(false); // Cerrar el modal
+                        }}
+                    >
+                        Sí
                     </Button>
                 </DialogActions>
             </Dialog>
