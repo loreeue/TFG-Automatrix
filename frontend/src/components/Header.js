@@ -32,10 +32,6 @@ const Header = () => {
         }, 300);
     };
 
-    const usersDatabase = [
-        { email: "test@user.com", password: "password123", name: "Test User" },
-    ];
-
     const handleClickOpenDialog = (isLoginOption) => {
         setIsLogin(isLoginOption);
         setOpenDialog(true);
@@ -47,26 +43,54 @@ const Header = () => {
         setPassword("");
     };
 
-    const handleAuthenticate = () => {
-        if (isLogin) {
-            const user = usersDatabase.find(
-                (user) => user.email === email && user.password === password
-            );
+    const handleAuthenticate = async () => {
+		if (isLogin) {
+			// Inicio de sesión: verifica si el usuario existe
+			try {
+				const response = await fetch("http://localhost:8080/api/users/login", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ email, password }),
+				});
 
-            if (user) {
-                setUserName(user.name);
-                navigate("/");
-                setOpenDialog(false);
-            } else {
-                setOpenErrorDialog(true);
-            }
-        } else {
-            usersDatabase.push({ email, password, name: userName });
-            setUserName(userName);
-            navigate("/");
-            setOpenDialog(false);
-        }
-    };
+				if (response.ok) {
+					const data = await response.json();
+					setUserName(data.username);
+					setOpenDialog(false);
+					navigate("/");
+				} else {
+					setOpenErrorDialog(true);
+				}
+			} catch (error) {
+				console.error("Error en el login:", error);
+				setOpenErrorDialog(true);
+			}
+		} else {
+			// Registro de usuario
+			try {
+				const response = await fetch("http://localhost:8080/api/users/register", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ username: userName, email, password }),
+				});
+
+				if (response.ok) {
+					const newUser = await response.json();
+					setUserName(newUser.username);
+					setOpenDialog(false);
+					navigate("/");
+				} else {
+					console.error("Error al crear el usuario");
+				}
+			} catch (error) {
+				console.error("Error en el registro:", error);
+			}
+		}
+	};
 
     const handleCloseErrorDialog = () => {
         setOpenErrorDialog(false);

@@ -1,6 +1,5 @@
 org/example/Entities/AutomatonUtils.class
 org/example/Main.class
-org/example/Controllers/UserController.class
 org/example/Controllers/AutomataSimulatorRESTController.class
 org/example/Services/UserService.class
 org/example/Services/AutomataService.class
