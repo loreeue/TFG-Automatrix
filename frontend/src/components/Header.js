@@ -9,7 +9,10 @@ import AutoGraphIcon from "@mui/icons-material/AutoGraph";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { useTheme } from "@mui/material/styles";
+import { InputAdornment, IconButton } from "@mui/material";
 import "@fontsource/abril-fatface";
 
 const Header = () => {
@@ -23,6 +26,7 @@ const Header = () => {
     const [email, setEmail] = useState(""); // Para los campos del login/registro
     const [password, setPassword] = useState(""); // Para los campos del login/registro
     const [isClicked, setIsClicked] = useState(false);
+	const [showPassword, setShowPassword] = useState(false);
 
     const handleAutomatrixClick = () => {
         setIsClicked(true);
@@ -96,6 +100,11 @@ const Header = () => {
         setOpenErrorDialog(false);
         navigate("/");
     };
+
+	const handleLogout = () => {
+		setUserName(""); // Elimina el mensaje de bienvenida
+		navigate("/"); // Redirige al usuario a la página principal
+	};
 
     return (
         <Box
@@ -233,10 +242,25 @@ const Header = () => {
 
                 {/* Nombre del usuario en el header si está autenticado */}
                 {userName && (
-                    <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
-                        Bienvenid@, {userName}
-                    </span>
-                )}
+					<>
+						<span style={{ fontSize: "1rem", fontWeight: "bold" }}>
+							Bienvenid@, {userName}
+						</span>
+						<Button
+							variant="contained"
+							color="secondary"
+							startIcon={<LogoutIcon />}
+							sx={{
+								fontWeight: "bold",
+								textTransform: "none",
+								"&:hover": { backgroundColor: theme.palette.primary.main },
+								fontFamily: "'Josefin Sans', sans-serif",
+							}}
+							onClick={handleLogout}
+						>
+						</Button>
+					</>
+				)}
 
                 {/* Botones de Iniciar sesión y Registrarse */}
                 {!userName && (
@@ -290,14 +314,23 @@ const Header = () => {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <TextField
-                        margin="dense"
-                        label="Contraseña"
-                        type="password"
-                        fullWidth
-                        variant="standard"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
+						margin="dense"
+						label="Contraseña"
+						type={showPassword ? "text" : "password"} // Alterna entre text y password
+						fullWidth
+						variant="standard"
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+										{showPassword ? <VisibilityOff /> : <Visibility />}
+									</IconButton>
+								</InputAdornment>
+							)
+						}}
+					/>
                     {!isLogin && (
                         <TextField
                             margin="dense"
