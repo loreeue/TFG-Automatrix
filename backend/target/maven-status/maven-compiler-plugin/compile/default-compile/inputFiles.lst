@@ -1,10 +1,14 @@
-/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/backend/src/main/java/org/example/Entities/Grammar2Request.java
+/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/backend/src/main/java/org/example/Repositories/UserRepository.java
 /Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/backend/src/main/java/org/example/Controllers/AutomataTransformerRESTController.java
 /Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/backend/src/main/java/org/example/Controllers/AutomataExtraRESTController.java
+/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/backend/src/main/java/org/example/Services/AutomataService.java
+/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/backend/src/main/java/org/example/Main.java
+/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/backend/src/main/java/org/example/Entities/User.java
+/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/backend/src/main/java/org/example/Entities/Grammar2Request.java
+/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/backend/src/main/java/org/example/Controllers/UserController.java
 /Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/backend/src/main/java/org/example/Entities/AutomatonUtils.java
 /Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/backend/src/main/java/org/example/Controllers/AutomataSimulatorRESTController.java
-/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/backend/src/main/java/org/example/Services/AutomataService.java
 /Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/backend/src/main/java/org/example/Controllers/GrammarRESTController.java
 /Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/backend/src/main/java/org/example/Services/GrammarService.java
-/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/backend/src/main/java/org/example/Main.java
+/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/backend/src/main/java/org/example/Services/UserService.java
 /Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/backend/src/main/java/org/example/Entities/GrammarRequest.java

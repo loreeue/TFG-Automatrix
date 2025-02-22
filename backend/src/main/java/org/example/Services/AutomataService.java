@@ -15,12 +15,10 @@ import grammar.Production;
 import grammar.cfg.CFGToPDALLConverter;
 import grammar.cfg.ContextFreeGrammar;
 import grammar.reg.RightLinearGrammarToFSAConverter;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.io.File;
 import java.util.*;
 import automata.*;
-import regular.RegularExpression;
 
 @Service
 public class AutomataService {
