@@ -11,6 +11,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
+import InfoIcon from "@mui/icons-material/Info";  // <--- importamos el icono de Info
 import { useTheme } from "@mui/material/styles";
 import { InputAdornment, IconButton } from "@mui/material";
 import "@fontsource/abril-fatface";
@@ -20,19 +21,19 @@ const Header = () => {
     const navigate = useNavigate();
 
     const [openDialog, setOpenDialog] = useState(false);
-    const [isLogin, setIsLogin] = useState(true); // Si es login o registro
-    const [openErrorDialog, setOpenErrorDialog] = useState(false); // Error si no existe el usuario
-    const [userName, setUserName] = useState(""); // Nombre del usuario en el header
-    const [email, setEmail] = useState(""); // Para los campos del login/registro
-    const [password, setPassword] = useState(""); // Para los campos del login/registro
+    const [isLogin, setIsLogin] = useState(true);
+    const [openErrorDialog, setOpenErrorDialog] = useState(false);
+    const [userName, setUserName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [isClicked, setIsClicked] = useState(false);
-	const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleAutomatrixClick = () => {
         setIsClicked(true);
         setTimeout(() => {
             setIsClicked(false);
-            navigate("/"); // Redirige después de la animación
+            navigate("/");
         }, 300);
     };
 
@@ -48,63 +49,63 @@ const Header = () => {
     };
 
     const handleAuthenticate = async () => {
-		if (isLogin) {
-			// Inicio de sesión: verifica si el usuario existe
-			try {
-				const response = await fetch("http://localhost:8080/api/users/login", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({ email, password }),
-				});
+        if (isLogin) {
+            // Login
+            try {
+                const response = await fetch("http://localhost:8080/api/users/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
 
-				if (response.ok) {
-					const data = await response.json();
-					setUserName(data.username);
-					setOpenDialog(false);
-					navigate("/");
-				} else {
-					setOpenErrorDialog(true);
-				}
-			} catch (error) {
-				console.error("Error en el login:", error);
-				setOpenErrorDialog(true);
-			}
-		} else {
-			// Registro de usuario
-			try {
-				const response = await fetch("http://localhost:8080/api/users/register", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({ username: userName, email, password }),
-				});
+                if (response.ok) {
+                    const data = await response.json();
+                    setUserName(data.username);
+                    setOpenDialog(false);
+                    navigate("/");
+                } else {
+                    setOpenErrorDialog(true);
+                }
+            } catch (error) {
+                console.error("Error en el login:", error);
+                setOpenErrorDialog(true);
+            }
+        } else {
+            // Registro
+            try {
+                const response = await fetch("http://localhost:8080/api/users/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ username: userName, email, password }),
+                });
 
-				if (response.ok) {
-					const newUser = await response.json();
-					setUserName(newUser.username);
-					setOpenDialog(false);
-					navigate("/");
-				} else {
-					console.error("Error al crear el usuario");
-				}
-			} catch (error) {
-				console.error("Error en el registro:", error);
-			}
-		}
-	};
+                if (response.ok) {
+                    const newUser = await response.json();
+                    setUserName(newUser.username);
+                    setOpenDialog(false);
+                    navigate("/");
+                } else {
+                    console.error("Error al crear el usuario");
+                }
+            } catch (error) {
+                console.error("Error en el registro:", error);
+            }
+        }
+    };
 
     const handleCloseErrorDialog = () => {
         setOpenErrorDialog(false);
         navigate("/");
     };
 
-	const handleLogout = () => {
-		setUserName(""); // Elimina el mensaje de bienvenida
-		navigate("/"); // Redirige al usuario a la página principal
-	};
+    const handleLogout = () => {
+        setUserName("");
+        navigate("/");
+    };
 
     return (
         <Box
@@ -119,12 +120,11 @@ const Header = () => {
             }}
         >
             {/* Izquierda: Logo y botones */}
-            <Box sx={{display: "flex", alignItems: "center", gap: "1rem"}}>
-                {/* Automatrix como Link al inicio */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                 <span
                     onClick={handleAutomatrixClick}
-                    onMouseEnter={() => setIsClicked(true)}  // Cuando el mouse entra, agrandar
-                    onMouseLeave={() => setIsClicked(false)} // Cuando el mouse sale, volver al tamaño normal
+                    onMouseEnter={() => setIsClicked(true)}
+                    onMouseLeave={() => setIsClicked(false)}
                     style={{
                         fontSize: "1.5rem",
                         fontFamily: "'Abril Fatface', cursive",
@@ -133,24 +133,23 @@ const Header = () => {
                         display: "inline-block",
                         cursor: "pointer",
                         transition: "transform 0.3s ease-in-out",
-                        transform: isClicked ? "scale(1.05)" : "scale(1)",  // Animación suave
+                        transform: isClicked ? "scale(1.05)" : "scale(1)",
                     }}
                 >
                     Automatrix
                 </span>
 
-                {/* Botones principales */}
                 <Button
                     variant="text"
                     component={Link}
                     to="/gramaticas"
-                    startIcon={<BookIcon/>}
+                    startIcon={<BookIcon />}
                     sx={{
                         color: "#FFFFFF",
                         fontWeight: "bold",
                         fontSize: "1rem",
                         textTransform: "none",
-                        "&:hover": {color: theme.palette.primary.main},
+                        "&:hover": { color: theme.palette.primary.main },
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
@@ -160,13 +159,13 @@ const Header = () => {
                     variant="text"
                     component={Link}
                     to="/afds"
-                    startIcon={<CompareArrowsIcon/>}
+                    startIcon={<CompareArrowsIcon />}
                     sx={{
                         color: "#FFFFFF",
                         fontWeight: "bold",
                         fontSize: "1rem",
                         textTransform: "none",
-                        "&:hover": {color: theme.palette.primary.main},
+                        "&:hover": { color: theme.palette.primary.main },
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
@@ -176,13 +175,13 @@ const Header = () => {
                     variant="text"
                     component={Link}
                     to="/transformaciones"
-                    startIcon={<TransformIcon/>}
+                    startIcon={<TransformIcon />}
                     sx={{
                         color: "#FFFFFF",
                         fontWeight: "bold",
                         fontSize: "1rem",
                         textTransform: "none",
-                        "&:hover": {color: theme.palette.primary.main},
+                        "&:hover": { color: theme.palette.primary.main },
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
@@ -192,39 +191,58 @@ const Header = () => {
                     variant="text"
                     component={Link}
                     to="/simulaciones"
-                    startIcon={<ValidationIcon/>}
+                    startIcon={<ValidationIcon />}
                     sx={{
                         color: "#FFFFFF",
                         fontWeight: "bold",
                         fontSize: "1rem",
                         textTransform: "none",
-                        "&:hover": {color: theme.palette.primary.main},
+                        "&:hover": { color: theme.palette.primary.main },
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     Simulaciones
                 </Button>
+
+                {/* BOTÓN DE DIBUJAR AUTÓMATA */}
                 <Button
                     variant="text"
                     component={Link}
                     to="/draw_automata"
-                    startIcon={<AutoGraphIcon/>}
+                    startIcon={<AutoGraphIcon />}
                     sx={{
                         color: "#FFFFFF",
                         fontWeight: "bold",
                         fontSize: "1rem",
                         textTransform: "none",
-                        "&:hover": {color: theme.palette.primary.main},
+                        "&:hover": { color: theme.palette.primary.main },
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >
                     Dibujar Autómata
                 </Button>
+
+                {/* BOTÓN INFO */}
+                <Button
+                    variant="text"
+                    component={Link}
+                    to="/info"
+                    startIcon={<InfoIcon />}  // El icono de info
+                    sx={{
+                        color: "#FFFFFF",
+                        fontWeight: "bold",
+                        fontSize: "1rem",
+                        textTransform: "none",
+                        "&:hover": { color: theme.palette.primary.main },
+                        fontFamily: "'Josefin Sans', sans-serif",
+                    }}
+                >
+                    Info
+                </Button>
             </Box>
 
             {/* Derecha: Botones adicionales */}
-            <Box sx={{display: "flex", gap: "1rem", alignItems: "center"}}>
-                {/* Botón "Atrás" con el mismo estilo que "Inicio" */}
+            <Box sx={{ display: "flex", gap: "1rem", alignItems: "center" }}>
                 <Button
                     variant="outlined"
                     color="primary"
@@ -234,39 +252,39 @@ const Header = () => {
                         borderColor: "#FFFFFF",
                         fontWeight: "bold",
                         textTransform: "none",
-                        "&:hover": { borderColor: theme.palette.secondary.main, color: theme.palette.primary.main },
+                        "&:hover": {
+                            borderColor: theme.palette.secondary.main,
+                            color: theme.palette.primary.main,
+                        },
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                     onClick={() => navigate(-1)}
                 ></Button>
 
-                {/* Nombre del usuario en el header si está autenticado */}
                 {userName && (
-					<>
-						<span style={{ fontSize: "1rem", fontWeight: "bold" }}>
-							Bienvenid@, {userName}
-						</span>
-						<Button
-							variant="contained"
-							color="secondary"
-							startIcon={<LogoutIcon />}
-							sx={{
-								fontWeight: "bold",
-								textTransform: "none",
-								"&:hover": { backgroundColor: theme.palette.primary.main },
-								fontFamily: "'Josefin Sans', sans-serif",
-							}}
-							onClick={handleLogout}
-						>
-						</Button>
-					</>
-				)}
+                    <>
+                        <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
+                            Bienvenid@, {userName}
+                        </span>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            startIcon={<LogoutIcon />}
+                            sx={{
+                                fontWeight: "bold",
+                                textTransform: "none",
+                                "&:hover": { backgroundColor: theme.palette.primary.main },
+                                fontFamily: "'Josefin Sans', sans-serif",
+                            }}
+                            onClick={handleLogout}
+                        />
+                    </>
+                )}
 
-                {/* Botones de Iniciar sesión y Registrarse */}
                 {!userName && (
                     <>
                         <Button
-                            variant="contained" // Ambos botones con "contained" para el mismo estilo
+                            variant="contained"
                             color="primary"
                             startIcon={<LoginIcon />}
                             sx={{
@@ -276,12 +294,12 @@ const Header = () => {
                                 "&:hover": { backgroundColor: theme.palette.secondary.main },
                                 fontFamily: "'Josefin Sans', sans-serif",
                             }}
-                            onClick={() => handleClickOpenDialog(true)} // Iniciar sesión
+                            onClick={() => handleClickOpenDialog(true)}
                         >
                             Iniciar sesión
                         </Button>
                         <Button
-                            variant="contained" // Ambos botones con "contained" para el mismo estilo
+                            variant="contained"
                             color="primary"
                             startIcon={<PersonAddIcon />}
                             sx={{
@@ -291,7 +309,7 @@ const Header = () => {
                                 "&:hover": { backgroundColor: theme.palette.secondary.main },
                                 fontFamily: "'Josefin Sans', sans-serif",
                             }}
-                            onClick={() => handleClickOpenDialog(false)} // Registro
+                            onClick={() => handleClickOpenDialog(false)}
                         >
                             Registrarse
                         </Button>
@@ -314,23 +332,23 @@ const Header = () => {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <TextField
-						margin="dense"
-						label="Contraseña"
-						type={showPassword ? "text" : "password"} // Alterna entre text y password
-						fullWidth
-						variant="standard"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-						InputProps={{
-							endAdornment: (
-								<InputAdornment position="end">
-									<IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-										{showPassword ? <VisibilityOff /> : <Visibility />}
-									</IconButton>
-								</InputAdornment>
-							)
-						}}
-					/>
+                        margin="dense"
+                        label="Contraseña"
+                        type={showPassword ? "text" : "password"}
+                        fullWidth
+                        variant="standard"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
                     {!isLogin && (
                         <TextField
                             margin="dense"

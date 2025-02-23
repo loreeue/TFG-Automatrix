@@ -25,6 +25,14 @@ import DrawAP from "./components/draw_automatas/DrawAP";
 import DrawMT from "./components/draw_automatas/DrawMT";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Info from "./components/Info";
+import InfoAFD from "./components/info/InfoAFD";
+import InfoAFND from "./components/info/InfoAFND";
+import InfoAP from "./components/info/InfoAP";
+import InfoMT from "./components/info/InfoMT";
+import InfoGrammar from "./components/info/InfoGrammar";
+import InfoER from "./components/info/InfoER";
+import Summary from "./components/info/Summary";
 
 const App = () => {
     return (
@@ -54,6 +62,14 @@ const App = () => {
                 <Route path="/draw_automata/afnd" element={<DrawAFND />} />
                 <Route path="/draw_automata/ap" element={<DrawAP />} />
                 <Route path="/draw_automata/mt" element={<DrawMT />} />
+				<Route path="/info" element={<Info />} />
+				<Route path="/info/afd" element={<InfoAFD />} />
+				<Route path="/info/afnd" element={<InfoAFND />} />
+				<Route path="/info/ap" element={<InfoAP />} />
+				<Route path="/info/mt" element={<InfoMT />} />
+				<Route path="/info/gramaticas" element={<InfoGrammar />} />
+				<Route path="/info/expresiones" element={<InfoER />} />
+				<Route path="/info/resumen" element={<Summary />} />
             </Routes>
             <Footer />
         </Router>
