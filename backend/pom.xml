@@ -15,6 +15,7 @@
     <description>Prueba_TFG</description>
     <properties>
         <java.version>21</java.version>
+        <spring-boot.version>3.2.3</spring-boot.version>
     </properties>
 
     <dependencies>
@@ -74,6 +75,12 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
+		<!-- Para la encriptación de las contraseñas de la bd -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+			<version>${spring-boot.version}</version>
+		</dependency>
     </dependencies>
 
     <build>
