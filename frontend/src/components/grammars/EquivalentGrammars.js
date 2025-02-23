@@ -36,7 +36,6 @@ const EquivalentGrammars = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Validación para verificar que ambas gramáticas estén completas
         if (!grammar1.trim() || !grammar2.trim()) {
             toast.error("Por favor, introduce ambas gramáticas antes de verificar.", {
                 position: "top-right",
@@ -74,7 +73,11 @@ const EquivalentGrammars = () => {
                 grammar2: parsedGrammar2,
             });
 
-            setResult(response.data ? "Las gramáticas son equivalentes." : "Las gramáticas no son equivalentes.");
+            setResult(
+                response.data
+                    ? "Las gramáticas son equivalentes."
+                    : "Las gramáticas no son equivalentes."
+            );
         } catch (error) {
             console.error("Error verificando equivalencia:", error);
             toast.error("Error en el servidor al verificar la equivalencia.", {
@@ -91,9 +94,9 @@ const EquivalentGrammars = () => {
     };
 
     const handlePaste = (event, setGrammar) => {
-        event.preventDefault(); // Evita que se pegue con formato predeterminado
+        event.preventDefault();
         const pastedText = (event.clipboardData || window.clipboardData).getData("text");
-        setGrammar(pastedText); // Establece el texto pegado correctamente
+        setGrammar(pastedText);
     };
 
     return (
@@ -108,10 +111,8 @@ const EquivalentGrammars = () => {
                 color: "#FFFFFF",
             }}
         >
-            {/* Contenedor para Toast */}
             <ToastContainer />
 
-            {/* Título principal */}
             <Typography
                 variant="h3"
                 sx={{
@@ -124,28 +125,28 @@ const EquivalentGrammars = () => {
                 Verificar Equivalencia de Gramáticas
             </Typography>
 
-            {/* Instrucciones */}
+            {/* Instrucciones con menos altura */}
             <Box
                 sx={{
                     width: "100%",
                     maxWidth: "800px",
-                    marginBottom: 3,
-                    padding: 3,
+                    marginBottom: 2,    // Ajustado para reducir espacio
+                    padding: 2,        // Ajustado para reducir espacio
                     borderRadius: "12px",
                     backgroundColor: "#2C2C2C",
                 }}
             >
-                <Typography variant="h6" gutterBottom
-                    sx={{
-                        fontFamily: "'Josefin Sans', sans-serif",
-                    }}
+                <Typography
+                    variant="h6"
+                    gutterBottom
+                    sx={{ fontFamily: "'Josefin Sans', sans-serif" }}
                 >
                     Instrucciones:
                 </Typography>
-                <Typography variant="body1" gutterBottom
-                    sx={{
-                        fontFamily: "'Josefin Sans', sans-serif",
-                    }}
+                <Typography
+                    variant="body1"
+                    gutterBottom
+                    sx={{ fontFamily: "'Josefin Sans', sans-serif" }}
                 >
                     Introduzca cada gramática en formato JSON, con sus producciones enumeradas como se muestra a continuación:
                 </Typography>
@@ -192,12 +193,12 @@ const EquivalentGrammars = () => {
                         >
                             Gramática 1
                         </Typography>
+                        {/* Cajas de texto con menos filas */}
                         <TextField
-                            label=""
                             variant="outlined"
                             fullWidth
                             multiline
-                            rows={6}
+                            rows={4} // Reducción de filas
                             value={grammar1}
                             onChange={(e) => setGrammar1(e.target.value)}
                             onPaste={(e) => handlePaste(e, setGrammar1)}
@@ -210,7 +211,7 @@ const EquivalentGrammars = () => {
                                 },
                             }}
                             InputProps={{
-                                style: { color: "#FFFFFF" }
+                                style: { color: "#FFFFFF" },
                             }}
                         />
                     </Grid>
@@ -226,12 +227,12 @@ const EquivalentGrammars = () => {
                         >
                             Gramática 2
                         </Typography>
+                        {/* Cajas de texto con menos filas */}
                         <TextField
-                            label=""
                             variant="outlined"
                             fullWidth
                             multiline
-                            rows={6}
+                            rows={4} // Reducción de filas
                             value={grammar2}
                             onChange={(e) => setGrammar2(e.target.value)}
                             onPaste={(e) => handlePaste(e, setGrammar2)}
@@ -244,7 +245,7 @@ const EquivalentGrammars = () => {
                                 },
                             }}
                             InputProps={{
-                                style: { color: "#FFFFFF" }
+                                style: { color: "#FFFFFF" },
                             }}
                         />
                     </Grid>
@@ -269,14 +270,13 @@ const EquivalentGrammars = () => {
                 </Button>
             </form>
 
-            {/* Resultado */}
             {result && (
                 <Typography
                     variant="h6"
                     sx={{
                         marginTop: 3,
                         textAlign: "center",
-                        color: "#FFFFFF", // Cambiado a blanco
+                        color: "#FFFFFF",
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >

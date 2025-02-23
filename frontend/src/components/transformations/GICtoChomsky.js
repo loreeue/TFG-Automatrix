@@ -120,28 +120,28 @@ const GICToChomsky = () => {
                 Convertir GIC a Forma Normal de Chomsky
             </Typography>
 
-            {/* Example Section */}
+            {/* Sección de instrucciones con menos altura */}
             <Box
                 sx={{
-                    marginBottom: 3,
-                    padding: 3,
+                    marginBottom: 2,  // Reducido
+                    padding: 2,       // Reducido
                     borderRadius: "8px",
                     backgroundColor: "#2C2C2C",
                     width: "100%",
                     maxWidth: "800px",
                 }}
             >
-                <Typography variant="h6" gutterBottom
-                    sx={{
-                        fontFamily: "'Josefin Sans', sans-serif",
-                    }}
+                <Typography
+                    variant="h6"
+                    gutterBottom
+                    sx={{ fontFamily: "'Josefin Sans', sans-serif" }}
                 >
                     Instrucciones:
                 </Typography>
-                <Typography variant="body1" gutterBottom
-                    sx={{
-                        fontFamily: "'Josefin Sans', sans-serif",
-                    }}
+                <Typography
+                    variant="body1"
+                    gutterBottom
+                    sx={{ fontFamily: "'Josefin Sans', sans-serif" }}
                 >
                     Introduzca la gramática en formato JSON, siguiendo este ejemplo:
                 </Typography>
@@ -161,7 +161,9 @@ const GICToChomsky = () => {
                             flex: 1,
                             fontFamily: "'Josefin Sans', sans-serif",
                         }}
-                    >{exampleGrammar}</Box>
+                    >
+                        {exampleGrammar}
+                    </Box>
                     <IconButton
                         onClick={handleCopyExample}
                         sx={{
@@ -190,12 +192,12 @@ const GICToChomsky = () => {
                 >
                     Gramática
                 </Typography>
+                {/* Caja de texto con menos filas */}
                 <TextField
-                    label=""
                     variant="outlined"
                     fullWidth
                     multiline
-                    rows={6}
+                    rows={4} // Reducido de 6 a 4
                     value={grammar}
                     onChange={(e) => setGrammar(e.target.value)}
                     onPaste={(e) => handlePaste(e, setGrammar)}
@@ -208,7 +210,7 @@ const GICToChomsky = () => {
                         },
                     }}
                     InputProps={{
-                        style: { color: "#FFFFFF" }
+                        style: { color: "#FFFFFF" },
                     }}
                 />
                 <Button
@@ -245,18 +247,18 @@ const GICToChomsky = () => {
                         backgroundColor: "#2C2C2C",
                         width: "100%",
                         maxWidth: "800px",
-                        minHeight: "300px", // Aumentamos el tamaño mínimo para el contenido
-                        maxHeight: "600px", // Limitar la altura máxima para mejor control
-                        overflowY: "auto", // Permitir desplazamiento
+                        minHeight: "300px",
+                        maxHeight: "600px",
+                        overflowY: "auto",
                         whiteSpace: "pre-wrap",
                         fontFamily: "monospace",
                         color: "#FFFFFF",
                     }}
                 >
-                    <Typography variant="h6" gutterBottom
-                        sx={{
-                            fontFamily: "'Josefin Sans', sans-serif",
-                        }}
+                    <Typography
+                        variant="h6"
+                        gutterBottom
+                        sx={{ fontFamily: "'Josefin Sans', sans-serif" }}
                     >
                         Gramática en Forma Normal de Chomsky:
                     </Typography>
