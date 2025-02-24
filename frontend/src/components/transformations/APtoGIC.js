@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Box, Typography, Button, CircularProgress } from "@mui/material";
+import { Box, Typography, Button, CircularProgress, Grid } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -103,6 +103,33 @@ const APToGIC = () => {
         }
     };
 
+	const formatGrammarOutput = (rawOutput) => {
+		// Elimina todo lo anterior a "V:"
+		const cleaned = rawOutput.replace(/^.*V:/, "V:");
+
+		// Separamos por las etiquetas clave
+		const [vPart, tPartAndRest] = cleaned.split("T:");
+		if (!tPartAndRest) return null;
+
+		const [tPart, sPartAndRest] = tPartAndRest.split("S:");
+		if (!sPartAndRest) return null;
+
+		const [sPart, pPart] = sPartAndRest.split("P:");
+		if (!pPart) return null;
+
+		const variablesClean = vPart
+		  .replace("V:", "")
+		  .trim()
+		  .replace(/^grammar\.cfg\.ContextFreeGrammar@\w+\s*/, "");
+
+		return {
+		  variables: variablesClean,
+		  terminals: tPart.trim(),
+		  start: sPart.trim(),
+		  productions: '\n' + pPart.trim(),
+		};
+	};
+
     return (
         <Box
             sx={{
@@ -110,6 +137,8 @@ const APToGIC = () => {
                 backgroundColor: "#1A1A1A",
                 padding: 3,
                 display: "flex",
+				height: "100vh",
+				overflowY: "auto",
                 flexDirection: "column",
                 alignItems: "center",
                 color: "#FFFFFF",
@@ -204,7 +233,54 @@ const APToGIC = () => {
                     >
                         Gramática Independiente de Contexto:
                     </Typography>
-                    {result}
+                    {(() => {
+						const formatted = formatGrammarOutput(result);
+						if (formatted) {
+							// Separamos las producciones en líneas
+							const productionLines = formatted.productions.trim().split("\n").filter(line => line.trim() !== "");
+							// Dividimos el arreglo en dos partes iguales (o casi iguales)
+							const midIndex = Math.ceil(productionLines.length / 2);
+							const leftColumn = productionLines.slice(0, midIndex);
+							const rightColumn = productionLines.slice(midIndex);
+
+							return (
+							<Box>
+								<Typography variant="body1">
+								<strong>Variables:</strong> {formatted.variables}
+								</Typography>
+								<Typography variant="body1">
+								<strong>Terminales:</strong> {formatted.terminals}
+								</Typography>
+								<Typography variant="body1">
+								<strong>Símbolo Inicial:</strong> {formatted.start}
+								</Typography>
+								<Box sx={{ mt: 2 }}>
+								<Typography variant="body1" sx={{ mb: 1 }}>
+									<strong>Producciones:</strong>
+								</Typography>
+								<Grid container spacing={2}>
+									<Grid item xs={6}>
+									{leftColumn.map((line, index) => (
+										<Typography key={`left-${index}`} variant="body2">
+										{line}
+										</Typography>
+									))}
+									</Grid>
+									<Grid item xs={6}>
+									{rightColumn.map((line, index) => (
+										<Typography key={`right-${index}`} variant="body2">
+										{line}
+										</Typography>
+									))}
+									</Grid>
+								</Grid>
+								</Box>
+							</Box>
+							);
+						} else {
+							return <Typography>{result}</Typography>;
+						}
+					})()}
                 </Box>
             )}
         </Box>

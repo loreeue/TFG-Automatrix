@@ -25,100 +25,103 @@ const SimulateAFND = () => {
     };
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
+		event.preventDefault();
 
-        // Verificar si un archivo ha sido seleccionado
-        if (!file) {
-            toast.error("Por favor selecciona un archivo AFND (.jff).", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
-            return;
-        }
+		// Verificar si un archivo ha sido seleccionado
+		if (!file) {
+			toast.error("Por favor selecciona un archivo AFND (.jff).", {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+			return;
+		}
 
-        // Verificar que el archivo tenga la extensión .jff
-        if (!file.name.endsWith(".jff")) {
-            toast.error("El archivo seleccionado no es un AFND válido (.jff).", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
-            return;
-        }
+		// Verificar que el archivo tenga la extensión .jff
+		if (!file.name.endsWith(".jff")) {
+			toast.error("El archivo seleccionado no es un AFND válido (.jff).", {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+			return;
+		}
 
-        // Leer el archivo y verificar que sea un AFND
-        const readFileContent = (file) => {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const content = e.target.result;
+		// Leer el archivo y verificar que sea un AFND
+		const readFileContent = (file) => {
+			return new Promise((resolve, reject) => {
+				const reader = new FileReader();
+				reader.onload = (e) => {
+					const content = e.target.result;
+					if (!content.includes("<structure>") || !content.includes("<type>fa</type>") || !content.includes("<automaton>")) {
+						resolve(false);
+						return;
+					}
 
-                    // Verificar si el archivo tiene la estructura de un autómata finito
-                    if (!content.includes("<structure>") || !content.includes("<type>fa</type>") || !content.includes("<automaton>")) {
-                        resolve(false); // No es un autómata finito
-                        return;
-                    }
+					// Determinar si es un AFND (por ejemplo, comprobando transiciones vacías o duplicadas)
+					const isAFND = content.includes("<read/>") || (content.match(/<read>/g) || []).length > (content.match(/<state>/g) || []).length;
+					resolve(isAFND);
+				};
+				reader.onerror = () => reject(false);
+				reader.readAsText(file);
+			});
+		};
 
-                    // Verificar si hay transiciones vacías o múltiples transiciones con el mismo símbolo
-                    const isAFND = content.includes("<read/>") || (content.match(/<read>/g) || []).length > (content.match(/<state>/g) || []).length;
+		const isValidAFND = await readFileContent(file);
 
-                    resolve(isAFND);
-                };
-                reader.onerror = () => reject(false);
-                reader.readAsText(file);
-            });
-        };
+		if (!isValidAFND) {
+			toast.error("El archivo seleccionado no es un AFND válido. Por favor sube un archivo correcto.", {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+			return;
+		}
 
-        const isValidAFND = await readFileContent(file);
+		if (!input) {
+			toast.error("Por favor ingresa una cadena de entrada.", { position: "top-right" });
+			return;
+		}
 
-        if (!isValidAFND) {
-            toast.error("El archivo seleccionado no es un AFND válido. Por favor sube un archivo correcto.", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
-            return;
-        }
+		setLoading(true);
+		const formData = new FormData();
+		formData.append("file", file);
+		formData.append("input", input);
 
-        if (!input) {
-            toast.error("Por favor ingresa una cadena de entrada.", { position: "top-right" });
-            return;
-        }
-
-        setLoading(true);
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("input", input);
-
-        try {
-            const response = await axios.post("/api/validate/afnd", formData, {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
-            setResult(response.data);
-        } catch (error) {
-            console.error(error);
-            toast.error("Error en el servidor al procesar la simulación.", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
-        } finally {
-            setLoading(false);
-        }
-    };
+		try {
+			const response = await axios.post("/api/validate/afnd", formData, {
+				headers: { "Content-Type": "multipart/form-data" },
+			});
+			// Supongamos que response.data es un booleano
+			const accepted = response.data;
+			setResult(
+				accepted
+					? "El AFND SÍ reconoce esta cadena de entrada"
+					: "El AFND NO reconoce esta cadena de entrada"
+			);
+		} catch (error) {
+			console.error(error);
+			toast.error("Error en el servidor al procesar la simulación.", {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+		} finally {
+			setLoading(false);
+		}
+	};
 
     return (
         <Box
@@ -227,32 +230,18 @@ const SimulateAFND = () => {
             </form>
 
             {result && (
-                <Box
-                    sx={{
-                        marginTop: 3,
-                        padding: 2,
-                        border: "1px solid #444444",
-                        borderRadius: "8px",
-                        backgroundColor: "#2C2C2C",
-                        width: "100%",
-                        maxWidth: "800px",
-                        minHeight: "100px",
-                        maxHeight: "300px",
-                        overflowY: "auto",
-                        fontFamily: "monospace",
-                        color: "#FFFFFF",
-                    }}
-                >
-                    <Typography variant="h6" gutterBottom
-                        sx={{
-                            fontFamily: "'Josefin Sans', sans-serif",
-                        }}
-                    >
-                        Resultado:
-                    </Typography>
-                    {result}
-                </Box>
-            )}
+				<Typography
+					variant="h6"
+					sx={{
+						marginTop: 3,
+						textAlign: "center",
+						color: "#FFFFFF",
+						fontFamily: "'Josefin Sans', sans-serif",
+					}}
+				>
+					{result}
+				</Typography>
+			)}
         </Box>
     );
 };

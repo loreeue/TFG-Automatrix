@@ -25,94 +25,100 @@ const SimulateAFD = () => {
     };
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
+		event.preventDefault();
 
-        // Verificar si un archivo ha sido seleccionado
-        if (!file) {
-            toast.error("Por favor selecciona un archivo AFD (.jff).", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
-            return;
-        }
+		// Verificar si un archivo ha sido seleccionado
+		if (!file) {
+			toast.error("Por favor selecciona un archivo AFD (.jff).", {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+			return;
+		}
 
-        // Verificar que el archivo tenga la extensión .jff
-        if (!file.name.endsWith(".jff")) {
-            toast.error("El archivo seleccionado no es un AFD válido (.jff).", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
-            return;
-        }
+		// Verificar que el archivo tenga la extensión .jff
+		if (!file.name.endsWith(".jff")) {
+			toast.error("El archivo seleccionado no es un AFD válido (.jff).", {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+			return;
+		}
 
-        // Leer el archivo y verificar que sea un AFD
-        const readFileContent = (file) => {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const content = e.target.result;
-                    if (content.includes("<type>fa</type>")) {
-                        resolve(true); // Es un AFD
-                    } else {
-                        resolve(false); // No es un AFD
-                    }
-                };
-                reader.onerror = () => reject(false);
-                reader.readAsText(file);
-            });
-        };
+		// Leer el archivo y verificar que sea un AFD
+		const readFileContent = (file) => {
+			return new Promise((resolve, reject) => {
+				const reader = new FileReader();
+				reader.onload = (e) => {
+					const content = e.target.result;
+					if (content.includes("<type>fa</type>")) {
+						resolve(true); // Es un AFD
+					} else {
+						resolve(false); // No es un AFD
+					}
+				};
+				reader.onerror = () => reject(false);
+				reader.readAsText(file);
+			});
+		};
 
-        const isValidAFD = await readFileContent(file);
+		const isValidAFD = await readFileContent(file);
 
-        if (!isValidAFD) {
-            toast.error("El archivo seleccionado no es un AFD válido. Por favor sube un archivo correcto.", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
-            return;
-        }
+		if (!isValidAFD) {
+			toast.error("El archivo seleccionado no es un AFD válido. Por favor sube un archivo correcto.", {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+			return;
+		}
 
-        if (!input) {
-            toast.error("Por favor ingresa una cadena de entrada.", { position: "top-right" });
-            return;
-        }
+		if (!input) {
+			toast.error("Por favor ingresa una cadena de entrada.", { position: "top-right" });
+			return;
+		}
 
-        setLoading(true);
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("input", input);
+		setLoading(true);
+		const formData = new FormData();
+		formData.append("file", file);
+		formData.append("input", input);
 
-        try {
-            const response = await axios.post("/api/validate/afd", formData, {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
-            setResult(response.data);
-        } catch (error) {
-            console.error(error);
-            toast.error("Error en el servidor al procesar la simulación.", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            });
-        } finally {
-            setLoading(false);
-        }
-    };
+		try {
+			const response = await axios.post("/api/validate/afd", formData, {
+				headers: { "Content-Type": "multipart/form-data" },
+			});
+			// Suponiendo que response.data es un booleano
+			const accepted = response.data;
+			setResult(
+				accepted
+					? "El AFD SÍ reconoce esta cadena de entrada"
+					: "El AFD NO reconoce esta cadena de entrada"
+			);
+		} catch (error) {
+			console.error(error);
+			toast.error("Error en el servidor al procesar la simulación.", {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+		} finally {
+			setLoading(false);
+		}
+	};
 
     return (
         <Box
@@ -221,32 +227,18 @@ const SimulateAFD = () => {
             </form>
 
             {result && (
-                <Box
-                    sx={{
-                        marginTop: 3,
-                        padding: 2,
-                        border: "1px solid #444444",
-                        borderRadius: "8px",
-                        backgroundColor: "#2C2C2C",
-                        width: "100%",
-                        maxWidth: "800px",
-                        minHeight: "100px",
-                        maxHeight: "300px",
-                        overflowY: "auto",
-                        fontFamily: "monospace",
-                        color: "#FFFFFF",
-                    }}
-                >
-                    <Typography variant="h6" gutterBottom
-                        sx={{
-                            fontFamily: "'Josefin Sans', sans-serif",
-                        }}
-                    >
-                        Resultado:
-                    </Typography>
-                    {result}
-                </Box>
-            )}
+				<Typography
+					variant="h6"
+					sx={{
+						marginTop: 3,
+						textAlign: "center",
+						color: "#FFFFFF",
+						fontFamily: "'Josefin Sans', sans-serif",
+					}}
+				>
+					{result}
+				</Typography>
+			)}
         </Box>
     );
 };

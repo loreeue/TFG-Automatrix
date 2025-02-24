@@ -93,11 +93,41 @@ const GICToChomsky = () => {
         setGrammar(pastedText); // Establece el texto pegado correctamente
     };
 
+	const formatChomskyOutput = (rawOutput) => {
+		// Elimina todo lo anterior a "V:"
+		const cleaned = rawOutput.replace(/^.*V:/, "V:");
+
+		// Separa la parte de cabecera y la de producciones usando "P:"
+		const parts = cleaned.split(/P:\s*/);
+		if (parts.length < 2) return null;
+
+		const headerPart = parts[0].trim(); // Contiene "V:", "T:" y "S:"
+		const productionsPart = parts[1].trim(); // Contiene las producciones
+
+		// Separa la cabecera por líneas
+		const headerLines = headerPart.split("\n").map((line) => line.trim());
+		let variables = "", terminals = "", start = "";
+
+		headerLines.forEach((line) => {
+		  if (line.startsWith("V:")) {
+			variables = line.replace("V:", "").trim();
+		  } else if (line.startsWith("T:")) {
+			terminals = line.replace("T:", "").trim();
+		  } else if (line.startsWith("S:")) {
+			start = line.replace("S:", "").trim();
+		  }
+		});
+
+		return { variables, terminals, start, productions: productionsPart };
+	};
+
     return (
         <Box
             sx={{
                 minHeight: "75vh",
                 backgroundColor: "#1A1A1A",
+				height: "110vh",
+				overflowY: "auto",
                 padding: 3,
                 display: "flex",
                 flexDirection: "column",
@@ -247,8 +277,8 @@ const GICToChomsky = () => {
                         backgroundColor: "#2C2C2C",
                         width: "100%",
                         maxWidth: "800px",
-                        minHeight: "300px",
-                        maxHeight: "600px",
+                        minHeight: "200px",
+                        maxHeight: "6¡400px",
                         overflowY: "auto",
                         whiteSpace: "pre-wrap",
                         fontFamily: "monospace",
@@ -262,7 +292,34 @@ const GICToChomsky = () => {
                     >
                         Gramática en Forma Normal de Chomsky:
                     </Typography>
-                    {result}
+                    {(() => {
+						const formatted = formatChomskyOutput(result);
+						if (formatted) {
+							return (
+							<Box>
+								<Typography variant="body1">
+								<strong>Variables:</strong> {formatted.variables}
+								</Typography>
+								<Typography variant="body1">
+								<strong>Terminales:</strong> {formatted.terminals}
+								</Typography>
+								<Typography variant="body1">
+								<strong>Símbolo Inicial:</strong> {formatted.start}
+								</Typography>
+								<Typography variant="body1" sx={{ mt: 2 }}>
+								<strong>Producciones:</strong>
+								</Typography>
+								{formatted.productions.split("\n").map((line, index) => (
+								<Typography key={index} variant="body2">
+									{line}
+								</Typography>
+								))}
+							</Box>
+							);
+						} else {
+							return <Typography>{result}</Typography>;
+						}
+					})()}
                 </Box>
             )}
         </Box>

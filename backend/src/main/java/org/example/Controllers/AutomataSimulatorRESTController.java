@@ -17,78 +17,74 @@ public class AutomataSimulatorRESTController {
     private AutomataService automataService;
 
     @PostMapping("/afd")
-    public String simulateAFD(@RequestParam("file") MultipartFile file, @RequestParam("input") String input) {
+    public boolean simulateAFD(@RequestParam("file") MultipartFile file, @RequestParam("input") String input) {
         try {
             // Convert the MultipartFile to a file and load the automaton
             File tempFile = File.createTempFile("afd", ".jff");
             file.transferTo(tempFile);
             FiniteStateAutomaton automaton = automataService.loadAFD(tempFile.getAbsolutePath());
             if (automaton == null) {
-                return "Error";
+                return false;
             }
             // Simulate the input
-            boolean result = automataService.simulateAFD(automaton, input);
-            return result ? "Accepted" : "No accepted";
+            return automataService.simulateAFD(automaton, input);
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error: " + e.getMessage();
+            return false;
         }
     }
 
     @PostMapping("/afnd")
-    public String simulateAFND(@RequestParam("file") MultipartFile file, @RequestParam("input") String input) {
+    public boolean simulateAFND(@RequestParam("file") MultipartFile file, @RequestParam("input") String input) {
         try {
             // Convert the MultipartFile to a file and load the automaton
             File tempFile = File.createTempFile("afnd", ".jff");
             file.transferTo(tempFile);
             FiniteStateAutomaton automaton = automataService.loadAFND(tempFile.getAbsolutePath());
             if (automaton == null) {
-                return "Error";
+                return false;
             }
             // Simulate the input
-            boolean result = automataService.simulateAFND(automaton, input);
-            return result ? "Accepted" : "No accepted";
+            return automataService.simulateAFND(automaton, input);
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error: " + e.getMessage();
+            return false;
         }
     }
 
     @PostMapping("/turingMachine")
-    public String simulateTuringMachine(@RequestParam("file") MultipartFile file, @RequestParam("input") String input) {
+    public boolean simulateTuringMachine(@RequestParam("file") MultipartFile file, @RequestParam("input") String input) {
         try {
             // Convert the MultipartFile to a file and load the turing machine
             File tempFile = File.createTempFile("turingMachine", ".jff");
             file.transferTo(tempFile);
             TuringMachine turingMachine = automataService.loadTuringMachine(tempFile.getAbsolutePath());
             if (turingMachine == null) {
-                return "Error";
+                return false;
             }
             // Simulate the input
-            boolean result = automataService.simulateTuringMachine(turingMachine, input);
-            return result ? "Accepted" : "No accepted";
+            return automataService.simulateTuringMachine(turingMachine, input);
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error: " + e.getMessage();
+            return false;
         }
     }
 
     @PostMapping("/ap")
-    public String simulateAP(@RequestParam("file") MultipartFile file, @RequestParam("input") String input) {
+    public boolean simulateAP(@RequestParam("file") MultipartFile file, @RequestParam("input") String input) {
         try {
             // Convert the MultipartFile to a file and load the pushdown automaton
             File tempFile = File.createTempFile("pda", ".jff");
             file.transferTo(tempFile);
             PushdownAutomaton automaton = automataService.loadAP(tempFile.getAbsolutePath());
             if (automaton == null) {
-                return "Error";
+                return false;
             }
             // Simulate the input
-            boolean result = automataService.simulateAP(automaton, input);
-            return result ? "Accepted" : "No accepted";
+            return automataService.simulateAP(automaton, input);
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error: " + e.getMessage();
+            return false;
         }
     }
 }

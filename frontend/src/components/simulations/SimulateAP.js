@@ -82,17 +82,22 @@ const SimulateAP = () => {
         formData.append("file", file);
         formData.append("input", input);
 
-        try {
-            const response = await axios.post("/api/validate/ap", formData, {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
-            setResult(response.data);
-        } catch (error) {
-            console.error(error);
-            toast.error("Error en el servidor al procesar la simulación.", { position: "top-right" });
-        } finally {
-            setLoading(false);
-        }
+		try {
+			const response = await axios.post("/api/validate/ap", formData, {
+				headers: { "Content-Type": "multipart/form-data" },
+			});
+			const accepted = response.data;
+			setResult(
+				accepted
+					? "El AP SÍ reconoce esta cadena de entrada"
+					: "El AP NO reconoce esta cadena de entrada"
+			);
+		} catch (error) {
+			console.error(error);
+			toast.error("Error en el servidor al procesar la simulación.", { position: "top-right" });
+		} finally {
+			setLoading(false);
+		}
     };
 
     return (
@@ -203,32 +208,18 @@ const SimulateAP = () => {
             </form>
 
             {result && (
-                <Box
-                    sx={{
-                        marginTop: 3,
-                        padding: 2,
-                        border: "1px solid #444444",
-                        borderRadius: "8px",
-                        backgroundColor: "#2C2C2C",
-                        width: "100%",
-                        maxWidth: "800px",
-                        minHeight: "100px",
-                        maxHeight: "300px",
-                        overflowY: "auto",
-                        fontFamily: "monospace",
-                        color: "#FFFFFF",
-                    }}
-                >
-                    <Typography variant="h6" gutterBottom
-                        sx={{
-                            fontFamily: "'Josefin Sans', sans-serif",
-                        }}
-                    >
-                        Resultado:
-                    </Typography>
-                    {result}
-                </Box>
-            )}
+				<Typography
+					variant="h6"
+					sx={{
+						marginTop: 3,
+						textAlign: "center",
+						color: "#FFFFFF",
+						fontFamily: "'Josefin Sans', sans-serif",
+					}}
+				>
+					{result}
+				</Typography>
+			)}
 
             {/* Popup de advertencia */}
             <Dialog
