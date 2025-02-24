@@ -28,18 +28,6 @@ public class UserRESTController {
         return userService.saveUser(user);
     }
 
-	/*@PostMapping("/login")
-	public ResponseEntity<User> login(@RequestBody User loginUser) {
-		List<User> users = userService.getAllUsers();
-		for (User user : users) {
-			if (user.getEmail().equals(loginUser.getEmail()) &&
-				user.getPassword().equals(loginUser.getPassword()) &&
-				user.getUsername().equals(loginUser.getUsername())) {
-				return ResponseEntity.ok(user);
-			}
-		}
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-	}*/
 	@PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
         User user = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
