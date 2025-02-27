@@ -28,6 +28,10 @@ const Header = () => {
     const [password, setPassword] = useState("");
     const [isClicked, setIsClicked] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+	const [emailError, setEmailError] = useState("");
+	const [passwordError, setPasswordError] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
+	const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
     const handleAutomatrixClick = () => {
         setIsClicked(true);
@@ -48,54 +52,78 @@ const Header = () => {
         setPassword("");
     };
 
+	const validateEmail = (email) => {
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return emailRegex.test(email);
+	};
+
+	const validatePassword = (password) => {
+		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+		return passwordRegex.test(password);
+	};
+
+	const validateConfirmPassword = (password, confirmPassword) => {
+		return password === confirmPassword;
+	};
+
     const handleAuthenticate = async () => {
-        if (isLogin) {
-            // Login
-            try {
-                const response = await fetch("http://localhost:8080/api/users/login", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ email, password }),
-                });
+		if (!validateEmail(email)) {
+			setEmailError("Correo no válido");
+			return;
+		}
 
-                if (response.ok) {
-                    const data = await response.json();
-                    setUserName(data.username);
-                    setOpenDialog(false);
-                    navigate("/");
-                } else {
-                    setOpenErrorDialog(true);
-                }
-            } catch (error) {
-                console.error("Error en el login:", error);
-                setOpenErrorDialog(true);
-            }
-        } else {
-            // Registro
-            try {
-                const response = await fetch("http://localhost:8080/api/users/register", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ username: userName, email, password }),
-                });
+		if (!validatePassword(password)) {
+			setPasswordError("Debe tener 8 caracteres, mayúscula, minúscula, número y símbolo.");
+			return;
+		}
 
-                if (response.ok) {
-                    const newUser = await response.json();
-                    setUserName(newUser.username);
-                    setOpenDialog(false);
-                    navigate("/");
-                } else {
-                    console.error("Error al crear el usuario");
-                }
-            } catch (error) {
-                console.error("Error en el registro:", error);
-            }
-        }
-    };
+		if (!validateConfirmPassword(password, confirmPassword)) {
+			setConfirmPasswordError("Las contraseñas no coinciden.");
+			return;
+		}
+
+		// Si todo es válido, proceder con la autenticación
+		if (isLogin) {
+			try {
+				const response = await fetch("http://localhost:8080/api/users/login", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ email, password }),
+				});
+
+				if (response.ok) {
+					const data = await response.json();
+					setUserName(data.username);
+					setOpenDialog(false);
+					navigate("/");
+				} else {
+					setOpenErrorDialog(true);
+				}
+			} catch (error) {
+				console.error("Error en el login:", error);
+				setOpenErrorDialog(true);
+			}
+		} else {
+			try {
+				const response = await fetch("http://localhost:8080/api/users/register", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ username: userName, email, password }),
+				});
+
+				if (response.ok) {
+					const newUser = await response.json();
+					setUserName(newUser.username);
+					setOpenDialog(false);
+					navigate("/");
+				} else {
+					console.error("Error al crear el usuario");
+				}
+			} catch (error) {
+				console.error("Error en el registro:", error);
+			}
+		}
+	};
 
     const handleCloseErrorDialog = () => {
         setOpenErrorDialog(false);
@@ -318,54 +346,143 @@ const Header = () => {
             </Box>
 
             {/* Pop-up de iniciar sesión / registro */}
-            <Dialog open={openDialog} onClose={handleCloseDialog}>
-                <DialogTitle>{isLogin ? "Iniciar sesión" : "Registrarse"}</DialogTitle>
-                <DialogContent>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label="Correo"
-                        type="email"
-                        fullWidth
-                        variant="standard"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <TextField
-                        margin="dense"
-                        label="Contraseña"
-                        type={showPassword ? "text" : "password"}
-                        fullWidth
-                        variant="standard"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                    {!isLogin && (
-                        <TextField
-                            margin="dense"
-                            label="Nombre"
-                            type="text"
-                            fullWidth
-                            variant="standard"
-                            value={userName}
-                            onChange={(e) => setUserName(e.target.value)}
-                        />
-                    )}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDialog}>Cancelar</Button>
-                    <Button onClick={handleAuthenticate}>{isLogin ? "Iniciar sesión" : "Registrarse"}</Button>
-                </DialogActions>
-            </Dialog>
+            <Dialog open={openDialog} onClose={handleCloseDialog} sx={{ "& .MuiDialog-paper": { padding: "20px", borderRadius: "10px" } }}>
+				<DialogTitle sx={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "1.5rem", fontWeight: "bold" }}>
+					{isLogin ? "Iniciar sesión" : "Registrarse"}
+				</DialogTitle>
+				<DialogContent>
+					{!isLogin && (
+						<TextField
+							autoFocus
+							margin="dense"
+							label="Nombre de usuario"
+							type="text"
+							fullWidth
+							variant="standard"
+							value={userName}
+							onChange={(e) => setUserName(e.target.value)}
+							sx={{
+								fontFamily: "'Josefin Sans', sans-serif",
+								"& .MuiInputBase-input": { fontFamily: "'Josefin Sans', sans-serif" },
+								"& .MuiInputLabel-root": { fontFamily: "'Josefin Sans', sans-serif" }
+							}}
+						/>
+					)}
+					<TextField
+						margin="dense"
+						label="Correo"
+						type="email"
+						fullWidth
+						variant="standard"
+						value={email}
+						onChange={(e) => {
+							setEmail(e.target.value);
+							setEmailError(validateEmail(e.target.value) ? "" : "Correo no válido");
+						}}
+						error={!!emailError}  // Muestra error si hay un mensaje
+						helperText={emailError}  // Mensaje de error debajo del campo
+						sx={{
+							fontFamily: "'Josefin Sans', sans-serif",
+							"& .MuiInputBase-input": { fontFamily: "'Josefin Sans', sans-serif" },
+							"& .MuiInputLabel-root": { fontFamily: "'Josefin Sans', sans-serif" }
+						}}
+					/>
+					<TextField
+						margin="dense"
+						label="Contraseña"
+						type={showPassword ? "text" : "password"}
+						fullWidth
+						variant="standard"
+						value={password}
+						onChange={(e) => {
+							setPassword(e.target.value);
+							setPasswordError(validatePassword(e.target.value) ? "" :
+								"Debe tener 8 caracteres, mayúscula, minúscula, número y símbolo.");
+						}}
+						error={!!passwordError}  // Muestra el error si hay mensaje
+						helperText={passwordError}  // Mensaje de error debajo del campo
+						sx={{
+							fontFamily: "'Josefin Sans', sans-serif",
+							"& .MuiInputBase-input": { fontFamily: "'Josefin Sans', sans-serif" },
+							"& .MuiInputLabel-root": { fontFamily: "'Josefin Sans', sans-serif" }
+						}}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+										{showPassword ? <VisibilityOff /> : <Visibility />}
+									</IconButton>
+								</InputAdornment>
+							),
+						}}
+					/>
+					{!isLogin && (
+						<>
+							<TextField
+								margin="dense"
+								label="Repetir contraseña"
+								type={showPassword ? "text" : "password"}
+								fullWidth
+								variant="standard"
+								value={confirmPassword}
+								onChange={(e) => {
+									setConfirmPassword(e.target.value);
+									setConfirmPasswordError(validateConfirmPassword(password, e.target.value) ? "" : "Las contraseñas no coinciden.");
+								}}
+								error={!!confirmPasswordError}
+								helperText={confirmPasswordError}
+								sx={{
+									fontFamily: "'Josefin Sans', sans-serif",
+									"& .MuiInputBase-input": { fontFamily: "'Josefin Sans', sans-serif" },
+									"& .MuiInputLabel-root": { fontFamily: "'Josefin Sans', sans-serif" }
+								}}
+								InputProps={{
+									endAdornment: (
+										<InputAdornment position="end">
+											<IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+												{showPassword ? <VisibilityOff /> : <Visibility />}
+											</IconButton>
+										</InputAdornment>
+									),
+								}}
+							/>
+						</>
+					)}
+
+				</DialogContent>
+				<DialogActions sx={{ justifyContent: "space-between", padding: "16px" }}>
+					<Button
+						onClick={handleCloseDialog}
+						variant="contained"
+						color="secondary"
+						sx={{
+							fontFamily: "'Josefin Sans', sans-serif",
+							fontWeight: "bold",
+							textTransform: "none",
+							borderRadius: "8px",
+							transition: "0.3s",
+							"&:hover": { backgroundColor: theme.palette.primary.main }
+						}}
+					>
+						Cancelar
+					</Button>
+					<Button
+						onClick={handleAuthenticate}
+						variant="contained"
+						color="secondary"
+						sx={{
+							fontFamily: "'Josefin Sans', sans-serif",
+							fontWeight: "bold",
+							textTransform: "none",
+							borderRadius: "8px",
+							transition: "0.3s",
+							"&:hover": { backgroundColor: theme.palette.primary.main }
+						}}
+					>
+						{isLogin ? "Iniciar sesión" : "Registrarse"}
+					</Button>
+				</DialogActions>
+			</Dialog>
 
             {/* Pop-up de error en el inicio de sesión */}
             <Dialog open={openErrorDialog} onClose={handleCloseErrorDialog}>
