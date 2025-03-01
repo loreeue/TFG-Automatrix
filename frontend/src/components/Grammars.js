@@ -20,7 +20,7 @@ const Grammars = () => {
                 color: "#FFFFFF",
             }}
         >
-            {/* Título principal */}
+            {/* Main title */}
             <Typography
                 variant="h3"
                 sx={{
@@ -34,7 +34,7 @@ const Grammars = () => {
                 Gramáticas
             </Typography>
 
-            {/* Caja principal */}
+            {/* Principal box */}
             <Paper
                 elevation={3}
                 sx={{
