@@ -21,7 +21,7 @@ const EquivalentAFDs = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Verificar que ambos archivos han sido seleccionados
+        // Verify that both files have been selected
         if (!file1 || !file2) {
             toast.error("Por favor, selecciona ambos archivos AFD (.jff).", {
                 position: "top-right",
@@ -34,7 +34,7 @@ const EquivalentAFDs = () => {
             return;
         }
 
-        // Verificar que ambos archivos tengan la extensión .jff
+        // Verify that both files have the .jff extension
         if (!file1.name.endsWith(".jff") || !file2.name.endsWith(".jff")) {
             toast.error("Ambos archivos deben ser AFD en formato .jff.", {
                 position: "top-right",
@@ -47,7 +47,7 @@ const EquivalentAFDs = () => {
             return;
         }
 
-        // Leer los archivos y verificar que contienen un AFD válido
+        // Read the files and verify that they contain a valid AFD
         const readFileContent = (file) => {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -119,10 +119,9 @@ const EquivalentAFDs = () => {
                 color: "#FFFFFF",
             }}
         >
-            {/* Contenedor para Toast */}
             <ToastContainer />
 
-            {/* Título principal */}
+            {/* Main title */}
             <Typography
                 variant="h3"
                 sx={{
@@ -135,9 +134,9 @@ const EquivalentAFDs = () => {
                 Verificar Equivalencia de AFDs
             </Typography>
 
-            {/* Formulario */}
+            {/* Form */}
             <form onSubmit={handleSubmit} style={{ width: "100%", maxWidth: "800px" }}>
-                {/* Botón para subir archivo 1 */}
+                {/* File upload button 1*/}
                 <Button
                     variant="contained"
                     component="label"
@@ -162,7 +161,7 @@ const EquivalentAFDs = () => {
                     />
                 </Button>
 
-                {/* Nombre del archivo 1 */}
+                {/* Name file 1 */}
                 {file1 && (
                     <Typography
                         variant="body2"
@@ -176,7 +175,7 @@ const EquivalentAFDs = () => {
                     </Typography>
                 )}
 
-                {/* Botón para subir archivo 2 */}
+                {/* File upload button 2 */}
                 <Button
                     variant="contained"
                     component="label"
@@ -201,7 +200,7 @@ const EquivalentAFDs = () => {
                     />
                 </Button>
 
-                {/* Nombre del archivo 2 */}
+                {/* Name file 2 */}
                 {file2 && (
                     <Typography
                         variant="body2"
@@ -215,7 +214,7 @@ const EquivalentAFDs = () => {
                     </Typography>
                 )}
 
-                {/* Botón para comparar */}
+                {/* Compare button */}
                 <Button
                     type="submit"
                     variant="contained"
@@ -235,14 +234,14 @@ const EquivalentAFDs = () => {
                 </Button>
             </form>
 
-            {/* Resultado */}
+            {/* Result */}
             {result && (
                 <Typography
                     variant="h6"
                     sx={{
                         marginTop: 3,
                         textAlign: "center",
-                        color: "#FFFFFF", // Cambiado a blanco
+                        color: "#FFFFFF",
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >

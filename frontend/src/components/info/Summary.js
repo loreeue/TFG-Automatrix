@@ -6,11 +6,10 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 const Summary = () => {
   const theme = useTheme();
 
-  // Estilo de hover morado oscuro
   const hoverStyle = {
     transition: "color 0.3s",
     "&:hover": {
-      color: theme.palette.primary.dark, // Cambia a morado oscuro en hover
+      color: theme.palette.primary.dark,
     },
   };
 
@@ -18,7 +17,7 @@ const Summary = () => {
     <Box
       sx={{
         backgroundColor: "#1A1A1A",
-        minHeight: "80vh", // Fondo general oscuro
+        minHeight: "80vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -26,7 +25,7 @@ const Summary = () => {
         color: "#FFFFFF",
       }}
     >
-      {/* Título principal */}
+      {/* Main title */}
       <Typography
         variant="h3"
         sx={{
@@ -40,7 +39,7 @@ const Summary = () => {
         Resumen
       </Typography>
 
-      {/* Contenedor principal */}
+      {/* Principal container */}
       <Paper
         elevation={4}
         sx={{
@@ -58,7 +57,6 @@ const Summary = () => {
           justifyContent: "space-evenly",
         }}
       >
-        {/* Primera línea con hover */}
         <Typography
           paragraph
           sx={{
@@ -91,7 +89,6 @@ const Summary = () => {
           </ListItem>
         </List>
 
-        {/* AP con hover */}
         <Typography
           paragraph
           sx={{
@@ -102,7 +99,6 @@ const Summary = () => {
           <b>AP</b>: Reconoce lenguajes independientes del contexto (Tipo 2).
         </Typography>
 
-        {/* MT con hover */}
         <Typography
           paragraph
           sx={{
@@ -114,7 +110,6 @@ const Summary = () => {
           el modelo más general de cómputo tradicional.
         </Typography>
 
-        {/* Gramáticas con hover */}
         <Typography
           paragraph
           sx={{
@@ -126,7 +121,6 @@ const Summary = () => {
           independientes del contexto, etc.).
         </Typography>
 
-        {/* Expresiones regulares con hover */}
         <Typography
           paragraph
           sx={{
@@ -137,7 +131,6 @@ const Summary = () => {
           <b>Expresiones regulares</b>: Forma algebraica de describir lenguajes regulares.
         </Typography>
 
-        {/* Salto de línea antes del texto final */}
         <Typography paragraph sx={{ marginBottom: 0 }}>
           <br />
           Estos conceptos forman la base de la <b>Teoría de Autómatas y Lenguajes Formales</b>,
@@ -146,7 +139,7 @@ const Summary = () => {
         </Typography>
       </Paper>
 
-      {/* Animación */}
+      {/* Animations */}
       <style>
         {`
           @keyframes fadeSlideIn {

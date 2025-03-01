@@ -21,9 +21,9 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { saveAs } from 'file-saver';
 
 const DrawAFD = () => {
-    const [nodes, setNodes] = useState([]); // Estados
-    const [transitions, setTransitions] = useState([]); // Transiciones
-    const [selectedNode, setSelectedNode] = useState(null); // Nodo seleccionado para crear transición
+    const [nodes, setNodes] = useState([]); // States
+    const [transitions, setTransitions] = useState([]); // Transitions
+    const [selectedNode, setSelectedNode] = useState(null); // Selected node to create transition
 
     const [showStateTypeModal, setShowStateTypeModal] = useState(false);
     const [targetNode, setTargetNode] = useState(null);
@@ -42,7 +42,7 @@ const DrawAFD = () => {
 
     const theme = useTheme();
 
-    // Agregar un nuevo estado
+    // Add a new status
     const addNode = (e) => {
         const { x, y } = e.target.getStage().getPointerPosition();
         const newNode = {
@@ -56,7 +56,7 @@ const DrawAFD = () => {
         setNodes([...nodes, newNode]);
     };
 
-    // Mover un estado y actualizar transiciones
+    // Move a state and update transitions
     const moveNode = (id, x, y) => {
         setNodes((prevNodes) =>
             prevNodes.map((node) => (node.id === id ? { ...node, x, y } : node))
@@ -70,14 +70,14 @@ const DrawAFD = () => {
         );
     };
 
-    // Crear una nueva transición (con validación para evitar duplicados)
+    // Create a new transition (with validation to avoid duplicates)
     const confirmAddTransition = () => {
         if (!transitionLetter) {
             toast.error("Debes introducir una letra para la transición.");
             return;
         }
 
-        // Verificar si ya existe una transición entre los dos estados
+        // Check if there is already a transition between the two states
         const existingTransitionIndex = transitions.findIndex(
             (t) =>
                 t.from.id === transitionNodes.from.id &&
@@ -85,22 +85,23 @@ const DrawAFD = () => {
         );
 
         if (existingTransitionIndex !== -1) {
-            // Si ya existe, verificamos primero si el símbolo ya está en la transición
+            // If it already exists, we first check if the symbol is already in the transition
             const existingTransition = transitions[existingTransitionIndex];
-            // Dividir los símbolos existentes en un array
+            // Split existing symbols into an array
             const existingSymbols = existingTransition.letter.split(",");
 
             if (existingSymbols.includes(transitionLetter)) {
-                // Si el símbolo ya existe, mostramos un error y no modificamos la transición
+                // If the symbol already exists, we show an error and do not modify the transition
                 toast.error(`El símbolo "${transitionLetter}" ya está en la transición.`);
-                // No olvides restablecer el estado y salir de la función
+
+				// Reset values
                 setShowTransitionModal(false);
                 setTransitionLetter("");
                 setTransitionNodes({ from: null, to: null });
                 return;
             }
 
-            // Si el símbolo no existe, lo agregamos
+            // If the symbol does not exist, we add it
             const updatedLetter = `${existingTransition.letter},${transitionLetter}`;
 
             const updatedTransitions = [...transitions];
@@ -111,27 +112,27 @@ const DrawAFD = () => {
 
             setTransitions(updatedTransitions);
         } else {
-            // Si no existe la transición, crearla con la nueva letra
+            // If the transition does not exist, create it with the new letter
             setTransitions([
                 ...transitions,
                 { from: transitionNodes.from, to: transitionNodes.to, letter: transitionLetter },
             ]);
         }
 
-        // Restablecer valores
+        // Reset values
         setShowTransitionModal(false);
         setTransitionLetter("");
         setTransitionNodes({ from: null, to: null });
     };
 
-    // Manejar clic derecho para marcar inicial/final (con modal)
+    // Handle right click to mark start/end (with modal)
     const handleContextMenu = (e, node) => {
         e.evt.preventDefault();
         setTargetNode(node);
         setShowStateTypeModal(true);
     };
 
-    // Asignar tipo de estado (Inicial/Final)
+    // Assign status type (Initial/End)
     const setStateType = (type) => {
         if (!targetNode) {
             toast.error("No se puede asignar un tipo de estado porque no hay un nodo seleccionado.");
@@ -140,10 +141,10 @@ const DrawAFD = () => {
         }
 
         if (type === "initial") {
-            // Comprobar si ya existe un estado inicial
+            // Check if an initial state already exists
             const existingInitial = nodes.find((node) => node.isInitial);
             if (existingInitial && existingInitial.id !== targetNode.id) {
-                // Si ya hay un estado inicial diferente, desmarcarlo
+                // If there is already a different initial state, uncheck it
                 setNodes((prevNodes) =>
                     prevNodes.map((n) =>
                         n.id === existingInitial.id
@@ -154,7 +155,7 @@ const DrawAFD = () => {
             }
         }
 
-        // Actualizar el estado seleccionado como inicial o final
+        // Update the selected state as initial or final
         setNodes((prevNodes) =>
             prevNodes.map((n) =>
                 n.id === targetNode.id
@@ -177,15 +178,15 @@ const DrawAFD = () => {
         }
     };
 
-    // Manejar clics en los estados para crear transiciones
+    // Handle clicks on states to create transitions
     const handleNodeClick = (node) => {
         if (deleteTransitionMode)
             return ;
         if (selectedNode) {
-            // Seleccionamos el segundo estado
+            // We select the second state
             setTransitionNodes({ from: selectedNode, to: node });
             setShowTransitionModal(true);
-            // No limpiamos selectedNode aquí para poder mostrar ambos resaltados mediante transitionNodes
+            // We don't clear selectedNode here so we can show both highlights using transitionNodes
             setSelectedNode(null);
         } else {
             setSelectedNode(node);
@@ -198,33 +199,32 @@ const DrawAFD = () => {
         if (isLoop) {
             const x = t.from.x;
             const y = t.from.y;
-            const radius = 30; // Radio de la media circunferencia
+            const radius = 30;
             const offset = 20;
 
-            // Puntos para la media circunferencia (semi-arco)
+            // Points for the half circumference (semi-arc)
             const points = [
-                x - radius, y - offset, // Inicio del arco
-                x, y - radius * 2, // Punto más alto
-                x + radius, y - offset // Final del arco
+                x - radius, y - offset, // Start of the arc
+                x, y - radius * 2, // Highest point
+                x + radius, y - offset // End of the arc
             ];
 
-            // Posición del texto de la transición
             const textX = x - 10;
             const textY = y - radius * 1.5 - offset - 15;
 
             return (
                 <React.Fragment key={index}>
-                    {/* Arco (media circunferencia) */}
+                    {/* Arc */}
                     <Arrow
                         points={points}
-                        stroke="#333" // Color del borde
-                        fill="#333" // Color del relleno
+                        stroke="#333"
+                        fill="#333"
                         tension={0.8}
                         pointerLength={10}
                         pointerWidth={10}
                         onClick={() => handleTransitionClick(t)}
                     />
-                    {/* Texto para la transición */}
+                    {/* Transition text */}
                     <Text
                         text={t.letter}
                         x={textX}
@@ -236,24 +236,23 @@ const DrawAFD = () => {
                 </React.Fragment>
             );
         } else {
-            // Calcular si hay una transición opuesta
+            // Calculate if there is an opposite transition
             const hasOppositeTransition = transitions.some(
                 (other) =>
                     other.from.id === t.to.id &&
                     other.to.id === t.from.id
             );
 
-            // Transición normal
+            // Normal transition
             const dx = t.to.x - t.from.x;
             const dy = t.to.y - t.from.y;
-            const distance = Math.sqrt(dx * dx + dy * dy); // Distancia entre los nodos
-            const shortenBy = 30; // Acortar la flecha (ajusta este valor según el radio del estado)
+            const distance = Math.sqrt(dx * dx + dy * dy); // Distance between nodes
+            const shortenBy = 30;
 
-            // Offset para separar flechas en direcciones opuestas
+            // Offset to separate arrows in opposite directions
             const offsetX = hasOppositeTransition ? dy / distance * 14 : 0;
             const offsetY = hasOppositeTransition ? -dx / distance * 14 : 0;
 
-            // Calcular los nuevos puntos para acortar la flecha
             const startX = t.from.x + (dx / distance) * shortenBy + offsetX;
             const startY = t.from.y + (dy / distance) * shortenBy + offsetY;
             const endX = t.to.x - (dx / distance) * shortenBy + offsetX;
@@ -267,14 +266,14 @@ const DrawAFD = () => {
                 <React.Fragment key={index}>
                     <Arrow
                         points={points}
-                        stroke="#333" // Color del borde
-                        fill="#333" // Color del relleno
-                        pointerLength={10} // Longitud de la punta
-                        pointerWidth={10} // Ancho de la punta
+                        stroke="#333"
+                        fill="#333"
+                        pointerLength={10}
+                        pointerWidth={10}
                         tension={0}
                         onClick={() => handleTransitionClick(t)}
                     />
-                    {/* Texto para la transición */}
+                    {/* Transition text */}
                     <Text
                         text={t.letter}
                         x={textX}
@@ -288,14 +287,13 @@ const DrawAFD = () => {
         }
     };
 
-    // Función para determinar el color del estado
     const getNodeFillColor = (node) => {
         const isInTransition =
             (transitionNodes.from && transitionNodes.from.id === node.id) ||
             (transitionNodes.to && transitionNodes.to.id === node.id);
 
         if (selectedNode === node || isInTransition) {
-            return theme.palette.secondary.main; // Morado
+            return theme.palette.secondary.main;
         }
         return "#2C2C2C";
     };
@@ -348,7 +346,6 @@ const DrawAFD = () => {
         setExportFilename("automata");
     };
 
-    // Eliminar transición
     const handleDeleteTransitionClick = () => {
         setDeleteTransitionMode(!deleteTransitionMode);
         if (!deleteTransitionMode) {
@@ -379,7 +376,7 @@ const DrawAFD = () => {
             {/* Toast */}
             <ToastContainer />
 
-            {/* Título principal */}
+            {/* Main title */}
             <Typography
                 variant="h3"
                 sx={{
@@ -409,10 +406,10 @@ const DrawAFD = () => {
                     style={{ cursor: "pointer" }}
                 >
                     <Layer>
-                        {/* Renderizar transiciones */}
+                        {/* Render transitions */}
                         {transitions.map((t, index) => renderTransition(t, index))}
 
-                        {/* Renderizar nodos */}
+                        {/* Render nodes */}
                         {nodes.map((node) => (
                             <React.Fragment key={node.id}>
                                 {node.isInitial && (
@@ -452,7 +449,7 @@ const DrawAFD = () => {
                                         radius={34}
                                         stroke="#333"
                                         strokeWidth={2}
-                                        listening={false} // no bloquea eventos
+                                        listening={false}
                                     />
                                 )}
                                 <Text
@@ -469,7 +466,7 @@ const DrawAFD = () => {
                 </Stage>
             </Box>
 
-            {/* Botón de ayuda */}
+            {/* Help button */}
             <Tooltip title="¿Cómo usar el editor?" placement="left">
                 <Button
                     variant="contained"
@@ -483,13 +480,13 @@ const DrawAFD = () => {
                         backgroundColor: theme.palette.secondary.main,
                         "&:hover": { backgroundColor: theme.palette.primary.main },
                     }}
-                    onClick={() => setShowHelpModal(true)} // Abre el modal
+                    onClick={() => setShowHelpModal(true)}
                 >
                     <HelpOutlineIcon />
                 </Button>
             </Tooltip>
 
-            {/* Botón de eliminar */}
+            {/* Delete button */}
             <Tooltip title="Eliminar todo" placement="left">
                 <Button
                     variant="contained"
@@ -509,7 +506,7 @@ const DrawAFD = () => {
                 </Button>
             </Tooltip>
 
-            {/* Botón de exportar */}
+            {/* Export button */}
             <Tooltip title="Exportar como JFF" placement="left">
                 <Button
                     variant="contained"
@@ -529,7 +526,7 @@ const DrawAFD = () => {
                 </Button>
             </Tooltip>
 
-            {/* Botón de eliminar transición */}
+            {/* Delete transition button */}
             <Tooltip title="Eliminar transición" placement="left">
                 <Button
                     variant="contained"
@@ -549,7 +546,7 @@ const DrawAFD = () => {
                 </Button>
             </Tooltip>
 
-            {/* Modal para marcar estado inicial/final */}
+            {/* Modal to mark initial/final state */}
             <Dialog open={showStateTypeModal} onClose={() => setShowStateTypeModal(false)}>
                 <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: 'center' }}>
                     ¿Cómo marcar el estado?
@@ -601,7 +598,7 @@ const DrawAFD = () => {
                 </DialogActions>
             </Dialog>
 
-            {/* Modal para introducir la letra de la transición */}
+            {/* Modal to introduce the letter of the transition */}
             <Dialog open={showTransitionModal} onClose={() => setShowTransitionModal(false)}>
                 <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: 'center' }}>
                     Introducir letra de la transición
@@ -638,7 +635,6 @@ const DrawAFD = () => {
                             setShowTransitionModal(false);
                             setTransitionLetter("");
                             setTransitionNodes({ from: null, to: null });
-                            // Devolvemos el estado a normal si se cancela
                             setSelectedNode(null);
                         }}
                     >
@@ -661,7 +657,7 @@ const DrawAFD = () => {
                 </DialogActions>
             </Dialog>
 
-            {/* Modal para el nombre del archivo al exportar */}
+            {/* Modal for file name when exporting */}
             <Dialog open={showExportModal} onClose={() => setShowExportModal(false)}>
                 <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: 'center' }}>
                     Guardar archivo
@@ -714,10 +710,10 @@ const DrawAFD = () => {
                 </DialogActions>
             </Dialog>
 
-            {/* Modal para la ayuda */}
+            {/* Modal for help */}
             <Dialog
                 open={showHelpModal}
-                onClose={() => setShowHelpModal(false)} // Cierra el modal
+                onClose={() => setShowHelpModal(false)}
                 maxWidth="sm"
                 fullWidth
             >
@@ -775,14 +771,14 @@ const DrawAFD = () => {
                             "&:hover": {backgroundColor: theme.palette.primary.main},
                             fontFamily: "'Josefin Sans', sans-serif",
                         }}
-                        onClick={() => setShowHelpModal(false)} // Cierra el modal
+                        onClick={() => setShowHelpModal(false)}
                     >
                         Cerrar
                     </Button>
                 </DialogActions>
             </Dialog>
 
-            {/* Modal de confirmación para eliminar to_do */}
+            {/* Modal for confimation to delete everything */}
             <Dialog open={showDeleteConfirmation} onClose={() => setShowDeleteConfirmation(false)}>
                 <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: 'center' }}>
                     ¿Está seguro de querer eliminarlo todo?
@@ -817,7 +813,7 @@ const DrawAFD = () => {
                             setSelectedNode(null);
                             setTransitionNodes({ from: null, to: null });
                             toast.info("Todos los estados y transiciones han sido eliminados.");
-                            setShowDeleteConfirmation(false); // Cerrar el modal
+                            setShowDeleteConfirmation(false);
                         }}
                     >
                         Sí

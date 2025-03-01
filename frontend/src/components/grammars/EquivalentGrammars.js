@@ -125,13 +125,12 @@ const EquivalentGrammars = () => {
                 Verificar Equivalencia de Gramáticas
             </Typography>
 
-            {/* Instrucciones con menos altura */}
             <Box
                 sx={{
                     width: "100%",
                     maxWidth: "800px",
-                    marginBottom: 2,    // Ajustado para reducir espacio
-                    padding: 2,        // Ajustado para reducir espacio
+                    marginBottom: 2,
+                    padding: 2,
                     borderRadius: "12px",
                     backgroundColor: "#2C2C2C",
                 }}
@@ -178,7 +177,7 @@ const EquivalentGrammars = () => {
                 </Box>
             </Box>
 
-            {/* Formulario */}
+            {/* Form */}
             <form onSubmit={handleSubmit} style={{ width: "100%", maxWidth: "800px" }}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6}>
@@ -193,12 +192,11 @@ const EquivalentGrammars = () => {
                         >
                             Gramática 1
                         </Typography>
-                        {/* Cajas de texto con menos filas */}
                         <TextField
                             variant="outlined"
                             fullWidth
                             multiline
-                            rows={4} // Reducción de filas
+                            rows={4}
                             value={grammar1}
                             onChange={(e) => setGrammar1(e.target.value)}
                             onPaste={(e) => handlePaste(e, setGrammar1)}
@@ -227,12 +225,11 @@ const EquivalentGrammars = () => {
                         >
                             Gramática 2
                         </Typography>
-                        {/* Cajas de texto con menos filas */}
                         <TextField
                             variant="outlined"
                             fullWidth
                             multiline
-                            rows={4} // Reducción de filas
+                            rows={4}
                             value={grammar2}
                             onChange={(e) => setGrammar2(e.target.value)}
                             onPaste={(e) => handlePaste(e, setGrammar2)}

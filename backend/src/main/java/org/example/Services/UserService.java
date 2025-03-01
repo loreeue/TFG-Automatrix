@@ -31,12 +31,13 @@ public class UserService {
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            // En la BD tenemos la contraseña hasheada: user.getPassword()
-            // passwordEncoder.matches comprueba si la 'rawPassword' encaja con el hash de la BD
+
+            // In the DB we have the hashed password: user.getPassword()
+            // passwordEncoder.matches checks if the 'rawPassword' matches the database hash
             if (passwordEncoder.matches(rawPassword, user.getPassword())) {
-                return user; // Contraseña correcta
+                return user; // Correct password
             }
         }
-        return null; // No coincide o no existe
+        return null;
     }
 }

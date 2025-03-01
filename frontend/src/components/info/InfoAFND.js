@@ -13,11 +13,11 @@ const InfoAFND = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: "2.0rem", // Ajuste de padding
+        padding: "2.0rem",
         color: "#FFFFFF",
       }}
     >
-      {/* Título principal */}
+      {/* Main title */}
       <Typography
         variant="h3"
         sx={{
@@ -31,7 +31,7 @@ const InfoAFND = () => {
         AFND (Autómata Finito No Determinista)
       </Typography>
 
-      {/* Contenedor principal */}
+      {/* Principal container */}
       <Paper
         elevation={4}
         sx={{
@@ -40,12 +40,11 @@ const InfoAFND = () => {
           maxWidth: "800px",
           width: "100%",
           borderRadius: "16px",
-          padding: "1rem", // menos padding para acercar el contenido
+          padding: "1rem",
           fontFamily: "'Josefin Sans', sans-serif",
           animation: "fadeSlideIn 0.8s ease-out",
         }}
       >
-        {/* Idea general */}
         <Typography
           variant="h5"
           sx={{
@@ -70,7 +69,6 @@ const InfoAFND = () => {
           llamadas λ-transiciones).
         </Typography>
 
-        {/* Diferencia clave */}
         <Typography
           variant="h5"
           sx={{
@@ -94,7 +92,6 @@ const InfoAFND = () => {
           no consumir símbolo alguno.
         </Typography>
 
-        {/* Equivalencia con AFD */}
         <Typography
           variant="h5"
           sx={{
@@ -114,7 +111,7 @@ const InfoAFND = () => {
         </Typography>
       </Paper>
 
-      {/* Animaciones */}
+      {/* Animations */}
       <style>
         {`
           @keyframes fadeSlideIn {

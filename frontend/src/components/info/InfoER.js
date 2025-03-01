@@ -18,7 +18,7 @@ const InfoER = () => {
         color: "#FFFFFF",
       }}
     >
-      {/* Título principal */}
+      {/* Main title */}
       <Typography
         variant="h3"
         sx={{
@@ -32,7 +32,7 @@ const InfoER = () => {
         Expresiones Regulares
       </Typography>
 
-      {/* Contenedor principal */}
+      {/* Principal container */}
       <Paper
         elevation={4}
         sx={{
@@ -41,12 +41,11 @@ const InfoER = () => {
           maxWidth: "800px",
           width: "100%",
           borderRadius: "16px",
-          padding: "0.5rem", // ajusta el padding para ser más compacto
+          padding: "0.5rem",
           fontFamily: "'Josefin Sans', sans-serif",
           animation: "fadeSlideIn 0.8s ease-out",
         }}
       >
-        {/* Definición */}
         <Typography
           variant="h5"
           sx={{
@@ -76,7 +75,6 @@ const InfoER = () => {
           </ListItem>
         </List>
 
-        {/* Ejemplos */}
         <Typography
           variant="h5"
           sx={{
@@ -103,7 +101,6 @@ const InfoER = () => {
           </ListItem>
         </List>
 
-        {/* Operaciones */}
         <Typography
           variant="h5"
           sx={{
@@ -124,7 +121,6 @@ const InfoER = () => {
           </ListItem>
         </List>
 
-        {/* Lenguaje descrito */}
         <Typography
           variant="h5"
           sx={{
@@ -142,7 +138,7 @@ const InfoER = () => {
         </Typography>
       </Paper>
 
-      {/* Animación */}
+      {/* Animations */}
       <style>
         {`
           @keyframes fadeSlideIn {

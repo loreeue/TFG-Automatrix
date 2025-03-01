@@ -21,9 +21,9 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { saveAs } from 'file-saver';
 
 const DrawMT = () => {
-    const [nodes, setNodes] = useState([]); // Estados
-    const [transitions, setTransitions] = useState([]); // Transiciones
-    const [selectedNode, setSelectedNode] = useState(null); // Nodo seleccionado para crear transición
+    const [nodes, setNodes] = useState([]); // States
+    const [transitions, setTransitions] = useState([]); // Transitions
+    const [selectedNode, setSelectedNode] = useState(null); // Selected node to create transition
 
     const [showStateTypeModal, setShowStateTypeModal] = useState(false);
     const [targetNode, setTargetNode] = useState(null);
@@ -45,7 +45,6 @@ const DrawMT = () => {
 
     const theme = useTheme();
 
-    // Agregar un nuevo estado
     const addNode = (e) => {
         const { x, y } = e.target.getStage().getPointerPosition();
         const newNode = {
@@ -59,7 +58,6 @@ const DrawMT = () => {
         setNodes([...nodes, newNode]);
     };
 
-    // Mover un estado y actualizar transiciones
     const moveNode = (id, x, y) => {
         setNodes((prevNodes) =>
             prevNodes.map((node) => (node.id === id ? { ...node, x, y } : node))
@@ -73,11 +71,10 @@ const DrawMT = () => {
         );
     };
 
-    // Crear una nueva transición
     const confirmAddTransition = () => {
-        const read = transitionRead.trim() || "λ";   // Si está vacío, usamos "λ"
-        const write = transitionWrite.trim() || "λ"; // Si está vacío, usamos "λ"
-        const move = transitionMove.trim();          // Debe ser 'R' o 'L'
+        const read = transitionRead.trim() || "λ";   // If it is empty, we use "λ"
+        const write = transitionWrite.trim() || "λ"; // If it is empty, we use "λ"
+        const move = transitionMove.trim();          // 'R' o 'L'
 
         if (!["R", "L"].includes(move)) {
             toast.error("Movimiento inválido. Debe ser 'R' o 'L'.");
@@ -85,7 +82,7 @@ const DrawMT = () => {
         }
 
         setTransitions((prevTransitions) => {
-            // 1) Buscar si existe la transición (mismo 'from' y 'to')
+            // 1) Check if the transition exists (same 'from' and 'to')
             const existingTransitionIndex = prevTransitions.findIndex(
                 (t) =>
                     t.from.id === transitionNodes.from.id &&
@@ -93,13 +90,13 @@ const DrawMT = () => {
             );
 
             if (existingTransitionIndex !== -1) {
-                // 2) Si existe, revisamos su transitionsData
+                // 2) If it exists, we check its transitionsData
                 const updatedTransitions = [...prevTransitions];
                 const existingTransition = updatedTransitions[existingTransitionIndex];
 
                 const transitionsData = existingTransition.transitionsData || [];
 
-                // 3) Verificar si la tupla { read, write, move } ya existe
+                // 3) Check if the tuple { read, write, move } already exists
                 const isDuplicate = transitionsData.some(
                     (data) =>
                         data.read === read &&
@@ -108,14 +105,14 @@ const DrawMT = () => {
                 );
 
                 if (isDuplicate) {
-                    // 4) Mostrar error y no agregar nada
+                    // 4) Show error and add nothing
                     toast.error(
                         `Ya existe una transición con (read: ${read}, write: ${write}, move: ${move}).`
                     );
                     return updatedTransitions; // No agregamos duplicados
                 }
 
-                // 5) Agregamos la tupla si no hay duplicado
+                // 5) We add the tuple if there is no duplicate
                 updatedTransitions[existingTransitionIndex] = {
                     ...existingTransition,
                     transitionsData: [
@@ -125,7 +122,7 @@ const DrawMT = () => {
                 };
                 return updatedTransitions;
             } else {
-                // Si no existe la transición, creamos una nueva
+                // If the transition does not exist, we create a new one
                 return [
                     ...prevTransitions,
                     {
@@ -137,7 +134,7 @@ const DrawMT = () => {
             }
         });
 
-        // Reiniciar valores de entrada
+        // Reset
         setShowTransitionModal(false);
         setTransitionRead("");
         setTransitionWrite("");
@@ -145,14 +142,14 @@ const DrawMT = () => {
         setTransitionNodes({ from: null, to: null });
     };
 
-    // Manejar clic derecho para marcar inicial/final (con modal)
+    // Handle right click to mark start/end (with modal)
     const handleContextMenu = (e, node) => {
         e.evt.preventDefault();
         setTargetNode(node);
         setShowStateTypeModal(true);
     };
 
-    // Asignar tipo de estado (Inicial/Final)
+    // Assign status type (Initial/End)
     const setStateType = (type) => {
         if (!targetNode) {
             toast.error("No se puede asignar un tipo de estado porque no hay un nodo seleccionado.");
@@ -161,10 +158,10 @@ const DrawMT = () => {
         }
 
         if (type === "initial") {
-            // Comprobar si ya existe un estado inicial
+            // Check if an initial state already exists
             const existingInitial = nodes.find((node) => node.isInitial);
             if (existingInitial && existingInitial.id !== targetNode.id) {
-                // Si ya hay un estado inicial diferente, desmarcarlo
+                // If there is already a different initial state, uncheck it
                 setNodes((prevNodes) =>
                     prevNodes.map((n) =>
                         n.id === existingInitial.id
@@ -175,7 +172,7 @@ const DrawMT = () => {
             }
         }
 
-        // Actualizar el estado seleccionado como inicial o final
+        // Update the selected state as initial or final
         setNodes((prevNodes) =>
             prevNodes.map((n) =>
                 n.id === targetNode.id
@@ -198,15 +195,14 @@ const DrawMT = () => {
         }
     };
 
-    // Manejar clics en los estados para crear transiciones
+    // Handle clicks on states to create transitions
     const handleNodeClick = (node) => {
         if (deleteTransitionMode)
             return ;
         if (selectedNode) {
-            // Seleccionamos el segundo estado
+            // We select the second state
             setTransitionNodes({ from: selectedNode, to: node });
             setShowTransitionModal(true);
-            // No limpiamos selectedNode aquí para poder mostrar ambos resaltados mediante transitionNodes
             setSelectedNode(null);
         } else {
             setSelectedNode(node);
@@ -227,7 +223,7 @@ const DrawMT = () => {
 
         const isLoop = t.from.id === t.to.id;
 
-        // Generar el texto combinando todas las transiciones en transitionsData
+        // Generate the text by combining all the transitions in transitionsData
         const transitionText = t.transitionsData
             .map(({ read, write, move }) => `(${read}, ${write}, ${move})`)
             .join(", ");
@@ -267,24 +263,24 @@ const DrawMT = () => {
                 </React.Fragment>
             );
         } else {
-            // Calcular si hay una transición opuesta
+            // Calculate if there is an opposite transition
             const hasOppositeTransition = transitions.some(
                 (other) =>
                     other.from.id === t.to.id &&
                     other.to.id === t.from.id
             );
 
-            // Transición normal
+            // Normal transition
             const dx = t.to.x - t.from.x;
             const dy = t.to.y - t.from.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             const shortenBy = 30;
 
-            // Offset para separar flechas en direcciones opuestas
+            // Offset to separate arrows in opposite directions
             const offsetX = hasOppositeTransition ? dy / distance * 14 : 0;
             const offsetY = hasOppositeTransition ? -dx / distance * 14 : 0;
 
-            // Calcular los nuevos puntos para acortar la flecha
+            // Calculate the new points to shorten the arrow
             const startX = t.from.x + (dx / distance) * shortenBy + offsetX;
             const startY = t.from.y + (dy / distance) * shortenBy + offsetY;
             const endX = t.to.x - (dx / distance) * shortenBy + offsetX;
@@ -318,14 +314,13 @@ const DrawMT = () => {
         }
     };
 
-    // Función para determinar el color del estado
     const getNodeFillColor = (node) => {
         const isInTransition =
             (transitionNodes.from && transitionNodes.from.id === node.id) ||
             (transitionNodes.to && transitionNodes.to.id === node.id);
 
         if (selectedNode === node || isInTransition) {
-            return theme.palette.secondary.main; // Morado
+            return theme.palette.secondary.main;
         }
         return "#2C2C2C";
     };
@@ -343,7 +338,7 @@ const DrawMT = () => {
         const structureOpen = `<structure>\n<type>turing</type>\n<automaton>\n`;
         const structureClose = `</automaton>\n</structure>`;
 
-        // Construcción de estados
+        // State construction
         const statesXML = nodes.map((node, i) => {
             return `
         <state id="${i}" name="${node.label}">
@@ -354,14 +349,14 @@ const DrawMT = () => {
         </state>`;
         }).join("\n");
 
-        // Construcción de transiciones
+        // Transitions construction
         const transitionsXML = transitions.map(t => {
             const fromIndex = nodes.findIndex(n => n.id === t.from.id);
             const toIndex = nodes.findIndex(n => n.id === t.to.id);
 
             if (fromIndex === -1 || toIndex === -1) {
                 console.warn(`Transición inválida: ${JSON.stringify(t)}`);
-                return ""; // Omitir transiciones inválidas
+                return "";
             }
 
             return t.transitionsData.map(({ read, write, move }) => `
@@ -372,25 +367,24 @@ const DrawMT = () => {
             <write>${write || "λ"}</write>
             <move>${["R", "L"].includes(move) ? move : "S"}</move>
         </transition>`).join("\n");
-        }).filter(Boolean).join("\n"); // Filtrar transiciones vacías
+        }).filter(Boolean).join("\n"); // Filter empty transitions
 
-        // Construcción del archivo XML completo
+        // Construction of the complete XML file
         const fullXML = `${xmlHeader}
-    ${structureOpen}
-    ${statesXML}
-    ${transitionsXML}
-    ${structureClose}`;
+						${structureOpen}
+						${statesXML}
+						${transitionsXML}
+						${structureClose}`;
 
-        // Crear y guardar el archivo
+        // Create and save the file
         const blob = new Blob([fullXML], { type: "application/xml;charset=utf-8" });
         saveAs(blob, `${exportFilename || "turing_machine"}.jff`);
 
-        // Reiniciar estado del modal y nombre del archivo
+        // Reset
         setShowExportModal(false);
         setExportFilename("turing_machine");
     };
 
-    // Eliminar transición
     const handleDeleteTransitionClick = () => {
         setDeleteTransitionMode(!deleteTransitionMode);
         if (!deleteTransitionMode) {
@@ -399,6 +393,7 @@ const DrawMT = () => {
             toast.info("Modo de eliminación de transiciones desactivado.");
         }
     };
+
     const handleTransitionClick = (transition) => {
         if (deleteTransitionMode) {
             setTransitions(prevTransitions => prevTransitions.filter(t => t !== transition));
@@ -449,7 +444,7 @@ const DrawMT = () => {
                 </Stage>
             </Box>
 
-            {/* Botón de ayuda */}
+            {/* Help button */}
             <Tooltip title="¿Cómo usar el editor?" placement="left">
                 <Button
                     variant="contained"
@@ -463,13 +458,13 @@ const DrawMT = () => {
                         backgroundColor: theme.palette.secondary.main,
                         "&:hover": { backgroundColor: theme.palette.primary.main },
                     }}
-                    onClick={() => setShowHelpModal(true)} // Abre el modal
+                    onClick={() => setShowHelpModal(true)}
                 >
                     <HelpOutlineIcon />
                 </Button>
             </Tooltip>
 
-            {/* Botón de eliminar */}
+            {/* Delete button */}
             <Tooltip title="Eliminar todo" placement="left">
                 <Button
                     variant="contained"
@@ -489,7 +484,7 @@ const DrawMT = () => {
                 </Button>
             </Tooltip>
 
-            {/* Botón de exportar */}
+            {/* Export button */}
             <Tooltip title="Exportar como JFF" placement="left">
                 <Button
                     variant="contained"
@@ -509,7 +504,7 @@ const DrawMT = () => {
                 </Button>
             </Tooltip>
 
-            {/* Botón de eliminar transición */}
+            {/* Delete transition button */}
             <Tooltip title="Eliminar transición" placement="left">
                 <Button
                     variant="contained"
@@ -704,10 +699,10 @@ const DrawMT = () => {
                 </DialogActions>
             </Dialog>
 
-            {/* Modal para la ayuda */}
+            {/* Modal for help */}
             <Dialog
                 open={showHelpModal}
-                onClose={() => setShowHelpModal(false)} // Cierra el modal
+                onClose={() => setShowHelpModal(false)}
                 maxWidth="sm"
                 fullWidth
             >
@@ -766,14 +761,14 @@ const DrawMT = () => {
                             "&:hover": {backgroundColor: theme.palette.primary.main},
                             fontFamily: "'Josefin Sans', sans-serif",
                         }}
-                        onClick={() => setShowHelpModal(false)} // Cierra el modal
+                        onClick={() => setShowHelpModal(false)}
                     >
                         Cerrar
                     </Button>
                 </DialogActions>
             </Dialog>
 
-            {/* Modal de confirmación para eliminar to_do */}
+            {/* Modal of confirmation of delete everything */}
             <Dialog open={showDeleteConfirmation} onClose={() => setShowDeleteConfirmation(false)}>
                 <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: 'center' }}>
                     ¿Está seguro de querer eliminarlo todo?
@@ -808,7 +803,7 @@ const DrawMT = () => {
                             setSelectedNode(null);
                             setTransitionNodes({ from: null, to: null });
                             toast.info("Todos los estados y transiciones han sido eliminados.");
-                            setShowDeleteConfirmation(false); // Cerrar el modal
+                            setShowDeleteConfirmation(false);
                         }}
                     >
                         Sí

@@ -20,7 +20,7 @@ const Simulations = () => {
                 color: "#FFFFFF",
             }}
         >
-            {/* Título principal */}
+            {/* Main title */}
             <Typography
                 variant="h3"
                 sx={{
@@ -34,13 +34,12 @@ const Simulations = () => {
                 Simulaciones
             </Typography>
 
-            {/* Primera fila de botones */}
             <Grid
                 container
                 spacing={3}
                 sx={{
                     maxWidth: "800px",
-                    alignItems: "stretch", // Asegura que todos los elementos tengan la misma altura
+                    alignItems: "stretch",
                 }}
             >
                 {[
@@ -107,16 +106,15 @@ const Simulations = () => {
                 ))}
             </Grid>
 
-            {/* Separación entre filas */}
+            {/* Separation */}
             <Box sx={{ marginTop: "5rem" }} />
 
-            {/* Segunda fila de botones */}
             <Grid
                 container
                 spacing={3}
                 sx={{
                     maxWidth: "800px",
-                    alignItems: "stretch", // Asegura que todos los elementos tengan la misma altura
+                    alignItems: "stretch",
                 }}
             >
                 {[

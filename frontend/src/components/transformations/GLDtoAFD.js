@@ -33,7 +33,7 @@ const GLDToAFD = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Validación para verificar que la gramática esté completa
+        // Validation to verify that the grammar is complete
         if (!grammar.trim()) {
             toast.error("Por favor, introduce la gramática antes de continuar.", {
                 position: "top-right",
@@ -94,9 +94,9 @@ const GLDToAFD = () => {
     };
 
     const handlePaste = (event, setGrammar) => {
-        event.preventDefault(); // Evita que se pegue con formato predeterminado
+        event.preventDefault(); // Prevent sticking with default formatting
         const pastedText = (event.clipboardData || window.clipboardData).getData("text");
-        setGrammar(pastedText); // Establece el texto pegado correctamente
+        setGrammar(pastedText); // Set the pasted text correctly
     };
 
     return (
@@ -111,7 +111,7 @@ const GLDToAFD = () => {
                 color: "#FFFFFF",
             }}
         >
-            {/* Contenedor para Toast */}
+
             <ToastContainer />
 
             <Typography
@@ -126,7 +126,6 @@ const GLDToAFD = () => {
                 Convertir GLD a AFD
             </Typography>
 
-            {/* Example Section */}
             <Box
                 sx={{
                     marginBottom: 3,

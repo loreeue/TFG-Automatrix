@@ -14,17 +14,17 @@ const InfoAFD = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: "2.0rem", // Reducir padding general un poco
+        padding: "2.0rem",
         color: "#FFFFFF",
       }}
     >
-      {/* Título principal */}
+      {/* Main title */}
       <Typography
         variant="h3"
         sx={{
           fontWeight: "bold",
           textAlign: "center",
-          marginBottom: "1.5rem", // Disminuye el bottom margin
+          marginBottom: "1.5rem",
           fontFamily: "'Spicy Rice', cursive",
           animation: "fadeSlideIn 0.8s ease-out",
         }}
@@ -32,7 +32,7 @@ const InfoAFD = () => {
         AFD (Autómata Finito Determinista)
       </Typography>
 
-      {/* Contenedor principal */}
+      {/* Principal Container */}
       <Paper
         elevation={4}
         sx={{
@@ -41,7 +41,7 @@ const InfoAFD = () => {
           maxWidth: "800px",
           width: "100%",
           borderRadius: "16px",
-          padding: "1rem", // menos padding para acercar el contenido
+          padding: "1rem",
           fontFamily: "'Josefin Sans', sans-serif",
           animation: "fadeSlideIn 0.8s ease-out",
         }}
@@ -49,7 +49,7 @@ const InfoAFD = () => {
         <Typography
           variant="h5"
           sx={{
-            marginBottom: "0.75rem", // aún menos espacio
+            marginBottom: "0.75rem",
             fontFamily: "'Spicy Rice', cursive",
             transition: "color 0.3s",
             "&:hover": {
@@ -62,7 +62,7 @@ const InfoAFD = () => {
         <Typography
           paragraph
           sx={{
-            marginBottom: "0.75rem", // controla el espaciado de párrafos
+            marginBottom: "0.75rem",
           }}
         >
           Un AFD es un modelo matemático que procesa cadenas (palabras) símbolo a símbolo, avanzando

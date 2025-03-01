@@ -18,7 +18,7 @@ const InfoMT = () => {
         color: "#FFFFFF",
       }}
     >
-      {/* Título principal */}
+      {/* Main title */}
       <Typography
         variant="h3"
         sx={{
@@ -32,7 +32,7 @@ const InfoMT = () => {
         Máquina de Turing
       </Typography>
 
-      {/* Contenedor principal */}
+      {/* Principal container */}
       <Paper
         elevation={4}
         sx={{
@@ -46,7 +46,6 @@ const InfoMT = () => {
           animation: "fadeSlideIn 0.8s ease-out",
         }}
       >
-        {/* Idea general */}
         <Typography
           variant="h5"
           sx={{
@@ -63,7 +62,6 @@ const InfoMT = () => {
           que se pueda describir de manera mecánica.
         </Typography>
 
-        {/* Componentes */}
         <Typography
           variant="h5"
           sx={{
@@ -102,7 +100,6 @@ const InfoMT = () => {
           </ListItem>
         </List>
 
-        {/* Lenguaje aceptado */}
         <Typography
           variant="h5"
           sx={{
@@ -119,7 +116,7 @@ const InfoMT = () => {
         </Typography>
       </Paper>
 
-      {/* Animaciones */}
+      {/* Animations */}
       <style>
         {`
           @keyframes fadeSlideIn {

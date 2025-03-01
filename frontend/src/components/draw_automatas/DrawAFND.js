@@ -21,9 +21,9 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { saveAs } from 'file-saver';
 
 const DrawAFND = () => {
-    const [nodes, setNodes] = useState([]); // Estados
-    const [transitions, setTransitions] = useState([]); // Transiciones
-    const [selectedNode, setSelectedNode] = useState(null); // Nodo seleccionado para crear transición
+    const [nodes, setNodes] = useState([]); // States
+    const [transitions, setTransitions] = useState([]); // Trnsitions
+    const [selectedNode, setSelectedNode] = useState(null); // Selected node to create transition
 
     const [showStateTypeModal, setShowStateTypeModal] = useState(false);
     const [targetNode, setTargetNode] = useState(null);
@@ -42,7 +42,7 @@ const DrawAFND = () => {
 
     const theme = useTheme();
 
-    // Agregar un nuevo estado
+    // Add a new status
     const addNode = (e) => {
         const { x, y } = e.target.getStage().getPointerPosition();
         const newNode = {
@@ -56,7 +56,7 @@ const DrawAFND = () => {
         setNodes([...nodes, newNode]);
     };
 
-    // Mover un estado y actualizar transiciones
+    // Move a state and update transitions
     const moveNode = (id, x, y) => {
         setNodes((prevNodes) =>
             prevNodes.map((node) => (node.id === id ? { ...node, x, y } : node))
@@ -70,9 +70,9 @@ const DrawAFND = () => {
         );
     };
 
-    // Crear una nueva transición (sin restricciones de duplicados para AFND)
+    // Create a new transition (no duplicate restrictions for AFND)
     const confirmAddTransition = () => {
-        // Si no hay letra, asumimos lambda
+        // If there is no letter, we assume lambda
         const transitionSymbol = transitionLetter.trim() === "" ? "λ" : transitionLetter.trim();
 
         setTransitions((prevTransitions) => {
@@ -81,20 +81,20 @@ const DrawAFND = () => {
             );
 
             if (existingTransitionIndex !== -1) {
-                // Ya existe una transición de "from" a "to"
+                // There is already a transition from "from" to "to"
                 const updatedTransitions = [...prevTransitions];
                 const existingTransition = updatedTransitions[existingTransitionIndex];
 
-                // Separamos los símbolos actuales en un array
+                // We separate the current symbols into an array
                 const existingSymbols = existingTransition.letter.split(",");
 
-                // Verificamos si el nuevo símbolo ya existe
+                // We check if the new symbol already exists
                 if (existingSymbols.includes(transitionSymbol)) {
                     toast.error(`El símbolo "${transitionSymbol}" ya está en la transición.`);
-                    return updatedTransitions; // Devolvemos el array sin modificaciones
+                    return updatedTransitions;
                 }
 
-                // Si no existe, lo agregamos
+                // If it doesn't exist, we add it
                 updatedTransitions[existingTransitionIndex] = {
                     ...existingTransition,
                     letter: existingTransition.letter + "," + transitionSymbol,
@@ -102,7 +102,7 @@ const DrawAFND = () => {
                 return updatedTransitions;
 
             } else {
-                // Si no existe la transición, la creamos
+                // If the transition does not exist, we create it
                 return [
                     ...prevTransitions,
                     {
@@ -114,20 +114,20 @@ const DrawAFND = () => {
             }
         });
 
-        // Reseteamos los valores y cerramos el modal
+        // Reset values
         setShowTransitionModal(false);
         setTransitionLetter("");
         setTransitionNodes({ from: null, to: null });
     };
 
-    // Manejar clic derecho para marcar inicial/final (con modal)
+    // Handle right click to mark start/end (with modal)
     const handleContextMenu = (e, node) => {
         e.evt.preventDefault();
         setTargetNode(node);
         setShowStateTypeModal(true);
     };
 
-    // Asignar tipo de estado (Inicial/Final)
+    // Assign status type (Initial/End)
     const setStateType = (type) => {
         if (!targetNode) {
             toast.error("No se puede asignar un tipo de estado porque no hay un nodo seleccionado.");
@@ -136,10 +136,10 @@ const DrawAFND = () => {
         }
 
         if (type === "initial") {
-            // Comprobar si ya existe un estado inicial
+            // Check if an initial state already exists
             const existingInitial = nodes.find((node) => node.isInitial);
             if (existingInitial && existingInitial.id !== targetNode.id) {
-                // Si ya hay un estado inicial diferente, desmarcarlo
+                // If there is already a different initial state, uncheck it
                 setNodes((prevNodes) =>
                     prevNodes.map((n) =>
                         n.id === existingInitial.id
@@ -150,7 +150,7 @@ const DrawAFND = () => {
             }
         }
 
-        // Actualizar el estado seleccionado como inicial o final
+        // Update the selected state as initial or final
         setNodes((prevNodes) =>
             prevNodes.map((n) =>
                 n.id === targetNode.id
@@ -173,15 +173,15 @@ const DrawAFND = () => {
         }
     };
 
-    // Manejar clics en los estados para crear transiciones
+    // Handle clicks on states to create transitions
     const handleNodeClick = (node) => {
         if (deleteTransitionMode)
             return ;
         if (selectedNode) {
-            // Seleccionamos el segundo estado
+            // We select the second state
             setTransitionNodes({ from: selectedNode, to: node });
             setShowTransitionModal(true);
-            // No limpiamos selectedNode aquí para poder mostrar ambos resaltados mediante transitionNodes
+            // We don't clear selectedNode here so we can show both highlights using transitionNodes
             setSelectedNode(null);
         } else {
             setSelectedNode(node);
@@ -227,24 +227,23 @@ const DrawAFND = () => {
                 </React.Fragment>
             );
         } else {
-            // Calcular si hay una transición opuesta
+            // Calculate if there is an opposite transition
             const hasOppositeTransition = transitions.some(
                 (other) =>
                     other.from.id === t.to.id &&
                     other.to.id === t.from.id
             );
 
-            // Transición normal
+            // Normal transition
             const dx = t.to.x - t.from.x;
             const dy = t.to.y - t.from.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             const shortenBy = 30;
 
-            // Offset para separar flechas en direcciones opuestas
+            // Offset to separate arrows in opposite directions
             const offsetX = hasOppositeTransition ? dy / distance * 14 : 0;
             const offsetY = hasOppositeTransition ? -dx / distance * 14 : 0;
 
-            // Calcular los nuevos puntos para acortar la flecha
             const startX = t.from.x + (dx / distance) * shortenBy + offsetX;
             const startY = t.from.y + (dy / distance) * shortenBy + offsetY;
             const endX = t.to.x - (dx / distance) * shortenBy + offsetX;
@@ -278,14 +277,13 @@ const DrawAFND = () => {
         }
     };
 
-    // Función para determinar el color del estado
     const getNodeFillColor = (node) => {
         const isInTransition =
             (transitionNodes.from && transitionNodes.from.id === node.id) ||
             (transitionNodes.to && transitionNodes.to.id === node.id);
 
         if (selectedNode === node || isInTransition) {
-            return theme.palette.secondary.main; // Morado
+            return theme.palette.secondary.main;
         }
         return "#2C2C2C";
     };
@@ -338,7 +336,6 @@ const DrawAFND = () => {
         setExportFilename("automata");
     };
 
-    // Eliminar transición
     const handleDeleteTransitionClick = () => {
         setDeleteTransitionMode(!deleteTransitionMode);
         if (!deleteTransitionMode) {
@@ -347,6 +344,7 @@ const DrawAFND = () => {
             toast.info("Modo de eliminación de transiciones desactivado.");
         }
     };
+
     const handleTransitionClick = (transition) => {
         if (deleteTransitionMode) {
             setTransitions(prevTransitions => prevTransitions.filter(t => t !== transition));
@@ -368,7 +366,7 @@ const DrawAFND = () => {
             {/* Toast */}
             <ToastContainer />
 
-            {/* Título principal */}
+            {/* Main title */}
             <Typography
                 variant="h3"
                 sx={{
@@ -398,10 +396,10 @@ const DrawAFND = () => {
                     style={{ cursor: "pointer" }}
                 >
                     <Layer>
-                        {/* Renderizar transiciones */}
+                        {/* Render transitions */}
                         {transitions.map((t, index) => renderTransition(t, index))}
 
-                        {/* Renderizar nodos */}
+                        {/* Render nodes */}
                         {nodes.map((node) => (
                             <React.Fragment key={node.id}>
                                 {node.isInitial && (
@@ -441,7 +439,7 @@ const DrawAFND = () => {
                                         radius={34}
                                         stroke="#333"
                                         strokeWidth={2}
-                                        listening={false} // no bloquea eventos
+                                        listening={false}
                                     />
                                 )}
                                 <Text
@@ -458,7 +456,7 @@ const DrawAFND = () => {
                 </Stage>
             </Box>
 
-            {/* Botón de ayuda */}
+            {/* Help button */}
             <Tooltip title="¿Cómo usar el editor?" placement="left">
                 <Button
                     variant="contained"
@@ -472,13 +470,13 @@ const DrawAFND = () => {
                         backgroundColor: theme.palette.secondary.main,
                         "&:hover": { backgroundColor: theme.palette.primary.main },
                     }}
-                    onClick={() => setShowHelpModal(true)} // Abre el modal
+                    onClick={() => setShowHelpModal(true)}
                 >
                     <HelpOutlineIcon />
                 </Button>
             </Tooltip>
 
-            {/* Botón de eliminar */}
+            {/* Delete button */}
             <Tooltip title="Eliminar todo" placement="left">
                 <Button
                     variant="contained"
@@ -498,7 +496,7 @@ const DrawAFND = () => {
                 </Button>
             </Tooltip>
 
-            {/* Botón de exportar */}
+            {/* Export button */}
             <Tooltip title="Exportar como JFF" placement="left">
                 <Button
                     variant="contained"
@@ -518,7 +516,7 @@ const DrawAFND = () => {
                 </Button>
             </Tooltip>
 
-            {/* Botón de eliminar transición */}
+            {/* Delete transition button */}
             <Tooltip title="Eliminar transición" placement="left">
                 <Button
                     variant="contained"
@@ -538,7 +536,7 @@ const DrawAFND = () => {
                 </Button>
             </Tooltip>
 
-            {/* Modal para marcar estado inicial/final */}
+            {/* Modal to mark initial/final state */}
             <Dialog open={showStateTypeModal} onClose={() => setShowStateTypeModal(false)}>
                 <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: 'center' }}>
                     ¿Cómo marcar el estado?
@@ -590,7 +588,7 @@ const DrawAFND = () => {
                 </DialogActions>
             </Dialog>
 
-            {/* Modal para introducir la letra de la transición */}
+            {/* Modal to introduce the letter of the transition */}
             <Dialog open={showTransitionModal} onClose={() => setShowTransitionModal(false)}>
                 <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: 'center' }}>
                     Introducir letra de la transición
@@ -627,7 +625,6 @@ const DrawAFND = () => {
                             setShowTransitionModal(false);
                             setTransitionLetter("");
                             setTransitionNodes({ from: null, to: null });
-                            // Devolvemos el estado a normal si se cancela
                             setSelectedNode(null);
                         }}
                     >
@@ -650,7 +647,7 @@ const DrawAFND = () => {
                 </DialogActions>
             </Dialog>
 
-            {/* Modal para el nombre del archivo al exportar */}
+            {/* Modal for file name when exporting */}
             <Dialog open={showExportModal} onClose={() => setShowExportModal(false)}>
                 <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: 'center' }}>
                     Guardar archivo
@@ -703,10 +700,10 @@ const DrawAFND = () => {
                 </DialogActions>
             </Dialog>
 
-            {/* Modal para la ayuda */}
+            {/* Modal for help */}
             <Dialog
                 open={showHelpModal}
-                onClose={() => setShowHelpModal(false)} // Cierra el modal
+                onClose={() => setShowHelpModal(false)}
                 maxWidth="sm"
                 fullWidth
             >
@@ -765,14 +762,14 @@ const DrawAFND = () => {
                             "&:hover": {backgroundColor: theme.palette.primary.main},
                             fontFamily: "'Josefin Sans', sans-serif",
                         }}
-                        onClick={() => setShowHelpModal(false)} // Cierra el modal
+                        onClick={() => setShowHelpModal(false)}
                     >
                         Cerrar
                     </Button>
                 </DialogActions>
             </Dialog>
 
-            {/* Modal de confirmación para eliminar to_do */}
+            {/* Modal confirmation of delete everything */}
             <Dialog open={showDeleteConfirmation} onClose={() => setShowDeleteConfirmation(false)}>
                 <DialogTitle sx={{ fontFamily: "'Spicy Rice', cursive", textAlign: 'center' }}>
                     ¿Está seguro de querer eliminarlo todo?
@@ -807,7 +804,7 @@ const DrawAFND = () => {
                             setSelectedNode(null);
                             setTransitionNodes({ from: null, to: null });
                             toast.info("Todos los estados y transiciones han sido eliminados.");
-                            setShowDeleteConfirmation(false); // Cerrar el modal
+                            setShowDeleteConfirmation(false);
                         }}
                     >
                         Sí

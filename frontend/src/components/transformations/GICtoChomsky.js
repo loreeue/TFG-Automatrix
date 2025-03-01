@@ -34,7 +34,7 @@ const GICToChomsky = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Validación para verificar que la gramática esté completa
+        // Validation to verify that the grammar is complete
         if (!grammar.trim()) {
             toast.error("Por favor, introduce la gramática antes de continuar.", {
                 position: "top-right",
@@ -88,23 +88,23 @@ const GICToChomsky = () => {
     };
 
     const handlePaste = (event, setGrammar) => {
-        event.preventDefault(); // Evita que se pegue con formato predeterminado
+        event.preventDefault(); // Prevent sticking with default formatting
         const pastedText = (event.clipboardData || window.clipboardData).getData("text");
-        setGrammar(pastedText); // Establece el texto pegado correctamente
+        setGrammar(pastedText); // Set the pasted text correctly
     };
 
 	const formatChomskyOutput = (rawOutput) => {
-		// Elimina todo lo anterior a "V:"
+		// Remove everything before "V:"
 		const cleaned = rawOutput.replace(/^.*V:/, "V:");
 
-		// Separa la parte de cabecera y la de producciones usando "P:"
+		// Separate the header part and the production part using "P:"
 		const parts = cleaned.split(/P:\s*/);
 		if (parts.length < 2) return null;
 
-		const headerPart = parts[0].trim(); // Contiene "V:", "T:" y "S:"
-		const productionsPart = parts[1].trim(); // Contiene las producciones
+		const headerPart = parts[0].trim(); // Contains "V:", "T:" and "S:"
+		const productionsPart = parts[1].trim(); // Contains the productions
 
-		// Separa la cabecera por líneas
+		// Separate the header by lines
 		const headerLines = headerPart.split("\n").map((line) => line.trim());
 		let variables = "", terminals = "", start = "";
 
@@ -135,7 +135,6 @@ const GICToChomsky = () => {
                 color: "#FFFFFF",
             }}
         >
-            {/* Toast Container */}
             <ToastContainer />
 
             <Typography
@@ -150,11 +149,10 @@ const GICToChomsky = () => {
                 Convertir GIC a Forma Normal de Chomsky
             </Typography>
 
-            {/* Sección de instrucciones con menos altura */}
             <Box
                 sx={{
-                    marginBottom: 2,  // Reducido
-                    padding: 2,       // Reducido
+                    marginBottom: 2,
+                    padding: 2,
                     borderRadius: "8px",
                     backgroundColor: "#2C2C2C",
                     width: "100%",
@@ -222,12 +220,11 @@ const GICToChomsky = () => {
                 >
                     Gramática
                 </Typography>
-                {/* Caja de texto con menos filas */}
                 <TextField
                     variant="outlined"
                     fullWidth
                     multiline
-                    rows={4} // Reducido de 6 a 4
+                    rows={4}
                     value={grammar}
                     onChange={(e) => setGrammar(e.target.value)}
                     onPaste={(e) => handlePaste(e, setGrammar)}

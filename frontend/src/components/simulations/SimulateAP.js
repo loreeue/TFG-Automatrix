@@ -20,26 +20,29 @@ const SimulateAP = () => {
     };
 
     const validateFile = async () => {
+
+		// Check if a file has been selected
         if (!file) {
             toast.error("Por favor selecciona un archivo AP (.jff).", { position: "top-right" });
             return false;
         }
 
+		// Verify that the file has the .jff extension
         if (!file.name.endsWith(".jff")) {
             toast.error("El archivo seleccionado no es un AP válido (.jff).", { position: "top-right" });
             return false;
         }
 
-        // Leer el archivo y verificar que sea un Autómata a Pila (AP)
+        // Read the file and verify that it is a Battery Powered Automaton (AP)
         const readFileContent = (file) => {
             return new Promise((resolve) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const content = e.target.result;
 
-                    // Verificar si el archivo tiene la estructura de un AP
+                    //Check if the file has the structure of an AP
                     if (!content.includes("<structure>") || !content.includes("<type>pda</type>") || !content.includes("<automaton>")) {
-                        resolve(false); // No es un AP
+                        resolve(false); // Is an AP
                         return;
                     }
                     resolve(true);
@@ -60,14 +63,13 @@ const SimulateAP = () => {
 
     const handleSimulateClick = async () => {
         const isValid = await validateFile();
-        if (!isValid) return; // No mostrar el mensaje si hay errores
+        if (!isValid) return;
 
         if (!input) {
             toast.error("Por favor ingresa una cadena de entrada.", { position: "top-right" });
             return;
         }
 
-        // Si  es válido, mostrar el mensaje y luego ejecutar la simulación
         setOpenDialog(true);
     };
 
@@ -221,7 +223,6 @@ const SimulateAP = () => {
 				</Typography>
 			)}
 
-            {/* Popup de advertencia */}
             <Dialog
                 open={openDialog}
                 onClose={handleDialogClose}

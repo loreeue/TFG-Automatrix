@@ -27,7 +27,7 @@ const SimulateAFD = () => {
     const handleSubmit = async (event) => {
 		event.preventDefault();
 
-		// Verificar si un archivo ha sido seleccionado
+		// Check if a file has been selected
 		if (!file) {
 			toast.error("Por favor selecciona un archivo AFD (.jff).", {
 				position: "top-right",
@@ -40,7 +40,7 @@ const SimulateAFD = () => {
 			return;
 		}
 
-		// Verificar que el archivo tenga la extensión .jff
+		// Verify that the file has the .jff extension
 		if (!file.name.endsWith(".jff")) {
 			toast.error("El archivo seleccionado no es un AFD válido (.jff).", {
 				position: "top-right",
@@ -53,16 +53,16 @@ const SimulateAFD = () => {
 			return;
 		}
 
-		// Leer el archivo y verificar que sea un AFD
+		// Read the file and verify that it is an AFD
 		const readFileContent = (file) => {
 			return new Promise((resolve, reject) => {
 				const reader = new FileReader();
 				reader.onload = (e) => {
 					const content = e.target.result;
 					if (content.includes("<type>fa</type>")) {
-						resolve(true); // Es un AFD
+						resolve(true); // Is an AFD
 					} else {
-						resolve(false); // No es un AFD
+						resolve(false); // Isn`t an AFD
 					}
 				};
 				reader.onerror = () => reject(false);
@@ -98,7 +98,6 @@ const SimulateAFD = () => {
 			const response = await axios.post("/api/validate/afd", formData, {
 				headers: { "Content-Type": "multipart/form-data" },
 			});
-			// Suponiendo que response.data es un booleano
 			const accepted = response.data;
 			setResult(
 				accepted

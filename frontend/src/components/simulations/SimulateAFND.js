@@ -27,7 +27,7 @@ const SimulateAFND = () => {
     const handleSubmit = async (event) => {
 		event.preventDefault();
 
-		// Verificar si un archivo ha sido seleccionado
+		// Check if a file has been selected
 		if (!file) {
 			toast.error("Por favor selecciona un archivo AFND (.jff).", {
 				position: "top-right",
@@ -40,7 +40,7 @@ const SimulateAFND = () => {
 			return;
 		}
 
-		// Verificar que el archivo tenga la extensión .jff
+		// Verify that the file has the .jff extension
 		if (!file.name.endsWith(".jff")) {
 			toast.error("El archivo seleccionado no es un AFND válido (.jff).", {
 				position: "top-right",
@@ -53,7 +53,7 @@ const SimulateAFND = () => {
 			return;
 		}
 
-		// Leer el archivo y verificar que sea un AFND
+		// Read the file and verify that it is an AFND
 		const readFileContent = (file) => {
 			return new Promise((resolve, reject) => {
 				const reader = new FileReader();
@@ -64,7 +64,6 @@ const SimulateAFND = () => {
 						return;
 					}
 
-					// Determinar si es un AFND (por ejemplo, comprobando transiciones vacías o duplicadas)
 					const isAFND = content.includes("<read/>") || (content.match(/<read>/g) || []).length > (content.match(/<state>/g) || []).length;
 					resolve(isAFND);
 				};
@@ -101,7 +100,6 @@ const SimulateAFND = () => {
 			const response = await axios.post("/api/validate/afnd", formData, {
 				headers: { "Content-Type": "multipart/form-data" },
 			});
-			// Supongamos que response.data es un booleano
 			const accepted = response.data;
 			setResult(
 				accepted

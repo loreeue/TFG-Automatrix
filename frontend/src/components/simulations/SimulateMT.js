@@ -20,26 +20,29 @@ const SimulateMT = () => {
     };
 
     const validateFile = async () => {
+
+		// Check if a file has been selected
         if (!file) {
             toast.error("Por favor selecciona un archivo MT (.jff).", { position: "top-right" });
             return false;
         }
 
+		// Verify that the file has the .jff extension
         if (!file.name.endsWith(".jff")) {
             toast.error("El archivo seleccionado no es una Máquina de Turing válida (.jff).", { position: "top-right" });
             return false;
         }
 
-        // Leer el archivo y verificar que sea una Máquina de Turing (MT)
+        // Read the file and verify that it is a Turing Machine (MT)
         const readFileContent = (file) => {
             return new Promise((resolve) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const content = e.target.result;
 
-                    // Verificar si el archivo tiene la estructura de una MT
+                    // Check if the file has the structure of a MT
                     if (!content.includes("<structure>") || !content.includes("<type>turing</type>") || !content.includes("<automaton>")) {
-                        resolve(false); // No es una MT
+                        resolve(false); // Isn't an MT
                         return;
                     }
                     resolve(true);
@@ -60,14 +63,12 @@ const SimulateMT = () => {
 
     const handleSimulateClick = async () => {
         const isValid = await validateFile();
-        if (!isValid) return; // No mostrar el mensaje si hay errores
+        if (!isValid) return;
 
         if (!input) {
             toast.error("Por favor ingresa una cadena de entrada.", { position: "top-right" });
             return;
         }
-
-        // Si todo es válido, mostrar el mensaje y luego ejecutar la simulación
         setOpenDialog(true);
     };
 
@@ -86,7 +87,6 @@ const SimulateMT = () => {
 			const response = await axios.post("/api/validate/turingMachine", formData, {
 				headers: { "Content-Type": "multipart/form-data" },
 			});
-			// Suponiendo que response.data es un booleano
 			const accepted = response.data;
 			setResult(
 				accepted
@@ -223,7 +223,6 @@ const SimulateMT = () => {
 				</Typography>
 			)}
 
-            {/* Popup de advertencia */}
             <Dialog
                 open={openDialog}
                 onClose={handleDialogClose}

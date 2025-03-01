@@ -22,7 +22,7 @@ public class SecurityConfig {
 		http
 			.cors(withDefaults())
 			.authorizeHttpRequests(auth -> auth
-				//Permito todas las solicitudes POST y GET
+				// I allow all POST and GET requests
 				.requestMatchers(HttpMethod.POST, "/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/**").permitAll()
 				.anyRequest().authenticated()

@@ -11,7 +11,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import InfoIcon from "@mui/icons-material/Info";  // <--- importamos el icono de Info
+import InfoIcon from "@mui/icons-material/Info";
 import { useTheme } from "@mui/material/styles";
 import { InputAdornment, IconButton } from "@mui/material";
 import "@fontsource/abril-fatface";
@@ -82,7 +82,7 @@ const Header = () => {
 			return;
 		}
 
-		// Si todo es válido, proceder con la autenticación
+		// If everything is valid, proceed with authentication
 		if (isLogin) {
 			try {
 				const response = await fetch("http://localhost:8080/api/users/login", {
@@ -147,7 +147,6 @@ const Header = () => {
                 boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.2)",
             }}
         >
-            {/* Izquierda: Logo y botones */}
             <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                 <span
                     onClick={handleAutomatrixClick}
@@ -232,7 +231,7 @@ const Header = () => {
                     Simulaciones
                 </Button>
 
-                {/* BOTÓN DE DIBUJAR AUTÓMATA */}
+                {/* DRAW AUTOMATA BUTTON */}
                 <Button
                     variant="text"
                     component={Link}
@@ -250,12 +249,12 @@ const Header = () => {
                     Dibujar Autómata
                 </Button>
 
-                {/* BOTÓN INFO */}
+                {/* INFO BUTTON */}
                 <Button
                     variant="text"
                     component={Link}
                     to="/info"
-                    startIcon={<InfoIcon />}  // El icono de info
+                    startIcon={<InfoIcon />}
                     sx={{
                         color: "#FFFFFF",
                         fontWeight: "bold",
@@ -269,7 +268,6 @@ const Header = () => {
                 </Button>
             </Box>
 
-            {/* Derecha: Botones adicionales */}
             <Box sx={{ display: "flex", gap: "1rem", alignItems: "center" }}>
                 <Button
                     variant="outlined"
@@ -345,7 +343,7 @@ const Header = () => {
                 )}
             </Box>
 
-            {/* Pop-up de iniciar sesión / registro */}
+            {/* Login/registration pop-up*/}
             <Dialog open={openDialog} onClose={handleCloseDialog} sx={{ "& .MuiDialog-paper": { padding: "20px", borderRadius: "10px" } }}>
 				<DialogTitle sx={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "1.5rem", fontWeight: "bold" }}>
 					{isLogin ? "Iniciar sesión" : "Registrarse"}
@@ -379,8 +377,8 @@ const Header = () => {
 							setEmail(e.target.value);
 							setEmailError(validateEmail(e.target.value) ? "" : "Correo no válido");
 						}}
-						error={!!emailError}  // Muestra error si hay un mensaje
-						helperText={emailError}  // Mensaje de error debajo del campo
+						error={!!emailError}
+						helperText={emailError}
 						sx={{
 							fontFamily: "'Josefin Sans', sans-serif",
 							"& .MuiInputBase-input": { fontFamily: "'Josefin Sans', sans-serif" },
@@ -399,8 +397,8 @@ const Header = () => {
 							setPasswordError(validatePassword(e.target.value) ? "" :
 								"Debe tener 8 caracteres, mayúscula, minúscula, número y símbolo.");
 						}}
-						error={!!passwordError}  // Muestra el error si hay mensaje
-						helperText={passwordError}  // Mensaje de error debajo del campo
+						error={!!passwordError}
+						helperText={passwordError}
 						sx={{
 							fontFamily: "'Josefin Sans', sans-serif",
 							"& .MuiInputBase-input": { fontFamily: "'Josefin Sans', sans-serif" },
@@ -484,7 +482,7 @@ const Header = () => {
 				</DialogActions>
 			</Dialog>
 
-            {/* Pop-up de error en el inicio de sesión */}
+            {/* Login error pop-up */}
             <Dialog open={openErrorDialog} onClose={handleCloseErrorDialog}>
                 <DialogTitle>Error</DialogTitle>
                 <DialogContent>El correo o la contraseña son incorrectos.</DialogContent>

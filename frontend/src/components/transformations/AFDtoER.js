@@ -17,6 +17,7 @@ const AFDToER = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+		// Check if a file has been selected
         if (!file) {
             toast.error("Por favor selecciona un archivo AFD (.jff).", {
                 position: "top-right",
@@ -29,6 +30,7 @@ const AFDToER = () => {
             return;
         }
 
+		// Verify that the file has the .jff extension
         if (!file.name.endsWith(".jff")) {
             toast.error("El archivo seleccionado no es un AFD válido (.jff).", {
                 position: "top-right",
@@ -41,22 +43,22 @@ const AFDToER = () => {
             return;
         }
 
-        // Leer el archivo y verificar que sea un AFD
+        // Read the file and verify that it is an AFD
         const readFileContent = (file) => {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const content = e.target.result;
 
-                    // Verificar si tiene la estructura de un autómata finito
+                    // Check if it has the structure of a finite automaton
                     if (!content.includes("<structure>") || !content.includes("<type>fa</type>") || !content.includes("<automaton>")) {
                         resolve(false);
                         return;
                     }
 
-                    // Comprobación mejorada para detectar AFND
+                    // Improved checking for AFND
                     const isAFND = content.includes("<read/>") || content.match(/<transition>/g)?.length > content.match(/<state>/g)?.length;
-                    resolve(!isAFND); // Si es AFND, se rechaza
+                    resolve(!isAFND); // If it is AFND, it is rejected
                 };
                 reader.onerror = () => reject(false);
                 reader.readAsText(file);
@@ -212,7 +214,7 @@ const AFDToER = () => {
                     sx={{
                         marginTop: 3,
                         textAlign: "center",
-                        color: "#FFFFFF", // Cambiado a blanco
+                        color: "#FFFFFF",
                         fontFamily: "'Josefin Sans', sans-serif",
                     }}
                 >

@@ -30,21 +30,21 @@ public class GrammarService {
         for (String key : grammarMap.keySet()) {
             String productionStr = grammarMap.get(key);
 
-            // Dividir producción en lado izquierdo (lhs) y lado derecho (rhs)
+            // Split production into left side (lhs) and right side (rhs)
             String[] parts = productionStr.split("->");
             if (parts.length != 2) {
                 System.out.println("Formato de producción inválido");
                 return grammar;
             }
 
-            String lhs = parts[0].trim();  // Lado izquierdo
-            String rhs = parts[1].trim();  // Lado derecho
+            String lhs = parts[0].trim();  // Left side
+            String rhs = parts[1].trim();  // Right side
 
             Production production = new Production(lhs, rhs);
             grammar.addProduction(production);
         }
 
-        // Asignar variable inicial si hay variables en la gramática
+        // Assign initial variable if there are variables in the grammar
         if (grammar.getVariables().length > 0) {
             grammar.setStartVariable(grammar.getVariables()[0]);
         } else {

@@ -18,7 +18,7 @@ const InfoGrammar = () => {
         color: "#FFFFFF",
       }}
     >
-      {/* Título principal */}
+      {/* Main title */}
       <Typography
         variant="h3"
         sx={{
@@ -32,7 +32,7 @@ const InfoGrammar = () => {
         Gramáticas y Jerarquía de Chomsky
       </Typography>
 
-      {/* Contenedor principal, sin scroll ni maxHeight */}
+      {/* Principal container */}
       <Paper
         elevation={4}
         sx={{
@@ -41,12 +41,11 @@ const InfoGrammar = () => {
           maxWidth: "800px",
           width: "100%",
           borderRadius: "16px",
-          padding: "0.5rem", // algo de padding reducido
+          padding: "0.5rem",
           fontFamily: "'Josefin Sans', sans-serif",
           animation: "fadeSlideIn 0.8s ease-out",
         }}
       >
-        {/* Gramática formal */}
         <Typography
           variant="h5"
           sx={{
@@ -89,7 +88,6 @@ const InfoGrammar = () => {
           </ListItem>
         </List>
 
-        {/* Jerarquía de Chomsky */}
         <Typography
           variant="h5"
           sx={{
@@ -140,7 +138,7 @@ const InfoGrammar = () => {
         </List>
       </Paper>
 
-      {/* Animación */}
+      {/* Animations */}
       <style>
         {`
           @keyframes fadeSlideIn {

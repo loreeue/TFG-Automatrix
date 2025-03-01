@@ -20,7 +20,7 @@ const Transformations = () => {
                 color: "#FFFFFF",
             }}
         >
-            {/* Título principal */}
+            {/* Main title */}
             <Typography
                 variant="h3"
                 sx={{
@@ -34,7 +34,6 @@ const Transformations = () => {
                 Transformaciones
             </Typography>
 
-            {/* Primera fila de transformaciones */}
             <Grid container spacing={3} sx={{ maxWidth: "1200px", alignItems: "stretch" }}>
                 {[
                     { label: "AFND → AFD", description: "Convierte un AFND a su equivalente AFD.", path: "/afnd-to-afd" },
@@ -94,7 +93,6 @@ const Transformations = () => {
                 ))}
             </Grid>
 
-            {/* Segunda fila de transformaciones con separación */}
             <Grid container spacing={3} sx={{ maxWidth: "1200px", alignItems: "stretch", marginTop: "4rem" }}>
                 {[
                     { label: "AP → GIC", description: "Convierte un autómata de pila a su gramática equivalente.", path: "/ap-to-gic" },
@@ -106,7 +104,7 @@ const Transformations = () => {
                         xs={12}
                         sm={6}
                         md={4}
-                        key={index + 3} // Para evitar conflicto de claves con la primera fila
+                        key={index + 3}
                         sx={{
                             animation: `slideIn 0.8s ease-out ${(index + 3) * 0.2}s`,
                         }}

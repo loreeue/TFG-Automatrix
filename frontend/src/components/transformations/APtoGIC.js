@@ -17,6 +17,7 @@ const APToGIC = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+		 // Check if a file has been selected
         if (!file) {
             toast.error("Por favor selecciona un archivo AP (.jff).", {
                 position: "top-right",
@@ -29,6 +30,7 @@ const APToGIC = () => {
             return;
         }
 
+		// Verify that the file has the .jff extension
         if (!file.name.endsWith(".jff")) {
             toast.error("El archivo seleccionado no es un AP válido (.jff).", {
                 position: "top-right",
@@ -41,20 +43,20 @@ const APToGIC = () => {
             return;
         }
 
-        // Leer el archivo y verificar que sea un AP
+        // Read the file and verify that it is an AP
         const readFileContent = (file) => {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const content = e.target.result;
 
-                    // Verificar si tiene la estructura de un autómata y es un AP
+                    // Check if it has the structure of an automaton and is an AP
                     if (!content.includes("<structure>") || !content.includes("<type>pda</type>") || !content.includes("<automaton>")) {
                         resolve(false);
                         return;
                     }
 
-                    resolve(true); // Si cumple con los requisitos, es un AP
+                    resolve(true);
                 };
                 reader.onerror = () => reject(false);
                 reader.readAsText(file);

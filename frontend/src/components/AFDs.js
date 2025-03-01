@@ -21,7 +21,7 @@ const AFDs = () => {
                 color: "#FFFFFF",
             }}
         >
-            {/* Título principal */}
+            {/* Main title */}
             <Typography
                 variant="h3"
                 sx={{
@@ -35,13 +35,13 @@ const AFDs = () => {
                 AFDs: Operaciones y Transformaciones
             </Typography>
 
-            {/* Lista de operaciones */}
+            {/* Operations list */}
             <Grid
                 container
                 spacing={3}
                 sx={{
                     maxWidth: "1200px",
-                    alignItems: "stretch", // Asegura que todos los elementos del grid tengan la misma altura
+                    alignItems: "stretch",
                 }}
             >
                 {[

@@ -19,7 +19,7 @@ const MainMenu = () => {
                 fontFamily: "'Raleway', sans-serif"
             }}
         >
-            {/* Secciones informativas */}
+            {/* Informative sections */}
             <Grid container spacing={3} sx={{ maxWidth: "1200px", marginTop: "3rem" }}>
                 {[
                     {
@@ -44,7 +44,7 @@ const MainMenu = () => {
                         md={4}
                         key={index}
                         sx={{
-                            animation: `slideIn 0.8s ease-out ${index * 0.2}s`, // Animación para cada elemento con un delay
+                            animation: `slideIn 0.8s ease-out ${index * 0.2}s`,
                         }}
                     >
                         <Paper
@@ -58,7 +58,7 @@ const MainMenu = () => {
                                 height: "400px",
                                 display: "flex",
                                 flexDirection: "column",
-                                justifyContent: "flex-start", // Posiciona el contenido arriba
+                                justifyContent: "flex-start",
                                 alignItems: "center",
                                 paddingTop: "2rem",
                                 cursor: "pointer",
@@ -71,10 +71,10 @@ const MainMenu = () => {
                             }}
                         >
                             <Typography
-                                variant="h4" // Título más grande
+                                variant="h4"
                                 sx={{
                                     fontWeight: "700",
-                                    fontFamily: "'Spicy Rice', cursive", // Fuente Spicy Rice
+                                    fontFamily: "'Spicy Rice', cursive",
                                     marginBottom: "1rem",
                                     textAlign: "center",
                                 }}
@@ -98,7 +98,7 @@ const MainMenu = () => {
                 ))}
             </Grid>
 
-            {/* Definición de animación */}
+            {/* Animation */}
             <style>
                 {`
                 @keyframes slideIn {

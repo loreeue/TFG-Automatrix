@@ -18,7 +18,7 @@ const InfoAP = () => {
         color: "#FFFFFF",
       }}
     >
-      {/* Título principal */}
+      {/* Main title */}
       <Typography
         variant="h3"
         sx={{
@@ -32,7 +32,7 @@ const InfoAP = () => {
         AP (Autómata a Pila)
       </Typography>
 
-      {/* Contenedor principal */}
+      {/* Principal container */}
       <Paper
         elevation={4}
         sx={{
@@ -46,7 +46,6 @@ const InfoAP = () => {
           animation: "fadeSlideIn 0.8s ease-out",
         }}
       >
-        {/* Idea general */}
         <Typography
           variant="h5"
           sx={{
@@ -64,7 +63,6 @@ const InfoAP = () => {
           de la pila).
         </Typography>
 
-        {/* Reconocen */}
         <Typography
           variant="h5"
           sx={{
@@ -80,11 +78,10 @@ const InfoAP = () => {
           Lenguajes independientes del contexto (Tipo 2 en la Jerarquía de Chomsky).
         </Typography>
 
-        {/* Componentes */}
         <Typography
           variant="h5"
           sx={{
-            marginBottom: "0.2rem", // Menos espacio justo antes de la lista
+            marginBottom: "0.2rem",
             fontFamily: "'Spicy Rice', cursive",
             transition: "color 0.3s",
             "&:hover": { color: theme.palette.primary.main },
@@ -113,11 +110,10 @@ const InfoAP = () => {
           </ListItem>
         </List>
 
-        {/* Aceptación */}
         <Typography
           variant="h5"
           sx={{
-            marginBottom: "0.2rem", // Menos espacio
+            marginBottom: "0.2rem",
             fontFamily: "'Spicy Rice', cursive",
             transition: "color 0.3s",
             "&:hover": { color: theme.palette.primary.main },
@@ -144,7 +140,7 @@ const InfoAP = () => {
         </List>
       </Paper>
 
-      {/* Animaciones */}
+      {/* Animations */}
       <style>
         {`
           @keyframes fadeSlideIn {

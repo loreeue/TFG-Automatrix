@@ -15,7 +15,7 @@ const AFNDToAFD = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Verificar si un archivo ha sido seleccionado
+        // Check if a file has been selected
         if (!file) {
             toast.error("Por favor selecciona un archivo AFND (.jff).", {
                 position: "top-right",
@@ -28,7 +28,7 @@ const AFNDToAFD = () => {
             return;
         }
 
-        // Verificar que el archivo tenga la extensión .jff
+        // Verify that the file has the .jff extension
         if (!file.name.endsWith(".jff")) {
             toast.error("El archivo seleccionado no es un AFND válido (.jff).", {
                 position: "top-right",
@@ -41,20 +41,20 @@ const AFNDToAFD = () => {
             return;
         }
 
-        // Leer el archivo y verificar que sea un AFND
+        // Read the file and verify that it is an AFND
         const readFileContent = (file) => {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const content = e.target.result;
 
-                    // Verificar si el archivo tiene la estructura de un autómata finito
+                    // Check if the file has the structure of a finite automaton
                     if (!content.includes("<structure>") || !content.includes("<type>fa</type>") || !content.includes("<automaton>")) {
-                        resolve(false); // No es un autómata finito
+                        resolve(false); // Isn't an AF
                         return;
                     }
 
-                    // Verificar si hay transiciones vacías o múltiples transiciones con el mismo símbolo (característica de un AFND)
+                    // Check for empty transitions or multiple transitions with the same symbol (characteristic of an AFND)
                     const isAFND = content.includes("<read/>") || (content.match(/<read>/g) || []).length > (content.match(/<state>/g) || []).length;
 
                     resolve(isAFND);

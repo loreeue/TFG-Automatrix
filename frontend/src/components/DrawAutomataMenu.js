@@ -20,7 +20,7 @@ const DrawAutomataMenu = () => {
                 color: "#FFFFFF",
             }}
         >
-            {/* Título principal */}
+            {/* Main title */}
             <Typography
                 variant="h3"
                 sx={{
@@ -34,7 +34,7 @@ const DrawAutomataMenu = () => {
                 Dibujar Autómatas
             </Typography>
 
-            {/* Botones de Opciones */}
+            {/* Options Buttons */}
             <Grid container spacing={3} justifyContent="center">
                 {[
                     { label: "AFD", description: "Dibuja un AFD", path: "/draw_automata/afd" },
@@ -83,7 +83,7 @@ const DrawAutomataMenu = () => {
                 ))}
             </Grid>
 
-            {/* Estilo de la animación */}
+            {/* Animation style */}
             <style>
                 {`
                 @keyframes slideIn {

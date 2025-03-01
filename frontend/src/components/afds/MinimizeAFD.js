@@ -15,7 +15,7 @@ const MinimizeAFD = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Validar si hay un archivo seleccionado
+        // Validate if a file is selected
         if (!file) {
             toast.error("Por favor selecciona un archivo AFD (.jff).", {
                 position: "top-right",
@@ -28,7 +28,7 @@ const MinimizeAFD = () => {
             return;
         }
 
-        // Validar la extensión del archivo
+        // Validate file extension
         if (!file.name.endsWith(".jff")) {
             toast.error("El archivo seleccionado no es un AFD válido (.jff).", {
                 position: "top-right",
@@ -88,10 +88,9 @@ const MinimizeAFD = () => {
                 color: "#FFFFFF",
             }}
         >
-            {/* Contenedor para Toast */}
             <ToastContainer />
 
-            {/* Título principal */}
+            {/* Main title */}
             <Typography
                 variant="h3"
                 sx={{
@@ -104,9 +103,9 @@ const MinimizeAFD = () => {
                 Minimizar AFD
             </Typography>
 
-            {/* Formulario */}
+            {/* Form */}
             <form onSubmit={handleSubmit} style={{ width: "100%", maxWidth: "800px" }}>
-                {/* Botón para subir archivo */}
+                {/* File upload button */}
                 <Button
                     variant="contained"
                     component="label"
@@ -131,7 +130,7 @@ const MinimizeAFD = () => {
                     />
                 </Button>
 
-                {/* Nombre del archivo seleccionado */}
+                {/* Name file */}
                 {file && (
                     <Typography
                         variant="body2"
@@ -145,7 +144,7 @@ const MinimizeAFD = () => {
                     </Typography>
                 )}
 
-                {/* Botón para minimizar */}
+                {/* Minimize button */}
                 <Button
                     type="submit"
                     variant="contained"

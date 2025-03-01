@@ -7,7 +7,6 @@ const Info = () => {
     const navigate = useNavigate();
     const theme = useTheme();
 
-    // 7 items totales
     const infoItems = [
         { label: "AFD", description: "Autómatas Finitos Deterministas", path: "/info/afd" },
         { label: "AFND", description: "Autómatas Finitos No Deterministas", path: "/info/afnd" },
@@ -18,7 +17,6 @@ const Info = () => {
         { label: "Resumen", description: "Comparativa y conclusiones", path: "/info/resumen" },
     ];
 
-    // Dividimos en 4 de arriba y 3 de abajo
     const topItems = infoItems.slice(0, 4);   // AFD, AFND, AP, MT
     const bottomItems = infoItems.slice(4);  // Gramáticas, Expresiones, Resumen
 
@@ -34,7 +32,7 @@ const Info = () => {
                 color: "#FFFFFF",
             }}
         >
-            {/* Título principal */}
+            {/* Main title */}
             <Typography
                 variant="h3"
                 sx={{
@@ -48,9 +46,7 @@ const Info = () => {
                 Información
             </Typography>
 
-            {/* Contenedor con ancho máximo */}
             <Box sx={{ maxWidth: "900px", width: "100%", margin: "0 auto" }}>
-                {/* Sección superior (4 items) */}
                 <Grid container spacing={3} justifyContent="center" sx={{ marginBottom: "2rem" }}>
                     {topItems.map((item, index) => (
                         <Grid item xs={12} sm={6} md={3} key={index}>
@@ -68,7 +64,7 @@ const Info = () => {
                                         backgroundColor: theme.palette.primary.main,
                                     },
                                     animation: `slideIn 0.8s ease-out ${index * 0.2}s`,
-                                    minHeight: "10rem", // Más pequeño
+                                    minHeight: "10rem",
                                     display: "flex",
                                     flexDirection: "column",
                                     justifyContent: "center",
@@ -97,8 +93,6 @@ const Info = () => {
                         </Grid>
                     ))}
                 </Grid>
-
-                {/* Sección inferior (3 items) */}
                 <Grid container spacing={3} justifyContent="center">
                     {bottomItems.map((item, index) => (
                         <Grid item xs={12} sm={6} md={4} key={index}>
@@ -116,7 +110,7 @@ const Info = () => {
                                         backgroundColor: theme.palette.primary.main,
                                     },
                                     animation: `slideIn 0.8s ease-out ${index * 0.2}s`,
-                                    minHeight: "10rem", // Más pequeño
+                                    minHeight: "10rem",
                                     display: "flex",
                                     flexDirection: "column",
                                     justifyContent: "center",
@@ -147,7 +141,7 @@ const Info = () => {
                 </Grid>
             </Box>
 
-            {/* Animación */}
+            {/* Animation */}
             <style>
                 {`
                 @keyframes slideIn {
