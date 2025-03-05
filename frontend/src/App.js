@@ -34,6 +34,7 @@ import InfoGrammar from "./components/info/InfoGrammar";
 import InfoER from "./components/info/InfoER";
 import Summary from "./components/info/Summary";
 import UsoWeb from "./components/info/UsoWeb";
+import Docs from "./components/Docs";
 
 const App = () => {
     return (
@@ -72,6 +73,7 @@ const App = () => {
 				<Route path="/info/expresiones" element={<InfoER />} />
 				<Route path="/info/resumen" element={<Summary />} />
 				<Route path="/info/uso-web" element={<UsoWeb />} />
+				<Route path="/docs" element={<Docs />} />
             </Routes>
             <Footer />
         </Router>

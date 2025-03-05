@@ -132,7 +132,7 @@ const Header = () => {
     const handleCloseErrorDialog = () => {
 		setOpenErrorDialog(false);
 		if (failedAttempts >= 3) {
-			setFailedAttempts(0); // Reinicia el contador después de mostrar el mensaje
+			setFailedAttempts(0);
 		}
 		navigate("/");
 	};
@@ -294,25 +294,36 @@ const Header = () => {
                     onClick={() => navigate(-1)}
                 ></Button>
 
-                {userName && (
-                    <>
-                        <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
-                            Bienvenid@, {userName}
-                        </span>
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            startIcon={<LogoutIcon />}
-                            sx={{
-                                fontWeight: "bold",
-                                textTransform: "none",
-                                "&:hover": { backgroundColor: theme.palette.primary.main },
-                                fontFamily: "'Josefin Sans', sans-serif",
-                            }}
-                            onClick={handleLogout}
-                        />
-                    </>
-                )}
+				{userName && (
+					<>
+						<Button
+							variant="text"
+							onClick={() => navigate("/docs", { state: { userName } })}
+							sx={{
+								color: "#FFFFFF",
+								fontWeight: "bold",
+								fontSize: "1rem",
+								textTransform: "none",
+								"&:hover": { color: theme.palette.primary.main },
+								fontFamily: "'Josefin Sans', sans-serif",
+							}}
+						>
+							Mis documentos
+						</Button>
+						<Button
+							variant="contained"
+							color="secondary"
+							startIcon={<LogoutIcon />}
+							sx={{
+								fontWeight: "bold",
+								textTransform: "none",
+								"&:hover": { backgroundColor: theme.palette.primary.main },
+								fontFamily: "'Josefin Sans', sans-serif",
+							}}
+							onClick={handleLogout}
+						/>
+					</>
+				)}
 
                 {!userName && (
                     <>
