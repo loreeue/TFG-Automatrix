@@ -414,21 +414,29 @@ const DrawAFD = () => {
         setExportFilename("automata");
     };
 
-    const handleDeleteTransitionClick = () => {
-        setDeleteTransitionMode(!deleteTransitionMode);
-        if (!deleteTransitionMode) {
-            toast.info("Modo de eliminación de transiciones activado. Haz clic en una transición para eliminarla.");
-        } else {
-            toast.info("Modo de eliminación de transiciones desactivado.");
-        }
-    };
+    const handleDeleteModeClick = () => {
+		setDeleteTransitionMode(!deleteTransitionMode);
+		if (!deleteTransitionMode) {
+			toast.info("Modo de eliminación activado. Haz clic en una transición o en el nombre de un estado para eliminarlo.");
+		} else {
+			toast.info("Modo de eliminación desactivado.");
+		}
+	};
 
-    const handleTransitionClick = (transition) => {
-        if (deleteTransitionMode) {
-            setTransitions(prevTransitions => prevTransitions.filter(t => t !== transition));
-            toast.success("Transición eliminada.");
-        }
-    };
+	const handleTransitionClick = (transition) => {
+		if (deleteTransitionMode) {
+			setTransitions(prevTransitions => prevTransitions.filter(t => t !== transition));
+			toast.success("Transición eliminada.");
+		}
+	};
+
+	const handleStateClick = (state) => {
+		if (deleteTransitionMode) {
+			setNodes(prevNodes => prevNodes.filter(n => n.id !== state.id));
+			setTransitions(prevTransitions => prevTransitions.filter(t => t.from.id !== state.id && t.to.id !== state.id));
+			toast.success("Estado eliminado.");
+		}
+	};
 
     return (
         <Box
@@ -479,57 +487,43 @@ const DrawAFD = () => {
 
                         {/* Render nodes */}
                         {nodes.map((node) => (
-                            <React.Fragment key={node.id}>
-                                {node.isInitial && (
-                                    <Arrow
-                                        points={[
-                                            node.x - 70,
-                                            node.y,
-                                            node.x - 40,
-                                            node.y,
-                                        ]}
-                                        stroke="#333"
-                                        fill="#333"
-                                        pointerLength={10}
-                                        pointerWidth={10}
-                                    />
-                                )}
-                                <Circle
-                                    x={node.x}
-                                    y={node.y}
-                                    radius={30}
-                                    fill={getNodeFillColor(node)}
-                                    stroke="#333"
-                                    strokeWidth={2}
-                                    draggable
-                                    onDragMove={(e) =>
-                                        moveNode(node.id, e.target.x(), e.target.y())
-                                    }
-                                    onClick={() => handleNodeClick(node)}
-                                    onContextMenu={(e) =>
-                                        handleContextMenu(e, node)
-                                    }
-                                />
-                                {node.isFinal && (
-                                    <Circle
-                                        x={node.x}
-                                        y={node.y}
-                                        radius={34}
-                                        stroke="#333"
-                                        strokeWidth={2}
-                                        listening={false}
-                                    />
-                                )}
-                                <Text
-                                    text={node.label}
-                                    x={node.x - 10}
-                                    y={node.y - 10}
-                                    fontSize={16}
-                                    fill="#FFFFFF"
-                                    fontFamily="'Spicy Rice', cursive"
-                                />
-                            </React.Fragment>
-                        ))}
+							<React.Fragment key={node.id}>
+								{node.isInitial && (
+									<Arrow
+										points={[node.x - 70, node.y, node.x - 40, node.y]}
+										stroke="#333"
+										fill="#333"
+										pointerLength={10}
+										pointerWidth={10}
+									/>
+								)}
+								<Circle
+									x={node.x}
+									y={node.y}
+									radius={30}
+									fill={getNodeFillColor(node)}
+									stroke="#333"
+									strokeWidth={2}
+									draggable
+									onDragMove={(e) => moveNode(node.id, e.target.x(), e.target.y())}
+									onClick={() => handleNodeClick(node)}
+									onContextMenu={(e) => handleContextMenu(e, node)}
+								/>
+								{node.isFinal && (
+									<Circle x={node.x} y={node.y} radius={34} stroke="#333" strokeWidth={2} listening={false} />
+								)}
+								{/* Texto del estado, ahora es clickeable para eliminar */}
+								<Text
+									text={node.label}
+									x={node.x - 10}
+									y={node.y - 10}
+									fontSize={16}
+									fill="#FFFFFF"
+									fontFamily="'Spicy Rice', cursive"
+									onClick={() => handleStateClick(node)} // ← Ahora el nombre del estado puede eliminarlo
+								/>
+							</React.Fragment>
+						))}
                     </Layer>
                 </Stage>
             </Box>
@@ -594,25 +588,25 @@ const DrawAFD = () => {
                 </Button>
             </Tooltip>
 
-            {/* Delete transition button */}
-            <Tooltip title="Eliminar transición" placement="left">
-                <Button
-                    variant="contained"
-                    sx={{
-                        position: "absolute",
-                        right: "1rem",
-                        top: "30rem",
-                        borderRadius: "50%",
-                        minWidth: "3rem",
-                        height: "3rem",
-                        backgroundColor: theme.palette.secondary.main,
-                        "&:hover": { backgroundColor: theme.palette.primary.main },
-                    }}
-                    onClick={handleDeleteTransitionClick}
-                >
-                    <ClearIcon />
-                </Button>
-            </Tooltip>
+            {/* Delete transition or state button */}
+			<Tooltip title="Eliminar estado o transición" placement="left">
+				<Button
+					variant="contained"
+					sx={{
+						position: "absolute",
+						right: "1rem",
+						top: "30rem",
+						borderRadius: "50%",
+						minWidth: "3rem",
+						height: "3rem",
+						backgroundColor: theme.palette.secondary.main,
+						"&:hover": { backgroundColor: theme.palette.primary.main },
+					}}
+					onClick={handleDeleteModeClick}
+				>
+					<ClearIcon />
+				</Button>
+			</Tooltip>
 
             {/* Modal to mark initial/final state */}
             <Dialog open={showStateTypeModal} onClose={() => setShowStateTypeModal(false)}>
@@ -826,7 +820,7 @@ const DrawAFD = () => {
                         <li>
                             <Typography variant="body1" sx={{fontFamily: "'Josefin Sans', sans-serif"}}>
                                 <b>Botón de eliminar transición</b>: Activar modo de eliminación y hacer clic en una
-                                flecha para eliminarla.
+                                flecha para eliminar la transición o en el nombre de un estado para borrar el estado.
                             </Typography>
                         </li>
                     </ul>
