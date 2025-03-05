@@ -32,6 +32,7 @@ const Header = () => {
 	const [passwordError, setPasswordError] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [confirmPasswordError, setConfirmPasswordError] = useState("");
+	const [failedAttempts, setFailedAttempts] = useState(0);
 
     const handleAutomatrixClick = () => {
         setIsClicked(true);
@@ -77,7 +78,7 @@ const Header = () => {
 			return;
 		}
 
-		if (!validateConfirmPassword(password, confirmPassword)) {
+		if (!isLogin && !validateConfirmPassword(password, confirmPassword)) {
 			setConfirmPasswordError("Las contraseñas no coinciden.");
 			return;
 		}
@@ -95,10 +96,13 @@ const Header = () => {
 					const data = await response.json();
 					setUserName(data.username);
 					setOpenDialog(false);
+					setFailedAttempts(0);
 					navigate("/");
 				} else {
+					setFailedAttempts(prev => prev + 1);
 					setOpenErrorDialog(true);
 				}
+
 			} catch (error) {
 				console.error("Error en el login:", error);
 				setOpenErrorDialog(true);
@@ -126,9 +130,12 @@ const Header = () => {
 	};
 
     const handleCloseErrorDialog = () => {
-        setOpenErrorDialog(false);
-        navigate("/");
-    };
+		setOpenErrorDialog(false);
+		if (failedAttempts >= 3) {
+			setFailedAttempts(0); // Reinicia el contador después de mostrar el mensaje
+		}
+		navigate("/");
+	};
 
     const handleLogout = () => {
         setUserName("");
@@ -484,12 +491,19 @@ const Header = () => {
 
             {/* Login error pop-up */}
             <Dialog open={openErrorDialog} onClose={handleCloseErrorDialog}>
-                <DialogTitle>Error</DialogTitle>
-                <DialogContent>El correo o la contraseña son incorrectos.</DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseErrorDialog}>Aceptar</Button>
-                </DialogActions>
-            </Dialog>
+				<DialogTitle>Error</DialogTitle>
+				<DialogContent>
+					<p>El correo o la contraseña son incorrectos.</p>
+					{failedAttempts >= 3 && (
+						<p style={{ color: "red", fontWeight: "bold" }}>
+							Ponte en contacto con el administrador para recuperar la contraseña.
+						</p>
+					)}
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleCloseErrorDialog}>Aceptar</Button>
+				</DialogActions>
+			</Dialog>
         </Box>
     );
 };
