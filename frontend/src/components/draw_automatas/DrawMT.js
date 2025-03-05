@@ -18,7 +18,9 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
 import ClearIcon from "@mui/icons-material/Clear";
+import CircularProgress from "@mui/material/CircularProgress";
 import { saveAs } from 'file-saver';
+import axios from "axios";
 
 const DrawMT = () => {
     const [nodes, setNodes] = useState([]); // States
@@ -42,6 +44,10 @@ const DrawMT = () => {
 
     const [showHelpModal, setShowHelpModal] = useState(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+
+	const [inputString, setInputString] = useState("");
+	const [validationResult, setValidationResult] = useState("");
+	const [loading, setLoading] = useState(false);
 
     const theme = useTheme();
 
@@ -72,8 +78,8 @@ const DrawMT = () => {
     };
 
     const confirmAddTransition = () => {
-        const read = transitionRead.trim() || "λ";   // If it is empty, we use "λ"
-        const write = transitionWrite.trim() || "λ"; // If it is empty, we use "λ"
+        const read = transitionRead.trim() || ".";   // If it is empty, we use "."
+        const write = transitionWrite.trim() || "."; // If it is empty, we use "."
         const move = transitionMove.trim();          // 'R' o 'L'
 
         if (!["R", "L"].includes(move)) {
@@ -218,6 +224,87 @@ const DrawMT = () => {
         }
     };
 
+	const handleValidateStringMT = async () => {
+		if (nodes.length === 0 && transitions.length === 0) {
+			toast.error("No hay una Máquina de Turing para validar.");
+			return;
+		}
+
+		if (!inputString) {
+			toast.error("Por favor ingresa una cadena para validar.");
+			return;
+		}
+
+		const xmlHeader = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>`;
+		const structureOpen = `<structure>\n<type>turing</type>\n<automaton>\n`;
+		const structureClose = `</automaton>\n</structure>`;
+
+		const statesXML = nodes.map((node, i) => {
+			return `
+		<state id="${i}" name="${node.label}">
+			<x>${node.x}</x>
+			<y>${node.y}</y>
+			${node.isInitial ? "<initial/>" : ""}
+			${node.isFinal ? "<final/>" : ""}
+		</state>`;
+		}).join("\n");
+
+		const transitionsXML = transitions.map(t => {
+			const fromIndex = parseInt(t.from.id.replace("state-", ""), 10);
+			const toIndex = parseInt(t.to.id.replace("state-", ""), 10);
+
+			if (!t.transitionsData || t.transitionsData.length === 0) {
+				console.warn(`Transición inválida o sin datos: ${JSON.stringify(t)}`);
+				return "";
+			}
+
+			return t.transitionsData.map(({ read, write, move }) => {
+				const readTag = !read || read.trim() === "." || read.trim() === "" ? "<read/>" : `<read>${read.trim()}</read>`;
+				const writeTag = !write || write.trim() === "." || write.trim() === "" ? "<write/>" : `<write>${write.trim()}</write>`;
+				const moveTag = move ? `<move>${move.trim()}</move>` : "<move/>";
+
+				return `
+		<transition>
+			<from>${fromIndex}</from>
+			<to>${toIndex}</to>
+			${readTag}
+			${writeTag}
+			${moveTag}
+		</transition>`;
+			}).join("\n");
+
+		}).filter(Boolean).join("\n");
+
+		const fullXML = `${xmlHeader}
+			${structureOpen}
+			${statesXML}
+			${transitionsXML}
+			${structureClose}`;
+
+		const blob = new Blob([fullXML], { type: "application/xml;charset=utf-8" });
+		const file = new File([blob], "automata_mt.jff", { type: "application/xml" });
+
+		setLoading(true);
+		const formData = new FormData();
+		formData.append("file", file);
+		formData.append("input", inputString);
+
+		try {
+			const response = await axios.post("/api/validate/turingMachine", formData, {
+				headers: { "Content-Type": "multipart/form-data" },
+			});
+			const accepted = response.data;
+			setValidationResult(
+				accepted ? "La MT SÍ reconoce esta cadena." : "La MT NO reconoce esta cadena."
+			);
+		} catch (error) {
+			console.error(error);
+			toast.error("Error en el servidor al validar la cadena.");
+		} finally {
+			setLoading(false);
+		}
+	};
+
     const renderTransition = (t, index) => {
         if (!t || !t.from || !t.to) return null;
 
@@ -334,56 +421,63 @@ const DrawMT = () => {
     };
 
     const exportToJFF = () => {
-        const xmlHeader = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>`;
-        const structureOpen = `<structure>\n<type>turing</type>\n<automaton>\n`;
-        const structureClose = `</automaton>\n</structure>`;
+		const xmlHeader = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>`;
+		const structureOpen = `<structure>\n<type>turing</type>\n<automaton>\n`;
+		const structureClose = `</automaton>\n</structure>`;
 
-        // State construction
-        const statesXML = nodes.map((node, i) => {
-            return `
-        <state id="${i}" name="${node.label}">
-            <x>${node.x}</x>
-            <y>${node.y}</y>
-            ${node.isInitial ? "<initial/>" : ""}
-            ${node.isFinal ? "<final/>" : ""}
-        </state>`;
-        }).join("\n");
+		// Construcción de los estados
+		const statesXML = nodes.map((node, i) => {
+			return `
+		<state id="${i}" name="${node.label}">
+			<x>${node.x}</x>
+			<y>${node.y}</y>
+			${node.isInitial ? "<initial/>" : ""}
+			${node.isFinal ? "<final/>" : ""}
+		</state>`;
+		}).join("\n");
 
-        // Transitions construction
-        const transitionsXML = transitions.map(t => {
-            const fromIndex = nodes.findIndex(n => n.id === t.from.id);
-            const toIndex = nodes.findIndex(n => n.id === t.to.id);
+		// Construcción de las transiciones
+		const transitionsXML = transitions.map(t => {
+			const fromIndex = nodes.findIndex(n => n.id === t.from.id);
+			const toIndex = nodes.findIndex(n => n.id === t.to.id);
 
-            if (fromIndex === -1 || toIndex === -1) {
-                console.warn(`Transición inválida: ${JSON.stringify(t)}`);
-                return "";
-            }
+			if (fromIndex === -1 || toIndex === -1) {
+				console.warn(`Transición inválida: ${JSON.stringify(t)}`);
+				return "";
+			}
 
-            return t.transitionsData.map(({ read, write, move }) => `
-        <transition>
-            <from>${fromIndex}</from>
-            <to>${toIndex}</to>
-            <read>${read || "λ"}</read>
-            <write>${write || "λ"}</write>
-            <move>${["R", "L"].includes(move) ? move : "S"}</move>
-        </transition>`).join("\n");
-        }).filter(Boolean).join("\n"); // Filter empty transitions
+			return t.transitionsData.map(({ read, write, move }) => {
+				// Manejo de los parámetros `read` y `write`
+				const readTag = (read && read.trim() === ".") ? "<read/>" : `<read>${read || "."}</read>`;
+				const writeTag = (write && write.trim() === ".") ? "<write/>" : `<write>${write || ""}</write>`;
+				const moveTag = ["R", "L"].includes(move) ? move : "S";
 
-        // Construction of the complete XML file
-        const fullXML = `${xmlHeader}
-						${structureOpen}
-						${statesXML}
-						${transitionsXML}
-						${structureClose}`;
+				return `
+		<transition>
+			<from>${fromIndex}</from>
+			<to>${toIndex}</to>
+			${readTag}
+			${writeTag}
+			<move>${moveTag}</move>
+		</transition>`;
+			}).join("\n");
+		}).filter(Boolean).join("\n"); // Filtrar transiciones vacías
 
-        // Create and save the file
-        const blob = new Blob([fullXML], { type: "application/xml;charset=utf-8" });
-        saveAs(blob, `${exportFilename || "turing_machine"}.jff`);
+		// Construcción del archivo XML completo
+		const fullXML = `${xmlHeader}
+			${structureOpen}
+			${statesXML}
+			${transitionsXML}
+			${structureClose}`;
 
-        // Reset
-        setShowExportModal(false);
-        setExportFilename("turing_machine");
-    };
+		// Crear y guardar el archivo
+		const blob = new Blob([fullXML], { type: "application/xml;charset=utf-8" });
+		saveAs(blob, `${exportFilename || "turing_machine"}.jff`);
+
+		// Reiniciar el estado de exportación
+		setShowExportModal(false);
+		setExportFilename("turing_machine");
+	};
 
     const handleDeleteTransitionClick = () => {
         setDeleteTransitionMode(!deleteTransitionMode);
@@ -810,6 +904,51 @@ const DrawMT = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+			<Box sx={{ marginTop: "2rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem" }}>
+				<Typography variant="h6" sx={{ color: "#FFFFFF", fontFamily: "'Josefin Sans', sans-serif" }}>
+					Validar Cadena:
+				</Typography>
+				<TextField
+					variant="outlined"
+					value={inputString}
+					onChange={(e) => setInputString(e.target.value)}
+					sx={{
+						backgroundColor: "#FFFFFF",
+						borderRadius: "8px",
+						width: "250px",
+						height: "30px",
+						fontFamily: "'Josefin Sans', sans-serif",
+						"& .MuiInputBase-input": {
+							fontFamily: "'Josefin Sans', sans-serif",
+							padding: "5px",
+							height: "20px"
+						}
+					}}
+					placeholder="Introduce una cadena"
+				/>
+				<Button
+					variant="contained"
+					sx={{
+						backgroundColor: theme.palette.secondary.main,
+						fontFamily: "'Josefin Sans', sans-serif",
+						"&:hover": { backgroundColor: theme.palette.primary.main }
+					}}
+					onClick={handleValidateStringMT}
+					disabled={loading}
+				>
+					{loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Validar"}
+				</Button>
+				{validationResult && (
+					<>
+						<Typography variant="h6" sx={{ color: "#FFFFFF", fontFamily: "'Josefin Sans', sans-serif" }}>
+							→
+						</Typography>
+						<Typography variant="h6" sx={{ color: "#FFFFFF", fontFamily: "'Josefin Sans', sans-serif" }}>
+							{validationResult}
+						</Typography>
+					</>
+				)}
+			</Box>
         </Box>
     );
 };

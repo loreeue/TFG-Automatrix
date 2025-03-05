@@ -18,7 +18,9 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
 import ClearIcon from "@mui/icons-material/Clear";
+import CircularProgress from "@mui/material/CircularProgress";
 import { saveAs } from 'file-saver';
+import axios from "axios";
 
 const DrawAFD = () => {
     const [nodes, setNodes] = useState([]); // States
@@ -39,6 +41,10 @@ const DrawAFD = () => {
 
     const [showHelpModal, setShowHelpModal] = useState(false);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+
+	const [inputString, setInputString] = useState("");
+	const [validationResult, setValidationResult] = useState("");
+	const [loading, setLoading] = useState(false);
 
     const theme = useTheme();
 
@@ -192,6 +198,68 @@ const DrawAFD = () => {
             setSelectedNode(node);
         }
     };
+
+	const handleValidateString = async () => {
+		if (nodes.length === 0 && transitions.length === 0) {
+			toast.error("No hay un autómata para validar.");
+			return;
+		}
+
+		if (!inputString) {
+			toast.error("Por favor ingresa una cadena para validar.");
+			return;
+		}
+
+		const xmlHeader = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>`;
+		const structureOpen = `<structure>\n<type>fa</type>\n<automaton>\n`;
+		const structureClose = `</automaton>\n</structure>`;
+
+		const statesXML = nodes.map((node, i) => {
+			return `
+		<state id="${i}" name="${node.label}">
+			<x>${node.x}</x>
+			<y>${node.y}</y>
+			${node.isInitial ? "<initial/>" : ""}
+			${node.isFinal ? "<final/>" : ""}
+		</state>`;
+		}).join("\n");
+
+		const transitionsXML = transitions.map(t => {
+			const fromIndex = nodes.findIndex(n => n.id === t.from.id);
+			const toIndex = nodes.findIndex(n => n.id === t.to.id);
+			return `
+		<transition>
+			<from>${fromIndex}</from>
+			<to>${toIndex}</to>
+			<read>${t.letter}</read>
+		</transition>`;
+		}).join("\n");
+
+		const fullXML = `${xmlHeader}\n${structureOpen}\n${statesXML}\n${transitionsXML}\n${structureClose}`;
+
+		const blob = new Blob([fullXML], { type: "application/xml;charset=utf-8" });
+		const file = new File([blob], "automata.jff", { type: "application/xml" });
+
+		setLoading(true);
+		const formData = new FormData();
+		formData.append("file", file);
+		formData.append("input", inputString);
+
+		try {
+			const response = await axios.post("/api/validate/afd", formData, {
+				headers: { "Content-Type": "multipart/form-data" },
+			});
+			const accepted = response.data;
+			setValidationResult(
+				accepted ? "El AFD SÍ reconoce esta cadena." : "El AFD NO reconoce esta cadena."
+			);
+		} catch (error) {
+			console.error(error);
+			toast.error("Error en el servidor al validar la cadena.");
+		} finally {
+			setLoading(false);
+		}
+	};
 
     const renderTransition = (t, index) => {
         const isLoop = t.from.id === t.to.id;
@@ -820,6 +888,52 @@ const DrawAFD = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
+			<Box sx={{ marginTop: "2rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem" }}>
+				<Typography variant="h6" sx={{ color: "#FFFFFF", fontFamily: "'Josefin Sans', sans-serif" }}>
+					Validar Cadena:
+				</Typography>
+				<TextField
+					variant="outlined"
+					value={inputString}
+					onChange={(e) => setInputString(e.target.value)}
+					sx={{
+						backgroundColor: "#FFFFFF",
+						borderRadius: "8px",
+						width: "250px",
+						height: "30px",
+						fontFamily: "'Josefin Sans', sans-serif",
+						"& .MuiInputBase-input": {
+							fontFamily: "'Josefin Sans', sans-serif",
+							padding: "5px",
+							height: "20px"
+						}
+					}}
+					placeholder="Introduce una cadena"
+				/>
+				<Button
+					variant="contained"
+					sx={{
+						backgroundColor: theme.palette.secondary.main,
+						fontFamily: "'Josefin Sans', sans-serif",
+						"&:hover": { backgroundColor: theme.palette.primary.main }
+					}}
+					onClick={handleValidateString}
+					disabled={loading}
+				>
+					{loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Validar"}
+				</Button>
+				{validationResult && (
+					<>
+						<Typography variant="h6" sx={{ color: "#FFFFFF", fontFamily: "'Josefin Sans', sans-serif" }}>
+							→
+						</Typography>
+						<Typography variant="h6" sx={{ color: "#FFFFFF", fontFamily: "'Josefin Sans', sans-serif" }}>
+							{validationResult}
+						</Typography>
+					</>
+				)}
+			</Box>
         </Box>
     );
 };
