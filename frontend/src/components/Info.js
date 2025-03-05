@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Paper, Grid } from "@mui/material";
+import { Box, Typography, Paper, Grid, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 
@@ -140,6 +140,24 @@ const Info = () => {
                     ))}
                 </Grid>
             </Box>
+
+			{/* Botón "¿Cómo usar la web?" */}
+			<Button
+				variant="contained"
+				sx={{
+					marginTop: "3rem",
+					padding: "1rem 2rem",
+					borderRadius: "20px",
+					fontFamily: "'Josefin Sans', sans-serif",
+					fontSize: "1.2rem",
+					backgroundColor: theme.palette.secondary.main,
+					"&:hover": { backgroundColor: theme.palette.primary.main },
+					animation: "fadeIn 1s ease-out",
+				}}
+				onClick={() => navigate("/info/uso-web")}
+			>
+				¿Cómo usar la web?
+			</Button>
 
             {/* Animation */}
             <style>

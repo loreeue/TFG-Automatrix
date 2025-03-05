@@ -33,6 +33,7 @@ import InfoMT from "./components/info/InfoMT";
 import InfoGrammar from "./components/info/InfoGrammar";
 import InfoER from "./components/info/InfoER";
 import Summary from "./components/info/Summary";
+import UsoWeb from "./components/info/UsoWeb";
 
 const App = () => {
     return (
@@ -70,6 +71,7 @@ const App = () => {
 				<Route path="/info/gramaticas" element={<InfoGrammar />} />
 				<Route path="/info/expresiones" element={<InfoER />} />
 				<Route path="/info/resumen" element={<Summary />} />
+				<Route path="/info/uso-web" element={<UsoWeb />} />
             </Routes>
             <Footer />
         </Router>
