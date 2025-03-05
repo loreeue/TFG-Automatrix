@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, Grid, Paper, Link } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { useLocation } from "react-router-dom"; // Importar useLocation
+import { useLocation } from "react-router-dom";
 
 const Docs = () => {
     const theme = useTheme();
     const location = useLocation();
 
-    // Obtener el nombre del usuario desde el estado de navegación
     const userName = location.state?.userName || "Usuario";
 
     const [documents, setDocuments] = useState([]);
@@ -36,7 +35,7 @@ const Docs = () => {
                 color: "#FFFFFF",
             }}
         >
-            {/* Mensaje de bienvenida con el nombre del usuario */}
+            {/* Welcome message */}
             <Typography
                 variant="h3"
                 sx={{
@@ -61,7 +60,6 @@ const Docs = () => {
                 Aquí puedes ver y descargar los documentos generados o subidos en la web.
             </Typography>
 
-            {/* Grid de documentos con mayor espacio entre filas */}
             <Grid container spacing={4} sx={{ maxWidth: "800px", alignItems: "stretch" }}>
                 {documents.length > 0 ? (
                     documents.map((doc, index) => (
@@ -72,13 +70,13 @@ const Docs = () => {
                             key={index}
                             sx={{
                                 animation: `slideIn 0.8s ease-out ${index * 0.2}s`,
-                                marginBottom: "2rem", // Aumentar espacio entre filas
+                                marginBottom: "2rem",
                             }}
                         >
                             <Paper
                                 elevation={3}
                                 sx={{
-                                    padding: "1rem", // Reducir el tamaño del cuadro
+                                    padding: "1rem",
                                     backgroundColor: theme.palette.secondary.main,
                                     color: "#FFFFFF",
                                     textAlign: "center",
@@ -92,7 +90,7 @@ const Docs = () => {
                                 }}
                             >
                                 <Typography
-                                    variant="h6" // Reducir tamaño del título
+                                    variant="h6"
                                     sx={{
                                         fontFamily: "'Spicy Rice', cursive",
                                         marginBottom: "0.5rem",
@@ -105,7 +103,7 @@ const Docs = () => {
                                     href={doc.url}
                                     download
                                     sx={{
-                                        fontSize: "0.9rem", // Reducir tamaño del texto de descarga
+                                        fontSize: "0.9rem",
                                         color: theme.palette.primary.main,
                                         fontFamily: "'Josefin Sans', sans-serif",
                                         textDecoration: "none",
@@ -124,7 +122,7 @@ const Docs = () => {
                 )}
             </Grid>
 
-            {/* Animaciones */}
+            {/* Animations */}
             <style>
                 {`
                 @keyframes slideIn {
