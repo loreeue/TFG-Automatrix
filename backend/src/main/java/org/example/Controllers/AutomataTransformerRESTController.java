@@ -6,8 +6,10 @@ import automata.fsa.FiniteStateAutomaton;
 import automata.pda.PushdownAutomaton;
 import grammar.Grammar;
 import org.example.Entities.AutomatonUtils;
+import org.example.Entities.Document;
 import org.example.Entities.Grammar2Request;
 import org.example.Services.AutomataService;
+import org.example.Services.DocumentService;
 import org.example.Services.GrammarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import java.io.File;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.core.io.Resource;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.FileWriter;
 
@@ -30,6 +33,9 @@ public class AutomataTransformerRESTController {
 
     @Autowired
     private GrammarService grammarService;
+
+	@Autowired
+	private DocumentService documentService;
 
     @PostMapping("/afnd-to-afd")
     public ResponseEntity<Resource> convertAfndToAfd(@RequestParam("file") MultipartFile file) {
@@ -70,8 +76,13 @@ public class AutomataTransformerRESTController {
     }
 
     @PostMapping("/afd-to-minimized-afd")
-    public ResponseEntity<Resource> convertAfdToMinimizedAfd(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Resource> convertAfdToMinimizedAfd(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) {
         try {
+			Document originalDocument = new Document();
+			originalDocument.setName(file.getOriginalFilename());
+			originalDocument.setContent(file.getBytes());
+			originalDocument = documentService.saveDocument(userId, originalDocument);
+
             // Convert MultipartFile to a temporary file
             File tempFile = File.createTempFile("afd", ".jff");
             file.transferTo(tempFile);
@@ -85,6 +96,18 @@ public class AutomataTransformerRESTController {
 
             // Minimize the AFD
             FiniteStateAutomaton minimizedAfd = automataService.minimize(afd);
+
+			File minimizedTempFile = File.createTempFile("afd_minimized", ".jff");
+			automataService.saveAFND(minimizedAfd, minimizedTempFile.getAbsolutePath());
+
+			// Leer el contenido del archivo minimizado en un array de bytes
+			byte[] minimizedContent = Files.readAllBytes(minimizedTempFile.toPath());
+
+			// Guardar el AFD minimizado en la base de datos
+			Document minimizedDocument = new Document();
+			minimizedDocument.setName("afd_minimized.jff");
+			minimizedDocument.setContent(minimizedContent);
+			minimizedDocument = documentService.saveDocument(userId, minimizedDocument);
 
             // Save the resulting minimized AFD to a file
             String outputPath = "/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/files/files_output/afd_minimized.jff";
