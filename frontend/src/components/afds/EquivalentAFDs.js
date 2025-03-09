@@ -21,6 +21,19 @@ const EquivalentAFDs = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+		const userId = localStorage.getItem("userId");
+		if (!userId) {
+			toast.error("Debes iniciar sesión antes de comparar AFDs.", {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+			return;
+		}
+
         // Verify that both files have been selected
         if (!file1 || !file2) {
             toast.error("Por favor, selecciona ambos archivos AFD (.jff).", {
@@ -84,6 +97,7 @@ const EquivalentAFDs = () => {
         const formData = new FormData();
         formData.append("file1", file1);
         formData.append("file2", file2);
+		formData.append("userId", userId);
 
         try {
             const response = await axios.post("/api/extra/compare-afds", formData, {

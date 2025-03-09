@@ -1,6 +1,9 @@
 import React from "react";
 import { Box, Typography, Grid, Paper } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import imgHome1 from "../assets/img-home1.png";
+import imgHome2 from "../assets/img-home2.png";
+import imgHome3 from "../assets/img-home3.png";
 
 const MainMenu = () => {
     const theme = useTheme();
@@ -25,17 +28,20 @@ const MainMenu = () => {
                     {
                         title: "Automatización",
                         description:
-                            "Resuelve ejercicios de autómatas y lenguajes formales de manera automática.",
+                            "Resuelve ejercicios de autómatas y lenguajes de manera automática.",
+						image: imgHome1
                     },
                     {
                         title: "Visualización",
                         description:
                             "Genera representaciones gráficas de AFDs, máquinas de Turing y más.",
+						image: imgHome2
                     },
                     {
                         title: "Validación",
                         description:
                             "Comprueba la equivalencia entre gramáticas y verifica sus propiedades.",
+						image: imgHome3
                     },
                 ].map((section, index) => (
                     <Grid
@@ -48,28 +54,28 @@ const MainMenu = () => {
                         }}
                     >
                         <Paper
-                            elevation={3}
-                            sx={{
-                                padding: "2rem",
-                                backgroundColor: theme.palette.secondary.main,
-                                color: "#FFFFFF",
-                                textAlign: "center",
-                                borderRadius: "20px",
-                                height: "400px",
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "flex-start",
-                                alignItems: "center",
-                                paddingTop: "2rem",
-                                cursor: "pointer",
-                                "&:hover": {
-                                    backgroundColor: theme.palette.primary.main,
-                                    transform: "scale(1.05)",
-                                    boxShadow: "0px 4px 15px rgba(255, 255, 255, 0.2)",
-                                },
-                                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                            }}
-                        >
+						elevation={3}
+						sx={{
+							padding: "2rem",
+							backgroundColor: theme.palette.secondary.main,
+							color: "#FFFFFF",
+							textAlign: "center",
+							borderRadius: "20px",
+							height: "500px", // Establece una altura uniforme
+							display: "flex",
+							flexDirection: "column",
+							justifyContent: "space-between", // Asegura que la imagen se mantenga alineada
+							alignItems: "center",
+							cursor: "pointer",
+							"&:hover": {
+								backgroundColor: theme.palette.primary.main,
+								transform: "scale(1.05)",
+								boxShadow: "0px 4px 15px rgba(255, 255, 255, 0.2)",
+							},
+							transition: "transform 0.3s ease, box-shadow 0.3s ease",
+						}}
+					>
+
                             <Typography
                                 variant="h4"
                                 sx={{
@@ -93,7 +99,17 @@ const MainMenu = () => {
                             >
                                 {section.description}
                             </Typography>
+							<img
+								src={section.image}
+								alt={section.title}
+								style={{
+									width: "400px",
+									height: "400px",
+									objectFit: "contain"
+								}}
+							/>
                         </Paper>
+
                     </Grid>
                 ))}
             </Grid>

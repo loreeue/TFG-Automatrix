@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import BookIcon from "@mui/icons-material/Book";
@@ -15,6 +15,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import { useTheme } from "@mui/material/styles";
 import { InputAdornment, IconButton } from "@mui/material";
 import "@fontsource/abril-fatface";
+import axios from "axios";
 
 const Header = () => {
     const theme = useTheme();
@@ -33,6 +34,20 @@ const Header = () => {
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [confirmPasswordError, setConfirmPasswordError] = useState("");
 	const [failedAttempts, setFailedAttempts] = useState(0);
+
+	useEffect(() => {
+		const userId = localStorage.getItem("userId");
+
+		if (userId) {
+			axios.get(`http://localhost:8080/api/users/me?userId=${userId}`)
+				.then(response => {
+					setUserName(response.data.username);
+				})
+				.catch(error => {
+					console.error("Error obteniendo usuario:", error);
+				});
+		}
+	}, []);
 
     const handleAutomatrixClick = () => {
         setIsClicked(true);
@@ -83,7 +98,6 @@ const Header = () => {
 			return;
 		}
 
-		// If everything is valid, proceed with authentication
 		if (isLogin) {
 			try {
 				const response = await fetch("http://localhost:8080/api/users/login", {
@@ -94,6 +108,7 @@ const Header = () => {
 
 				if (response.ok) {
 					const data = await response.json();
+					localStorage.setItem("userId", data.userId);
 					setUserName(data.username);
 					setOpenDialog(false);
 					setFailedAttempts(0);
@@ -117,6 +132,7 @@ const Header = () => {
 
 				if (response.ok) {
 					const newUser = await response.json();
+					localStorage.setItem("userId", newUser.id);
 					setUserName(newUser.username);
 					setOpenDialog(false);
 					navigate("/");
@@ -138,9 +154,10 @@ const Header = () => {
 	};
 
     const handleLogout = () => {
-        setUserName("");
-        navigate("/");
-    };
+		localStorage.removeItem("userId");
+		setUserName("");
+		navigate("/");
+	};
 
     return (
         <Box

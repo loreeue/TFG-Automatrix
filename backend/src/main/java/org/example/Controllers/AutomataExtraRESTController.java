@@ -1,7 +1,10 @@
 package org.example.Controllers;
 
 import automata.fsa.FiniteStateAutomaton;
+
+import org.example.Entities.Document;
 import org.example.Services.AutomataService;
+import org.example.Services.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +20,29 @@ public class AutomataExtraRESTController {
     @Autowired
     private AutomataService automataService;
 
-    @PostMapping("/compare-afds")
-    public String compareAfds(@RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2) {
-        try {
-            // Convert MultipartFiles to temporary files
+	@Autowired
+	private DocumentService documentService;
+
+	@PostMapping("/compare-afds")
+	public String compareAfds(
+			@RequestParam("file1") MultipartFile file1,
+			@RequestParam("file2") MultipartFile file2,
+			@RequestParam("userId") Long userId) {
+		try {
+			System.out.println("User ID recibido: " + userId);
+
+			// Create the documents
+			Document document1 = new Document();
+			document1.setName(file1.getOriginalFilename());
+			document1.setContent(file1.getBytes());
+
+			Document document2 = new Document();
+			document2.setName(file2.getOriginalFilename());
+			document2.setContent(file2.getBytes());
+			// Save the documents
+			document1 = documentService.saveDocument(userId, document1);
+			document2 = documentService.saveDocument(userId, document2);
+			// Convert MultipartFiles to temporary files
             File tempFile1 = File.createTempFile("afd1", ".jff");
             file1.transferTo(tempFile1);
             File tempFile2 = File.createTempFile("afd2", ".jff");
@@ -41,9 +63,9 @@ public class AutomataExtraRESTController {
             } else {
                 return "Los dos AFDs no son equivalentes.";
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error: " + e.getMessage();
-        }
-    }
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Error: " + e.getMessage();
+		}
+	}
 }

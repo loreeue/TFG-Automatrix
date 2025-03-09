@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Collections;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -29,12 +29,24 @@ public class UserRESTController {
     }
 
 	@PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
-        User user = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
-        if (user != null) {
-            return ResponseEntity.ok(Collections.singletonMap("username", user.getUsername()));
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario o contraseña incorrectos");
-        }
-    }
+	public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
+		User user = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
+		if (user != null) {
+			return ResponseEntity.ok(
+				Map.of("userId", user.getId(), "username", user.getUsername())
+			);
+		} else {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario o contraseña incorrectos");
+		}
+	}
+
+	@GetMapping("/me")
+	public ResponseEntity<?> getCurrentUser(@RequestParam Long userId) {
+		User user = userService.getUserById(userId);
+		if (user != null) {
+			return ResponseEntity.ok(user);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+		}
+	}
 }

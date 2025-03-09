@@ -34,4 +34,8 @@ public class DocumentService {
     public void deleteDocument(Long documentId) {
         documentRepository.deleteById(documentId);
     }
+
+	public Optional<Document> getDocumentById(Long documentId) {
+        return documentRepository.findById(documentId);
+    }
 }
