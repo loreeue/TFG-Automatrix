@@ -62,14 +62,28 @@ const GLDToAFD = () => {
             return;
         }
 
+		// Obtener el userId de localStorage
+		const userId = localStorage.getItem("userId");
+		if (!userId) {
+			toast.error("Error: No se encontró el ID del usuario. Inicia sesión de nuevo.", {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+			return;
+		}
+
         setLoading(true);
 
         try {
             const response = await axios.post(
-                "/api/convert/gld-to-afd",
-                { grammar: parsedGrammar },
-                { responseType: "blob" }
-            );
+				`/api/convert/gld-to-afd?userId=${userId}`,
+				{ grammar: parsedGrammar },
+				{ responseType: "blob" }
+			);
 
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement("a");

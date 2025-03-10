@@ -38,8 +38,13 @@ public class AutomataTransformerRESTController {
 	private DocumentService documentService;
 
     @PostMapping("/afnd-to-afd")
-    public ResponseEntity<Resource> convertAfndToAfd(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Resource> convertAfndToAfd(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) {
         try {
+			Document originalDocument = new Document();
+ 			originalDocument.setName(file.getOriginalFilename());
+ 			originalDocument.setContent(file.getBytes());
+ 			originalDocument = documentService.saveDocument(userId, originalDocument);
+
             // Convert MultipartFile to a temporary file
             File tempFile = File.createTempFile("afnd", ".jff");
             file.transferTo(tempFile);
@@ -53,6 +58,18 @@ public class AutomataTransformerRESTController {
 
             // Convert AFND to AFD (DFA)
             FiniteStateAutomaton afd = automataService.convertAFNDToAFD(afnd);
+
+			File afdTempFile = File.createTempFile("afd_from_afnd", ".jff");
+ 			automataService.saveAFND(afd, afdTempFile.getAbsolutePath());
+
+ 			// Leer el contenido del archivo minimizado en un array de bytes
+ 			byte[] afdContent = Files.readAllBytes(afdTempFile.toPath());
+
+ 			// Guardar el AFD minimizado en la base de datos
+ 			Document afdDocument = new Document();
+ 			afdDocument.setName("afd_from_afnd.jff");
+ 			afdDocument.setContent(afdContent);
+ 			afdDocument = documentService.saveDocument(userId, afdDocument);
 
             // Save the resulting AFD to a file
             String outputPath = "/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/files/files_output/afd.jff";
@@ -258,13 +275,25 @@ public class AutomataTransformerRESTController {
     }
 
     @PostMapping("/gld-to-afd")
-    public ResponseEntity<Resource> convertGldToAfd(@RequestBody Grammar2Request request) {
+    public ResponseEntity<Resource> convertGldToAfd(@RequestBody Grammar2Request request, @RequestParam("userId") Long userId) {
         try {
             // Parse the grammar received in the request
             Grammar grammar = grammarService.parseGrammar(request.getGrammar());
 
             // Convert the given GLD (Right-Linear Grammar) to an AFD (Deterministic Finite Automaton)
             FiniteStateAutomaton afd = automataService.convertGLDToAFD(grammar);
+
+			File afdTempFile = File.createTempFile("afd_from_gld", ".jff");
+ 			automataService.saveAFND(afd, afdTempFile.getAbsolutePath());
+
+ 			// Leer el contenido del archivo minimizado en un array de bytes
+ 			byte[] afdContent = Files.readAllBytes(afdTempFile.toPath());
+
+ 			// Guardar el AFD minimizado en la base de datos
+ 			Document afdDocument = new Document();
+ 			afdDocument.setName("afd_from_gld.jff");
+ 			afdDocument.setContent(afdContent);
+ 			afdDocument = documentService.saveDocument(userId, afdDocument);
 
             // Save the resulting AFD into a .jff file
             String outputPath = "/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/files/files_output/gld-afd.jff";

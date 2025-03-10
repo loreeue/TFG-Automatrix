@@ -78,9 +78,24 @@ const AFNDToAFD = () => {
             return;
         }
 
+		// Obtener el userId de localStorage
+		const userId = localStorage.getItem("userId");
+		if (!userId) {
+			toast.error("Error: No se encontró el ID del usuario. Inicia sesión de nuevo.", {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+			return;
+		}
+
         setLoading(true);
         const formData = new FormData();
         formData.append("file", file);
+		formData.append("userId", userId);
 
         try {
             const response = await axios.post("/api/convert/afnd-to-afd", formData, {
