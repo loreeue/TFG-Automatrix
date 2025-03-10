@@ -25,6 +25,7 @@ public class SecurityConfig {
 				// I allow all POST and GET requests
 				.requestMatchers(HttpMethod.POST, "/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/**").permitAll()
+				.requestMatchers(HttpMethod.DELETE, "/**").permitAll()
 				.anyRequest().authenticated()
 			)
 			.headers(headers -> headers.frameOptions(frame -> frame.disable()))

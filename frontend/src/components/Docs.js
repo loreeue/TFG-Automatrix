@@ -3,6 +3,8 @@ import axios from "axios";
 import { Box, Typography, Grid, Paper, Link, CircularProgress } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useLocation } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Button } from "@mui/material";
 
 const Docs = () => {
     const theme = useTheme();
@@ -34,6 +36,15 @@ const Docs = () => {
 				setLoading(false);
 			});
 	}, []);
+
+	const handleDelete = async (docId) => {
+		try {
+			await axios.delete(`http://localhost:8080/api/documents/${docId}`);
+			setDocuments(documents.filter(doc => doc.id !== docId));
+		} catch (error) {
+			console.error("Error al eliminar documento:", error);
+		}
+	};
 
     return (
         <Box
@@ -136,6 +147,22 @@ const Docs = () => {
                                     >
                                         Descargar
                                     </Link>
+									<Button
+										variant="contained"
+										startIcon={<DeleteIcon />}
+										onClick={() => handleDelete(doc.id)}
+										sx={{
+											marginTop: "1rem",
+											fontFamily: "'Josefin Sans', sans-serif",
+											backgroundColor: "#E4CCE8",
+											color: "#000", // Asegura que el texto sea visible
+											"&:hover": {
+												backgroundColor: "#C9B1CC", // Un tono más oscuro en hover
+											},
+										}}
+									>
+										Eliminar
+									</Button>
                                 </Paper>
                             </Grid>
                         ))

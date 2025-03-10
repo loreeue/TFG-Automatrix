@@ -31,11 +31,6 @@ public class DocumentRESTController {
         return documentService.saveDocument(userId, document);
     }
 
-    @DeleteMapping("/{documentId}")
-    public void deleteDocument(@PathVariable Long documentId) {
-        documentService.deleteDocument(documentId);
-    }
-
 	@GetMapping("/download/{documentId}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable Long documentId) {
         Optional<Document> documentOptional = documentService.getDocumentById(documentId);
@@ -50,4 +45,17 @@ public class DocumentRESTController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+	@DeleteMapping("{documentId}")
+	public ResponseEntity<String> deleteDocument(@PathVariable Long documentId) {
+		try {
+			documentService.deleteDocument(documentId);
+			return ResponseEntity.ok("Documento eliminado correctamente.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Error al eliminar el documento.");
+		}
+	}
+
 }
