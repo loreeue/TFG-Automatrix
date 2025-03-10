@@ -288,13 +288,27 @@ const DrawAP = () => {
 		const blob = new Blob([fullXML], { type: "application/xml;charset=utf-8" });
 		const file = new File([blob], "automata_ap.jff", { type: "application/xml" });
 
+		// Obtener el userId de localStorage
+		const userId = localStorage.getItem("userId");
+		if (!userId) {
+			toast.error("Error: No se encontró el ID del usuario. Inicia sesión de nuevo.", {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+			return;
+		}
+
 		setLoading(true);
 		const formData = new FormData();
 		formData.append("file", file);
 		formData.append("input", inputString);
 
 		try {
-			const response = await axios.post("/api/validate/ap", formData, {
+			const response = await axios.post(`/api/validate/ap?userId=${userId}`, formData, {
 				headers: { "Content-Type": "multipart/form-data" },
 			});
 			const accepted = response.data;

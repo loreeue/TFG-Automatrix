@@ -3,7 +3,10 @@ package org.example.Controllers;
 import automata.pda.PushdownAutomaton;
 import automata.turing.TuringMachine;
 import automata.fsa.FiniteStateAutomaton;
+
+import org.example.Entities.Document;
 import org.example.Services.AutomataService;
+import org.example.Services.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,9 +19,17 @@ public class AutomataSimulatorRESTController {
     @Autowired
     private AutomataService automataService;
 
+	@Autowired
+	private DocumentService documentService;
+
     @PostMapping("/afd")
-    public boolean simulateAFD(@RequestParam("file") MultipartFile file, @RequestParam("input") String input) {
+    public boolean simulateAFD(@RequestParam("file") MultipartFile file, @RequestParam("input") String input, @RequestParam("userId") Long userId) {
         try {
+			Document originalDocument = new Document();
+ 			originalDocument.setName(file.getOriginalFilename());
+ 			originalDocument.setContent(file.getBytes());
+ 			originalDocument = documentService.saveDocument(userId, originalDocument);
+
             // Convert the MultipartFile to a file and load the automaton
             File tempFile = File.createTempFile("afd", ".jff");
             file.transferTo(tempFile);
@@ -35,8 +46,13 @@ public class AutomataSimulatorRESTController {
     }
 
     @PostMapping("/afnd")
-    public boolean simulateAFND(@RequestParam("file") MultipartFile file, @RequestParam("input") String input) {
+    public boolean simulateAFND(@RequestParam("file") MultipartFile file, @RequestParam("input") String input, @RequestParam("userId") Long userId) {
         try {
+			Document originalDocument = new Document();
+ 			originalDocument.setName(file.getOriginalFilename());
+ 			originalDocument.setContent(file.getBytes());
+ 			originalDocument = documentService.saveDocument(userId, originalDocument);
+
             // Convert the MultipartFile to a file and load the automaton
             File tempFile = File.createTempFile("afnd", ".jff");
             file.transferTo(tempFile);
@@ -53,8 +69,13 @@ public class AutomataSimulatorRESTController {
     }
 
     @PostMapping("/turingMachine")
-    public boolean simulateTuringMachine(@RequestParam("file") MultipartFile file, @RequestParam("input") String input) {
+    public boolean simulateTuringMachine(@RequestParam("file") MultipartFile file, @RequestParam("input") String input, @RequestParam("userId") Long userId) {
         try {
+			Document originalDocument = new Document();
+ 			originalDocument.setName(file.getOriginalFilename());
+ 			originalDocument.setContent(file.getBytes());
+ 			originalDocument = documentService.saveDocument(userId, originalDocument);
+
             // Convert the MultipartFile to a file and load the turing machine
             File tempFile = File.createTempFile("turingMachine", ".jff");
             file.transferTo(tempFile);
@@ -71,8 +92,13 @@ public class AutomataSimulatorRESTController {
     }
 
     @PostMapping("/ap")
-    public boolean simulateAP(@RequestParam("file") MultipartFile file, @RequestParam("input") String input) {
+    public boolean simulateAP(@RequestParam("file") MultipartFile file, @RequestParam("input") String input, @RequestParam("userId") Long userId) {
         try {
+			Document originalDocument = new Document();
+ 			originalDocument.setName(file.getOriginalFilename());
+ 			originalDocument.setContent(file.getBytes());
+ 			originalDocument = documentService.saveDocument(userId, originalDocument);
+
             // Convert the MultipartFile to a file and load the pushdown automaton
             File tempFile = File.createTempFile("pda", ".jff");
             file.transferTo(tempFile);
