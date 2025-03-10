@@ -148,8 +148,13 @@ public class AutomataTransformerRESTController {
     }
 
     @PostMapping("/ap-to-gic")
-    public ResponseEntity<Resource> convertApToGic(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Resource> convertApToGic(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) {
         try {
+			Document originalDocument = new Document();
+ 			originalDocument.setName(file.getOriginalFilename());
+ 			originalDocument.setContent(file.getBytes());
+ 			originalDocument = documentService.saveDocument(userId, originalDocument);
+
             // Convert the MultipartFile to a temporary file
             File tempFile = File.createTempFile("pda", ".jff");
             file.transferTo(tempFile);
@@ -184,13 +189,25 @@ public class AutomataTransformerRESTController {
     }
 
     @PostMapping("/gic-to-ap")
-    public ResponseEntity<Resource> convertGicToAp(@RequestBody Grammar2Request request) {
+    public ResponseEntity<Resource> convertGicToAp(@RequestBody Grammar2Request request, @RequestParam("userId") Long userId) {
         try {
             // Parse the grammar provided in the request
             Grammar grammar = grammarService.parseGrammar(request.getGrammar());
 
             // Convert the grammar to a Pushdown Automaton (AP)
             Automaton ap = automataService.convertToAutomaton(grammar);
+
+			File apTempFile = File.createTempFile("ap_from_gic", ".jff");
+ 			automataService.saveAP(ap, apTempFile.getAbsolutePath());
+
+ 			// Leer el contenido del archivo minimizado en un array de bytes
+ 			byte[] apContent = Files.readAllBytes(apTempFile.toPath());
+
+ 			// Guardar el AFD minimizado en la base de datos
+ 			Document apDocument = new Document();
+ 			apDocument.setName("ap_from_gic.jff");
+ 			apDocument.setContent(apContent);
+ 			apDocument = documentService.saveDocument(userId, apDocument);
 
             // Save the resulting AP as a .jff file
             String outputPath = "/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/files/files_output/gic_to_ap.jff";
@@ -241,8 +258,13 @@ public class AutomataTransformerRESTController {
     }
 
     @PostMapping("/afd-to-er")
-    public ResponseEntity<String> convertAfdToEr(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> convertAfdToEr(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) {
         try {
+			Document originalDocument = new Document();
+ 			originalDocument.setName(file.getOriginalFilename());
+ 			originalDocument.setContent(file.getBytes());
+ 			originalDocument = documentService.saveDocument(userId, originalDocument);
+
             // Save uploaded file as a temporary file
             File tempFile = File.createTempFile("afd", ".jff");
             file.transferTo(tempFile);

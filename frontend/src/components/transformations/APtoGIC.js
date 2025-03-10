@@ -77,17 +77,31 @@ const APToGIC = () => {
             return;
         }
 
+		// Obtener el userId de localStorage
+		const userId = localStorage.getItem("userId");
+		if (!userId) {
+			toast.error("Error: No se encontró el ID del usuario. Inicia sesión de nuevo.", {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+			return;
+		}
+
         setLoading(true);
 
         const formData = new FormData();
         formData.append("file", file);
 
         try {
-            const response = await axios.post("/api/convert/ap-to-gic", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
+			const response = await axios.post(
+				`/api/convert/ap-to-gic?userId=${userId}`,
+				formData,
+				{ headers: { "Content-Type": "multipart/form-data" } }
+			);
 
             setResult(response.data);
         } catch (error) {

@@ -79,16 +79,30 @@ const AFDToER = () => {
             return;
         }
 
+		// Obtener el userId de localStorage
+		const userId = localStorage.getItem("userId");
+		if (!userId) {
+			toast.error("Error: No se encontró el ID del usuario. Inicia sesión de nuevo.", {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+			});
+			return;
+		}
+
         setLoading(true);
         const formData = new FormData();
         formData.append("file", file);
 
         try {
-            const response = await axios.post("/api/convert/afd-to-er", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
+            const response = await axios.post(
+				`/api/convert/afd-to-er?userId=${userId}`,
+				formData,
+				{ headers: { "Content-Type": "multipart/form-data" } }
+			);
 
             if (response.data.startsWith("Error") || response.data.includes("no se puede convertir")) {
                 toast.error("No se pudo convertir el AFD a Expresión Regular.", {
