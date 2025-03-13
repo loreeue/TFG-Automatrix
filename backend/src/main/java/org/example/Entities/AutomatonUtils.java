@@ -1,4 +1,5 @@
 package org.example.Entities;
+
 import automata.fsa.FiniteStateAutomaton;
 import automata.State;
 import automata.Transition;

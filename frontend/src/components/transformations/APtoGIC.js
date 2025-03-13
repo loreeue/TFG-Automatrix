@@ -77,7 +77,7 @@ const APToGIC = () => {
             return;
         }
 
-		// Obtener el userId de localStorage
+		// Obtain the user ID from the local storage
 		const userId = localStorage.getItem("userId");
 		if (!userId) {
 			toast.error("Error: No se encontró el ID del usuario. Inicia sesión de nuevo.", {
@@ -120,10 +120,8 @@ const APToGIC = () => {
     };
 
 	const formatGrammarOutput = (rawOutput) => {
-		// Elimina todo lo anterior a "V:"
 		const cleaned = rawOutput.replace(/^.*V:/, "V:");
 
-		// Separamos por las etiquetas clave
 		const [vPart, tPartAndRest] = cleaned.split("T:");
 		if (!tPartAndRest) return null;
 
@@ -252,9 +250,9 @@ const APToGIC = () => {
                     {(() => {
 						const formatted = formatGrammarOutput(result);
 						if (formatted) {
-							// Separamos las producciones en líneas
+							// Divide the productions into lines
 							const productionLines = formatted.productions.trim().split("\n").filter(line => line.trim() !== "");
-							// Dividimos el arreglo en dos partes iguales (o casi iguales)
+							// Divide the array into two columns
 							const midIndex = Math.ceil(productionLines.length / 2);
 							const leftColumn = productionLines.slice(0, midIndex);
 							const rightColumn = productionLines.slice(midIndex);

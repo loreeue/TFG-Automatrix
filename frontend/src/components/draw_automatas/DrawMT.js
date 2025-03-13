@@ -140,7 +140,6 @@ const DrawMT = () => {
             }
         });
 
-        // Reset
         setShowTransitionModal(false);
         setTransitionRead("");
         setTransitionWrite("");
@@ -284,7 +283,7 @@ const DrawMT = () => {
 		const blob = new Blob([fullXML], { type: "application/xml;charset=utf-8" });
 		const file = new File([blob], "automata_mt.jff", { type: "application/xml" });
 
-		// Obtener el userId de localStorage
+		// Obtain the userId from localStorage
 		const userId = localStorage.getItem("userId");
 		if (!userId) {
 			toast.error("Error: No se encontró el ID del usuario. Inicia sesión de nuevo.", {
@@ -439,7 +438,6 @@ const DrawMT = () => {
 		const structureOpen = `<structure>\n<type>turing</type>\n<automaton>\n`;
 		const structureClose = `</automaton>\n</structure>`;
 
-		// Construcción de los estados
 		const statesXML = nodes.map((node, i) => {
 			return `
 		<state id="${i}" name="${node.label}">
@@ -450,7 +448,6 @@ const DrawMT = () => {
 		</state>`;
 		}).join("\n");
 
-		// Construcción de las transiciones
 		const transitionsXML = transitions.map(t => {
 			const fromIndex = nodes.findIndex(n => n.id === t.from.id);
 			const toIndex = nodes.findIndex(n => n.id === t.to.id);
@@ -461,7 +458,6 @@ const DrawMT = () => {
 			}
 
 			return t.transitionsData.map(({ read, write, move }) => {
-				// Manejo de los parámetros `read` y `write`
 				const readTag = (read && read.trim() === ".") ? "<read/>" : `<read>${read || "."}</read>`;
 				const writeTag = (write && write.trim() === ".") ? "<write/>" : `<write>${write || ""}</write>`;
 				const moveTag = ["R", "L"].includes(move) ? move : "S";
@@ -475,20 +471,17 @@ const DrawMT = () => {
 			<move>${moveTag}</move>
 		</transition>`;
 			}).join("\n");
-		}).filter(Boolean).join("\n"); // Filtrar transiciones vacías
+		}).filter(Boolean).join("\n");
 
-		// Construcción del archivo XML completo
 		const fullXML = `${xmlHeader}
 			${structureOpen}
 			${statesXML}
 			${transitionsXML}
 			${structureClose}`;
 
-		// Crear y guardar el archivo
 		const blob = new Blob([fullXML], { type: "application/xml;charset=utf-8" });
 		saveAs(blob, `${exportFilename || "turing_machine"}.jff`);
 
-		// Reiniciar el estado de exportación
 		setShowExportModal(false);
 		setExportFilename("turing_machine");
 	};
@@ -559,7 +552,6 @@ const DrawMT = () => {
 								{node.isFinal && (
 									<Circle x={node.x} y={node.y} radius={34} stroke="#333" strokeWidth={2} listening={false} />
 								)}
-								{/* Texto del estado, ahora es clickeable para eliminar */}
 								<Text
 									text={node.label}
 									x={node.x - 10}
@@ -567,7 +559,7 @@ const DrawMT = () => {
 									fontSize={16}
 									fill="#FFFFFF"
 									fontFamily="'Spicy Rice', cursive"
-									onClick={() => handleStateClick(node)} // ← Ahora el nombre del estado puede eliminarlo
+									onClick={() => handleStateClick(node)}
 								/>
 							</React.Fragment>
 						))}

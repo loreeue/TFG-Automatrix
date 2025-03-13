@@ -140,7 +140,6 @@ const DrawAP = () => {
             }
         });
 
-        // Reset
         setShowTransitionModal(false);
         setTransitionLetter("");
         setStackSymbolConsume("");
@@ -288,7 +287,7 @@ const DrawAP = () => {
 		const blob = new Blob([fullXML], { type: "application/xml;charset=utf-8" });
 		const file = new File([blob], "automata_ap.jff", { type: "application/xml" });
 
-		// Obtener el userId de localStorage
+		// Obtain the userId from localStorage
 		const userId = localStorage.getItem("userId");
 		if (!userId) {
 			toast.error("Error: No se encontró el ID del usuario. Inicia sesión de nuevo.", {
@@ -558,7 +557,6 @@ const DrawAP = () => {
 								{node.isFinal && (
 									<Circle x={node.x} y={node.y} radius={34} stroke="#333" strokeWidth={2} listening={false} />
 								)}
-								{/* Texto del estado, ahora es clickeable para eliminar */}
 								<Text
 									text={node.label}
 									x={node.x - 10}
@@ -566,7 +564,7 @@ const DrawAP = () => {
 									fontSize={16}
 									fill="#FFFFFF"
 									fontFamily="'Spicy Rice', cursive"
-									onClick={() => handleStateClick(node)} // ← Ahora el nombre del estado puede eliminarlo
+									onClick={() => handleStateClick(node)}
 								/>
 							</React.Fragment>
 						))}

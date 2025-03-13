@@ -91,7 +91,7 @@ const SimulateAFND = () => {
 			return;
 		}
 
-		// Obtener el userId de localStorage
+		// Obtain the userId from localStorage
 		const userId = localStorage.getItem("userId");
 		if (!userId) {
 			toast.error("Error: No se encontró el ID del usuario. Inicia sesión de nuevo.", {

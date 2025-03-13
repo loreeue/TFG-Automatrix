@@ -144,7 +144,7 @@ const InfoAFD = () => {
         </Typography>
       </Paper>
 
-      {/* Animaciones */}
+      {/* Animations */}
       <style>
         {`
           @keyframes fadeSlideIn {

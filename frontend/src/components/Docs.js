@@ -23,7 +23,7 @@ const Docs = () => {
 			return;
 		}
 
-		// Obtener documentos del usuario desde el backend
+		// Obtain the documents from the backend
 		axios.get(`http://localhost:8080/api/documents/${userId}`)
 			.then(response => {
 				console.log("Respuesta del backend:", response.data);
@@ -59,7 +59,7 @@ const Docs = () => {
                 color: "#FFFFFF",
             }}
         >
-            {/* Mensaje de bienvenida */}
+            {/* Welcome Message */}
             <Typography
                 variant="h3"
                 sx={{
@@ -155,9 +155,9 @@ const Docs = () => {
 											marginTop: "1rem",
 											fontFamily: "'Josefin Sans', sans-serif",
 											backgroundColor: "#E4CCE8",
-											color: "#000", // Asegura que el texto sea visible
+											color: "#000",
 											"&:hover": {
-												backgroundColor: "#C9B1CC", // Un tono más oscuro en hover
+												backgroundColor: "#C9B1CC",
 											},
 										}}
 									>
@@ -174,7 +174,7 @@ const Docs = () => {
                 </Grid>
             )}
 
-            {/* Animaciones */}
+            {/* Animations */}
             <style>
                 {`
                 @keyframes slideIn {

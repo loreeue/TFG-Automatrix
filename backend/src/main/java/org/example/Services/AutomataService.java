@@ -32,7 +32,8 @@ public class AutomataService {
 
         try {
             automaton = (FiniteStateAutomaton) codec.decode(new File(filePath), null);
-        } catch (Exception e) {
+        }
+		catch (Exception e) {
             System.out.println("El AFD no se pudo cargar o es incorrecto");
             return null;
         }
@@ -51,7 +52,8 @@ public class AutomataService {
 
         try {
             automaton = (FiniteStateAutomaton) codec.decode(new File(filePath), null);
-        } catch (Exception e) {
+        }
+		catch (Exception e) {
             System.out.println("El AFD no se pudo cargar o es incorrecto");
             return null;
         }
@@ -70,7 +72,8 @@ public class AutomataService {
 
         try {
             automaton = (TuringMachine) codec.decode(new File(filePath), null);
-        } catch (Exception e) {
+        }
+		catch (Exception e) {
             System.out.println("El AFD no se pudo cargar o es incorrecto");
             return null;
         }
@@ -89,7 +92,8 @@ public class AutomataService {
 
         try {
             automaton = (PushdownAutomaton) codec.decode(new File(filePath), null);
-        } catch (Exception e) {
+        }
+		catch (Exception e) {
             System.out.println("El AFD no se pudo cargar o es incorrecto");
             return null;
         }

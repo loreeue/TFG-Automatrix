@@ -35,7 +35,8 @@ public class UserRESTController {
 			return ResponseEntity.ok(
 				Map.of("userId", user.getId(), "username", user.getUsername())
 			);
-		} else {
+		}
+		else {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario o contraseña incorrectos");
 		}
 	}
@@ -45,7 +46,8 @@ public class UserRESTController {
 		User user = userService.getUserById(userId);
 		if (user != null) {
 			return ResponseEntity.ok(user);
-		} else {
+		}
+		else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
 		}
 	}

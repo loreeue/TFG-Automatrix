@@ -78,7 +78,7 @@ const SimulateMT = () => {
     };
 
     const handleSubmit = async () => {
-		// Obtener el userId de localStorage
+		// Obtain the user ID from the local storage
 		const userId = localStorage.getItem("userId");
 		if (!userId) {
 			toast.error("Error: No se encontró el ID del usuario. Inicia sesión de nuevo.", {

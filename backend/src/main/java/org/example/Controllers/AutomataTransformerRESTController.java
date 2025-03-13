@@ -65,7 +65,7 @@ public class AutomataTransformerRESTController {
  			// Leer el contenido del archivo minimizado en un array de bytes
  			byte[] afdContent = Files.readAllBytes(afdTempFile.toPath());
 
- 			// Guardar el AFD minimizado en la base de datos
+ 			// Save the minimized AFD to the database
  			Document afdDocument = new Document();
  			afdDocument.setName("afd_from_afnd.jff");
  			afdDocument.setContent(afdContent);
@@ -117,10 +117,10 @@ public class AutomataTransformerRESTController {
 			File minimizedTempFile = File.createTempFile("afd_minimized", ".jff");
 			automataService.saveAFND(minimizedAfd, minimizedTempFile.getAbsolutePath());
 
-			// Leer el contenido del archivo minimizado en un array de bytes
+			// Read the content of the minimized file into a byte array
 			byte[] minimizedContent = Files.readAllBytes(minimizedTempFile.toPath());
 
-			// Guardar el AFD minimizado en la base de datos
+			// Save the minimized AFD to the database
 			Document minimizedDocument = new Document();
 			minimizedDocument.setName("afd_minimized.jff");
 			minimizedDocument.setContent(minimizedContent);
@@ -200,10 +200,10 @@ public class AutomataTransformerRESTController {
 			File apTempFile = File.createTempFile("ap_from_gic", ".jff");
  			automataService.saveAP(ap, apTempFile.getAbsolutePath());
 
- 			// Leer el contenido del archivo minimizado en un array de bytes
+ 			// Read the content of the minimized file into a byte array
  			byte[] apContent = Files.readAllBytes(apTempFile.toPath());
 
- 			// Guardar el AFD minimizado en la base de datos
+ 			// Save the minimized AFD to the database
  			Document apDocument = new Document();
  			apDocument.setName("ap_from_gic.jff");
  			apDocument.setContent(apContent);
@@ -308,10 +308,10 @@ public class AutomataTransformerRESTController {
 			File afdTempFile = File.createTempFile("afd_from_gld", ".jff");
  			automataService.saveAFND(afd, afdTempFile.getAbsolutePath());
 
- 			// Leer el contenido del archivo minimizado en un array de bytes
+ 			// Read the content of the minimized file into a byte array
  			byte[] afdContent = Files.readAllBytes(afdTempFile.toPath());
 
- 			// Guardar el AFD minimizado en la base de datos
+ 			// Save the minimized AFD to the database
  			Document afdDocument = new Document();
  			afdDocument.setName("afd_from_gld.jff");
  			afdDocument.setContent(afdContent);

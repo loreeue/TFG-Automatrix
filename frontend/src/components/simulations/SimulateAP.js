@@ -40,7 +40,7 @@ const SimulateAP = () => {
                 reader.onload = (e) => {
                     const content = e.target.result;
 
-                    //Check if the file has the structure of an AP
+                    // Check if the file has the structure of an AP
                     if (!content.includes("<structure>") || !content.includes("<type>pda</type>") || !content.includes("<automaton>")) {
                         resolve(false); // Is an AP
                         return;
@@ -79,7 +79,7 @@ const SimulateAP = () => {
     };
 
     const handleSubmit = async () => {
-		// Obtener el userId de localStorage
+		// Obtain the userId from localStorage
 		const userId = localStorage.getItem("userId");
 		if (!userId) {
 			toast.error("Error: No se encontró el ID del usuario. Inicia sesión de nuevo.", {

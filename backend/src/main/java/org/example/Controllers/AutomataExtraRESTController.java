@@ -1,7 +1,6 @@
 package org.example.Controllers;
 
 import automata.fsa.FiniteStateAutomaton;
-
 import org.example.Entities.Document;
 import org.example.Services.AutomataService;
 import org.example.Services.DocumentService;
@@ -39,23 +38,28 @@ public class AutomataExtraRESTController {
 			Document document2 = new Document();
 			document2.setName(file2.getOriginalFilename());
 			document2.setContent(file2.getBytes());
+
 			// Save the documents
 			document1 = documentService.saveDocument(userId, document1);
 			document2 = documentService.saveDocument(userId, document2);
+
 			// Convert MultipartFiles to temporary files
             File tempFile1 = File.createTempFile("afd1", ".jff");
             file1.transferTo(tempFile1);
             File tempFile2 = File.createTempFile("afd2", ".jff");
             file2.transferTo(tempFile2);
+
             // Load both AFDs
             FiniteStateAutomaton afd1 = automataService.loadAFD(tempFile1.getAbsolutePath());
             FiniteStateAutomaton afd2 = automataService.loadAFD(tempFile2.getAbsolutePath());
             if (afd1 == null || afd2 == null) {
                 return "Error";
             }
+
             // Minimize both AFDs
             FiniteStateAutomaton minimizedAfd1 = automataService.minimize(afd1);
             FiniteStateAutomaton minimizedAfd2 = automataService.minimize(afd2);
+
             // Compare the minimized AFDs
             boolean areEquivalent = automataService.areEquivalent(minimizedAfd1, minimizedAfd2);
             if (areEquivalent) {

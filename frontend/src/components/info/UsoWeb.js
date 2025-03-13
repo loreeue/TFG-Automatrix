@@ -155,7 +155,7 @@ const UsoWeb = () => {
         </Typography>
       </Paper>
 
-      {/* Animaciones */}
+      {/* Animations */}
       <style>
         {`
           @keyframes fadeSlideIn {

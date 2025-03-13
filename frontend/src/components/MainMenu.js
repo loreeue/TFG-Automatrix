@@ -61,10 +61,10 @@ const MainMenu = () => {
 							color: "#FFFFFF",
 							textAlign: "center",
 							borderRadius: "20px",
-							height: "500px", // Establece una altura uniforme
+							height: "500px",
 							display: "flex",
 							flexDirection: "column",
-							justifyContent: "space-between", // Asegura que la imagen se mantenga alineada
+							justifyContent: "space-between",
 							alignItems: "center",
 							cursor: "pointer",
 							"&:hover": {

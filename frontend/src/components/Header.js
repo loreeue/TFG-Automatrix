@@ -255,7 +255,7 @@ const Header = () => {
                     Simulaciones
                 </Button>
 
-                {/* DRAW AUTOMATA BUTTON */}
+                {/* Draw Automata Button */}
                 <Button
                     variant="text"
                     component={Link}
@@ -273,7 +273,7 @@ const Header = () => {
                     Dibujar Autómata
                 </Button>
 
-                {/* INFO BUTTON */}
+                {/* Info Button */}
                 <Button
                     variant="text"
                     component={Link}

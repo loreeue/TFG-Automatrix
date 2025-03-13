@@ -83,7 +83,7 @@ const DrawAutomataMenu = () => {
                 ))}
             </Grid>
 
-            {/* Animation style */}
+            {/* Animations */}
             <style>
                 {`
                 @keyframes slideIn {

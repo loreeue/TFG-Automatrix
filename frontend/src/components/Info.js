@@ -141,7 +141,7 @@ const Info = () => {
                 </Grid>
             </Box>
 
-			{/* Botón "¿Cómo usar la web?" */}
+			{/* Help Button */}
 			<Button
 				variant="contained"
 				sx={{
