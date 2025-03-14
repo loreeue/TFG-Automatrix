@@ -70,12 +70,12 @@ const AFDs = () => {
             <Paper
               elevation={3}
               sx={{
-                padding: { xs: "1rem", md: "2rem" }, // Menor padding en móvil
+                padding: { xs: "1rem", md: "2rem" },
                 backgroundColor: theme.palette.secondary.main,
                 color: "#FFFFFF",
                 textAlign: "center",
                 borderRadius: "12px",
-                minHeight: { xs: "200px", md: "300px" }, // Menor altura mínima en móvil
+                minHeight: { xs: "200px", md: "300px" },
                 height: "auto",
                 display: "flex",
                 flexDirection: "column",

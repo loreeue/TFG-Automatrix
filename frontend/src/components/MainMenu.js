@@ -23,13 +23,12 @@ const MainMenu = () => {
         overflowX: "hidden",
       }}
     >
-      {/* Secciones informativas */}
       <Grid
         container
         spacing={3}
         sx={{
           maxWidth: "1200px",
-          width: { xs: "70%", md: "90%" }, // En desktop, el contenedor usa más ancho
+          width: { xs: "70%", md: "90%" },
           marginTop: "3rem",
         }}
       >
@@ -71,7 +70,6 @@ const MainMenu = () => {
                   color: "#FFFFFF",
                   textAlign: "center",
                   borderRadius: "20px",
-                  // En desktop, usamos un minHeight mayor para hacerlos más grandes
                   minHeight: { xs: "auto", md: "500px" },
                   height: "auto",
                   display: "flex",
@@ -116,7 +114,7 @@ const MainMenu = () => {
                   src={section.image}
                   alt={section.title}
                   sx={{
-                    width: { xs: "100%", md: "400px" }, // Imagen más grande en desktop
+                    width: { xs: "100%", md: "400px" },
                     height: { xs: "auto", md: "400px" },
                     objectFit: "contain",
                     mt: 2,
@@ -128,7 +126,6 @@ const MainMenu = () => {
         ))}
       </Grid>
 
-      {/* Espacio extra para scroll */}
       <Box sx={{ height: "10vh" }} />
 
       <style>
