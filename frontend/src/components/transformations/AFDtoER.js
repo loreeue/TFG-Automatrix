@@ -143,7 +143,7 @@ const AFDToER = () => {
     return (
         <Box
             sx={{
-                minHeight: "75vh",
+                minHeight: "105vh",
                 backgroundColor: "#1A1A1A",
                 padding: 3,
                 display: "flex",

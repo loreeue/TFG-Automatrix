@@ -189,10 +189,8 @@ const DrawAFD = () => {
         if (deleteTransitionMode)
             return ;
         if (selectedNode) {
-            // We select the second state
             setTransitionNodes({ from: selectedNode, to: node });
             setShowTransitionModal(true);
-            // We don't clear selectedNode here so we can show both highlights using transitionNodes
             setSelectedNode(null);
         } else {
             setSelectedNode(node);
@@ -456,7 +454,7 @@ const DrawAFD = () => {
         <Box
             sx={{
                 backgroundColor: "#1A1A1A",
-                minHeight: "75vh",
+                minHeight: "105vh",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -547,7 +545,7 @@ const DrawAFD = () => {
                     variant="contained"
                     sx={{
                         position: "absolute",
-                        right: "1rem",
+                        right: { xs: "0.5rem", sm: "1.0rem" },
                         top: "15rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
@@ -567,7 +565,7 @@ const DrawAFD = () => {
                     variant="contained"
                     sx={{
                         position: "absolute",
-                        right: "1rem",
+                        right: { xs: "0.5rem", sm: "1.0rem" },
                         top: "20rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
@@ -587,7 +585,7 @@ const DrawAFD = () => {
                     variant="contained"
                     sx={{
                         position: "absolute",
-                        right: "1rem",
+                        right: { xs: "0.5rem", sm: "1.0rem" },
                         top: "25rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
@@ -607,7 +605,7 @@ const DrawAFD = () => {
 					variant="contained"
 					sx={{
 						position: "absolute",
-						right: "1rem",
+						right: { xs: "0.5rem", sm: "1.0rem" },
 						top: "30rem",
 						borderRadius: "50%",
 						minWidth: "3rem",

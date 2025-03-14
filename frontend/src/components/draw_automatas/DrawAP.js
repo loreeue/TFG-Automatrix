@@ -467,13 +467,13 @@ const DrawAP = () => {
 				const pushTag = push && push.trim() !== "" && push.trim() !== "λ" ? `<push>${push.trim()}</push>` : "<push/>";
 
 				return `
-		<transition>
-			<from>${fromIndex}</from>
-			<to>${toIndex}</to>
-			${readTag}
-			${popTag}
-			${pushTag}
-		</transition>`;
+					<transition>
+						<from>${fromIndex}</from>
+						<to>${toIndex}</to>
+						${readTag}
+						${popTag}
+						${pushTag}
+					</transition>`;
 			}).join("\n");
 
 		}).filter(Boolean).join("\n");
@@ -519,7 +519,7 @@ const DrawAP = () => {
         <Box
             sx={{
                 backgroundColor: "#1A1A1A",
-                minHeight: "75vh",
+                minHeight: "105vh",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -578,7 +578,7 @@ const DrawAP = () => {
                     variant="contained"
                     sx={{
                         position: "absolute",
-                        right: "1rem",
+                        right: { xs: "0.5rem", sm: "1.0rem" },
                         top: "15rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
@@ -598,7 +598,7 @@ const DrawAP = () => {
                     variant="contained"
                     sx={{
                         position: "absolute",
-                        right: "1rem",
+                        right: { xs: "0.5rem", sm: "1.0rem" },
                         top: "20rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
@@ -618,7 +618,7 @@ const DrawAP = () => {
                     variant="contained"
                     sx={{
                         position: "absolute",
-                        right: "1rem",
+                        right: { xs: "0.5rem", sm: "1.0rem" },
                         top: "25rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
@@ -638,7 +638,7 @@ const DrawAP = () => {
 					variant="contained"
 					sx={{
 						position: "absolute",
-						right: "1rem",
+						right: { xs: "0.5rem", sm: "1.0rem" },
 						top: "30rem",
 						borderRadius: "50%",
 						minWidth: "3rem",

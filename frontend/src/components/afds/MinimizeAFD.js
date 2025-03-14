@@ -41,7 +41,7 @@ const MinimizeAFD = () => {
             return;
         }
 
-		// Obtener el userId de localStorage
+		// Obtain the user ID from local storage
         const userId = localStorage.getItem("userId");
         if (!userId) {
             toast.error("Error: No se encontró el ID del usuario. Inicia sesión de nuevo.", {
@@ -94,7 +94,7 @@ const MinimizeAFD = () => {
     return (
         <Box
             sx={{
-                minHeight: "75vh",
+                minHeight: "105vh",
                 backgroundColor: "#1A1A1A",
                 padding: 3,
                 display: "flex",

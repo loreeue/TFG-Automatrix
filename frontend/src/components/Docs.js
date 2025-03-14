@@ -50,7 +50,7 @@ const Docs = () => {
         <Box
             sx={{
                 backgroundColor: "#1A1A1A",
-                minHeight: "75vh",
+                minHeight: "105vh",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-start",

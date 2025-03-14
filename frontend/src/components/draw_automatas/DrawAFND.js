@@ -24,7 +24,7 @@ import axios from "axios";
 
 const DrawAFND = () => {
     const [nodes, setNodes] = useState([]); // States
-    const [transitions, setTransitions] = useState([]); // Trnsitions
+    const [transitions, setTransitions] = useState([]); // Transitions
     const [selectedNode, setSelectedNode] = useState(null); // Selected node to create transition
 
     const [showStateTypeModal, setShowStateTypeModal] = useState(false);
@@ -120,7 +120,6 @@ const DrawAFND = () => {
             }
         });
 
-        // Reset values
         setShowTransitionModal(false);
         setTransitionLetter("");
         setTransitionNodes({ from: null, to: null });
@@ -447,7 +446,7 @@ const DrawAFND = () => {
         <Box
             sx={{
                 backgroundColor: "#1A1A1A",
-                minHeight: "75vh",
+                minHeight: "105vh",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -538,7 +537,7 @@ const DrawAFND = () => {
                     variant="contained"
                     sx={{
                         position: "absolute",
-                        right: "1rem",
+                        right: { xs: "0.5rem", sm: "1.0rem" },
                         top: "15rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
@@ -558,7 +557,7 @@ const DrawAFND = () => {
                     variant="contained"
                     sx={{
                         position: "absolute",
-                        right: "1rem",
+                        right: { xs: "0.5rem", sm: "1.0rem" },
                         top: "20rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
@@ -578,7 +577,7 @@ const DrawAFND = () => {
                     variant="contained"
                     sx={{
                         position: "absolute",
-                        right: "1rem",
+                        right: { xs: "0.5rem", sm: "1.0rem" },
                         top: "25rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
@@ -598,7 +597,7 @@ const DrawAFND = () => {
 					variant="contained"
 					sx={{
 						position: "absolute",
-						right: "1rem",
+						right: { xs: "0.5rem", sm: "1.0rem" },
 						top: "30rem",
 						borderRadius: "50%",
 						minWidth: "3rem",

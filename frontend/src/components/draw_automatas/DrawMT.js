@@ -115,7 +115,7 @@ const DrawMT = () => {
                     toast.error(
                         `Ya existe una transición con (read: ${read}, write: ${write}, move: ${move}).`
                     );
-                    return updatedTransitions; // No agregamos duplicados
+                    return updatedTransitions;
                 }
 
                 // 5) We add the tuple if there is no duplicate
@@ -514,7 +514,7 @@ const DrawMT = () => {
         <Box
             sx={{
                 backgroundColor: "#1A1A1A",
-                minHeight: "75vh",
+                minHeight: "105vh",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -573,7 +573,7 @@ const DrawMT = () => {
                     variant="contained"
                     sx={{
                         position: "absolute",
-                        right: "1rem",
+                        right: { xs: "0.5rem", sm: "1.0rem" },
                         top: "15rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
@@ -593,7 +593,7 @@ const DrawMT = () => {
                     variant="contained"
                     sx={{
                         position: "absolute",
-                        right: "1rem",
+                        right: { xs: "0.5rem", sm: "1.0rem" },
                         top: "20rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
@@ -613,7 +613,7 @@ const DrawMT = () => {
                     variant="contained"
                     sx={{
                         position: "absolute",
-                        right: "1rem",
+                        right: { xs: "0.5rem", sm: "1.0rem" },
                         top: "25rem",
                         borderRadius: "50%",
                         minWidth: "3rem",
@@ -633,7 +633,7 @@ const DrawMT = () => {
 					variant="contained"
 					sx={{
 						position: "absolute",
-						right: "1rem",
+						right: { xs: "0.5rem", sm: "1.0rem" },
 						top: "30rem",
 						borderRadius: "50%",
 						minWidth: "3rem",

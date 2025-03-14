@@ -24,7 +24,7 @@ const Info = () => {
         <Box
             sx={{
                 backgroundColor: "#1A1A1A",
-                minHeight: "75vh",
+                minHeight: { xs: "220vh", sm: "110vh", md: "105vh" },
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
