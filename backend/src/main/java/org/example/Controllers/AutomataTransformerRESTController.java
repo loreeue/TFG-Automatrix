@@ -12,6 +12,7 @@ import org.example.Services.AutomataService;
 import org.example.Services.DocumentService;
 import org.example.Services.GrammarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,6 +37,9 @@ public class AutomataTransformerRESTController {
 
 	@Autowired
 	private DocumentService documentService;
+
+	@Value("${file.output.dir}")
+	private String fileOutputDir;
 
     @PostMapping("/afnd-to-afd")
     public ResponseEntity<Resource> convertAfndToAfd(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) {
@@ -72,7 +76,7 @@ public class AutomataTransformerRESTController {
  			afdDocument = documentService.saveDocument(userId, afdDocument);
 
             // Save the resulting AFD to a file
-            String outputPath = "/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/files/files_output/afd.jff";
+			String outputPath = System.getProperty("user.dir") + File.separator + fileOutputDir + File.separator + "afd.jff";
             File outputFile = new File(outputPath);
             automataService.saveAFND(afd, outputFile.getAbsolutePath());
 
@@ -127,7 +131,7 @@ public class AutomataTransformerRESTController {
 			minimizedDocument = documentService.saveDocument(userId, minimizedDocument);
 
             // Save the resulting minimized AFD to a file
-            String outputPath = "/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/files/files_output/afd_minimized.jff";
+			String outputPath = System.getProperty("user.dir") + File.separator + fileOutputDir + File.separator + "afd.jff";
             File outputFile = new File(outputPath);
             automataService.saveAFND(minimizedAfd, outputFile.getAbsolutePath());
 
@@ -210,7 +214,7 @@ public class AutomataTransformerRESTController {
  			apDocument = documentService.saveDocument(userId, apDocument);
 
             // Save the resulting AP as a .jff file
-            String outputPath = "/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/files/files_output/gic_to_ap.jff";
+			String outputPath = System.getProperty("user.dir") + File.separator + fileOutputDir + File.separator + "afd.jff";
             File outputFile = new File(outputPath);
             automataService.saveAP(ap, outputFile.getAbsolutePath());
 
@@ -318,7 +322,7 @@ public class AutomataTransformerRESTController {
  			afdDocument = documentService.saveDocument(userId, afdDocument);
 
             // Save the resulting AFD into a .jff file
-            String outputPath = "/Users/loretouzquianoesteban/Documents/UNIVERSIDAD/CUARTO_CURSO/TFG/repo_github_2/files/files_output/gld-afd.jff";
+			String outputPath = System.getProperty("user.dir") + File.separator + fileOutputDir + File.separator + "afd.jff";
             File outputFile = new File(outputPath);
             automataService.saveAFND(afd, outputFile.getAbsolutePath());
 
