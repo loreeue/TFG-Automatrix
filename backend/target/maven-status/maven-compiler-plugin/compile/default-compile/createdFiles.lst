@@ -1,4 +1,3 @@
-org/example/Entities/AutomatonUtils.class
 org/example/Main.class
 org/example/Security/SecurityConfig.class
 org/example/Repositories/DocumentRepository.class
@@ -10,10 +9,11 @@ org/example/Entities/LoginRequest.class
 org/example/Controllers/AutomataTransformerRESTController.class
 org/example/Controllers/AutomataExtraRESTController.class
 org/example/Controllers/DocumentRESTController.class
-org/example/Controllers/GrammarRESTController.class
 org/example/Entities/User.class
 org/example/Entities/GrammarRequest.class
 org/example/Entities/Grammar2Request.class
+org/example/Entities/AutomatonUtils.class
+org/example/Controllers/GrammarRESTController.class
 org/example/Repositories/UserRepository.class
 org/example/Controllers/UserRESTController.class
 org/example/Services/GrammarService.class
