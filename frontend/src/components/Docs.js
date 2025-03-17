@@ -24,7 +24,7 @@ const Docs = () => {
 		}
 
 		// Obtain the documents from the backend
-		axios.get(`http://localhost:8080/api/documents/${userId}`)
+		axios.get(`/api/documents/${userId}`)
 			.then(response => {
 				console.log("Respuesta del backend:", response.data);
 				setDocuments(response.data);
@@ -39,7 +39,7 @@ const Docs = () => {
 
 	const handleDelete = async (docId) => {
 		try {
-			await axios.delete(`http://localhost:8080/api/documents/${docId}`);
+			await axios.delete(`/api/documents/${docId}`);
 			setDocuments(documents.filter(doc => doc.id !== docId));
 		} catch (error) {
 			console.error("Error al eliminar documento:", error);
@@ -135,7 +135,7 @@ const Docs = () => {
                                         {doc.name}
                                     </Typography>
                                     <Link
-                                        href={`http://localhost:8080/api/documents/download/${doc.id}`}
+                                        href={`/api/documents/download/${doc.id}`}
                                         download
                                         sx={{
                                             fontSize: "0.9rem",
