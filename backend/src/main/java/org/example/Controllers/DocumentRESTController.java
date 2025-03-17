@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/documents")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://automatrix-051d70c10bb9.herokuapp.com")
 public class DocumentRESTController {
 
     @Autowired
