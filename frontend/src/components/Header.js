@@ -60,7 +60,7 @@ const Header = () => {
     const userId = localStorage.getItem("userId");
     if (userId) {
       axios
-        .get(`http://localhost:8080/api/users/me?userId=${userId}`)
+        .get(`/api/users/me?userId=${userId}`)
         .then((response) => {
           setUserName(response.data.username);
         })
@@ -118,11 +118,12 @@ const Header = () => {
     }
     if (isLogin) {
       try {
-        const response = await fetch("http://localhost:8080/api/users/login", {
+        const response = await fetch("/api/users/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
         });
+
         if (response.ok) {
           const data = await response.json();
           localStorage.setItem("userId", data.userId);
@@ -140,7 +141,7 @@ const Header = () => {
       }
     } else {
       try {
-        const response = await fetch("http://localhost:8080/api/users/register", {
+        const response = await fetch("/api/users/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ username: userName, email, password }),
