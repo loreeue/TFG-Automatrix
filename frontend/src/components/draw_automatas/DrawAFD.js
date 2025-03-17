@@ -480,7 +480,7 @@ const DrawAFD = () => {
             <Box
                 sx={{
                     width: "80%",
-                    height: "500px",
+                    height: "470px",
                     border: "2px solid #ccc",
                     backgroundColor: "#FFFFFF",
                     borderRadius: "8px",

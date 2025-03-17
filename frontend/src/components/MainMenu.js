@@ -29,7 +29,7 @@ const MainMenu = () => {
         sx={{
           maxWidth: "1200px",
           width: { xs: "70%", md: "90%" },
-          marginTop: "3rem",
+          marginTop: "0.5rem",
         }}
       >
         {[

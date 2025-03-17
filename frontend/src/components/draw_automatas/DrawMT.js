@@ -522,7 +522,7 @@ const DrawMT = () => {
             }}>
             <ToastContainer />
             <Typography variant="h3" sx={{ fontFamily: "'Spicy Rice', cursive", color: "#FFFFFF", marginBottom: "1rem" }}>Editor de MT</Typography>
-            <Box sx={{ width: "80%", height: "500px", border: "2px solid #ccc", backgroundColor: "#FFFFFF", borderRadius: "8px", position: "relative" }}>
+            <Box sx={{ width: "80%", height: "470px", border: "2px solid #ccc", backgroundColor: "#FFFFFF", borderRadius: "8px", position: "relative" }}>
                 <Stage width={window.innerWidth * 0.75} height={500} onDblClick={addNode} style={{ cursor: "pointer" }}>
                     <Layer>
                         {transitions.map((t, index) => renderTransition(t, index))}

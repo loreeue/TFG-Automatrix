@@ -376,7 +376,7 @@ const Header = () => {
       )}
 
       {!isMobileOrTablet && (
-        <Box sx={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
+        <Box sx={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
           <Button
             variant="outlined"
             color="primary"

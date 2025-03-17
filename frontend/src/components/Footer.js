@@ -10,7 +10,7 @@ const Footer = () => {
                 backgroundColor: theme.palette.secondary.main,
                 color: "white",
                 textAlign: "center",
-                padding: "0.5rem",
+                padding: "0.05rem",
                 position: "fixed",
                 bottom: 0,
                 width: "100%",
