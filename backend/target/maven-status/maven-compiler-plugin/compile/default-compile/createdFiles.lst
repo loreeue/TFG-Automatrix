@@ -12,6 +12,7 @@ org/example/Entities/Grammar2Request.class
 org/example/Entities/AutomatonUtils.class
 org/example/Controllers/GrammarRESTController.class
 org/example/Services/DocumentService.class
+org/example/Config/WebConfig.class
 org/example/Main.class
 org/example/Repositories/DocumentRepository.class
 org/example/Controllers/AutomataTransformerRESTController.class
