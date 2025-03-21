@@ -894,7 +894,7 @@ const DrawAFD = () => {
                 </DialogActions>
             </Dialog>
 
-			<Box sx={{ marginTop: "2rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem" }}>
+			<Box sx={{ marginTop: "2rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", flexWrap: { xs: "wrap", sm: "nowrap" },  }}>
 				<Typography variant="h6" sx={{ color: "#FFFFFF", fontFamily: "'Josefin Sans', sans-serif" }}>
 					Validar Cadena:
 				</Typography>

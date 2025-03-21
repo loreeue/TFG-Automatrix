@@ -93,6 +93,7 @@ const MainMenu = () => {
                     fontFamily: "'Spicy Rice', cursive",
                     mb: "1rem",
                     textAlign: "center",
+					fontSize: "clamp(1.25rem, 5vw, 2rem)",
                   }}
                 >
                   {section.title}

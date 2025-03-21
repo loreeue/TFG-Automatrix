@@ -377,7 +377,7 @@ const Header = () => {
       )}
 
       {!isMobileOrTablet && (
-        <Box sx={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
+        <Box sx={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "nowrap" }}>
           <Button
             variant="outlined"
             color="primary"
@@ -464,33 +464,34 @@ const Header = () => {
 
       <Drawer anchor="left" open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)}>
         <Box sx={{ width: 250 }} role="presentation" onClick={() => setMobileMenuOpen(false)}>
-          <List>{menuItems}</List>
-          {!userName && (
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 1, p: 2 }}>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<LoginIcon />}
-                onClick={() => {
-                  handleClickOpenDialog(true);
-                  setMobileMenuOpen(false);
-                }}
-              >
-                Iniciar sesión
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<PersonAddIcon />}
-                onClick={() => {
-                  handleClickOpenDialog(false);
-                  setMobileMenuOpen(false);
-                }}
-              >
-                Registrarse
-              </Button>
-            </Box>
-          )}
+		<List>{menuItems}</List>
+
+			{userName ? (
+			<Box sx={{ display: "flex", flexDirection: "column", gap: 1, p: 2 }}>
+				<Button component={Link} to="/docs" variant="contained">
+				Mis documentos
+				</Button>
+				<Button
+				variant="contained"
+				startIcon={<LogoutIcon />}
+				onClick={() => {
+					handleLogout();
+					setMobileMenuOpen(false);
+				}}
+				>
+				Cerrar sesión
+				</Button>
+			</Box>
+			) : (
+			<Box sx={{ display: "flex", flexDirection: "column", gap: 1, p: 2 }}>
+				<Button variant="contained" color="primary" startIcon={<LoginIcon />} onClick={() => { handleClickOpenDialog(true); setMobileMenuOpen(false); }}>
+				Iniciar sesión
+				</Button>
+				<Button variant="contained" color="primary" startIcon={<PersonAddIcon />} onClick={() => { handleClickOpenDialog(false); setMobileMenuOpen(false); }}>
+				Registrarse
+				</Button>
+			</Box>
+			)}
         </Box>
       </Drawer>
 

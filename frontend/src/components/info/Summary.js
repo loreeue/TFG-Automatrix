@@ -17,7 +17,7 @@ const Summary = () => {
     <Box
       sx={{
         backgroundColor: "#1A1A1A",
-        minHeight: "80vh",
+        minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
