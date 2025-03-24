@@ -76,13 +76,15 @@ public class AutomataTransformerRESTController {
  			afdDocument = documentService.saveDocument(userId, afdDocument);
 
             // Save the resulting AFD to a file
-			String outputPath = System.getProperty("user.dir") + File.separator + fileOutputDir + File.separator + "afd.jff";
-            File outputFile = new File(outputPath);
+			//String outputPath = System.getProperty("user.dir") + File.separator + fileOutputDir + File.separator + "afd.jff";
+            //File outputFile = new File(outputPath);
+			File outputFile = File.createTempFile("afd_minimized", ".jff");
             automataService.saveAFND(afd, outputFile.getAbsolutePath());
 
             // Prepare the file as a downloadable resource
-            Path filePath = outputFile.toPath();
-            Resource resource = new FileSystemResource(filePath);
+            //Path filePath = outputFile.toPath();
+			//Resource resource = new FileSystemResource(filePath);
+			Resource resource = new FileSystemResource(outputFile);
 
             // Serve the file as a response with proper headers
             return ResponseEntity.ok()
