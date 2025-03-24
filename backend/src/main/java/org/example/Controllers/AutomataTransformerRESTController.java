@@ -22,7 +22,6 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.core.io.Resource;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.io.FileWriter;
 
 @RestController
@@ -76,14 +75,10 @@ public class AutomataTransformerRESTController {
  			afdDocument = documentService.saveDocument(userId, afdDocument);
 
             // Save the resulting AFD to a file
-			//String outputPath = System.getProperty("user.dir") + File.separator + fileOutputDir + File.separator + "afd.jff";
-            //File outputFile = new File(outputPath);
 			File outputFile = File.createTempFile("afd_minimized", ".jff");
             automataService.saveAFND(afd, outputFile.getAbsolutePath());
 
             // Prepare the file as a downloadable resource
-            //Path filePath = outputFile.toPath();
-			//Resource resource = new FileSystemResource(filePath);
 			Resource resource = new FileSystemResource(outputFile);
 
             // Serve the file as a response with proper headers
@@ -133,13 +128,11 @@ public class AutomataTransformerRESTController {
 			minimizedDocument = documentService.saveDocument(userId, minimizedDocument);
 
             // Save the resulting minimized AFD to a file
-			String outputPath = System.getProperty("user.dir") + File.separator + fileOutputDir + File.separator + "afd.jff";
-            File outputFile = new File(outputPath);
+			File outputFile = File.createTempFile("afd", ".jff");
             automataService.saveAFND(minimizedAfd, outputFile.getAbsolutePath());
 
-            // Serve the file as a downloadable resource
-            Path filePath = outputFile.toPath();
-            Resource resource = new FileSystemResource(filePath);
+            // Prepare the file as a downloadable resource
+			Resource resource = new FileSystemResource(outputFile);
 
             // Serve the file as a response with proper headers
             return ResponseEntity.ok()
@@ -216,12 +209,11 @@ public class AutomataTransformerRESTController {
  			apDocument = documentService.saveDocument(userId, apDocument);
 
             // Save the resulting AP as a .jff file
-			String outputPath = System.getProperty("user.dir") + File.separator + fileOutputDir + File.separator + "afd.jff";
-            File outputFile = new File(outputPath);
+			File outputFile = File.createTempFile("ap", ".jff");
             automataService.saveAP(ap, outputFile.getAbsolutePath());
 
-            // Create a resource for the saved file
-            Resource resource = new FileSystemResource(outputFile);
+            // Prepare the file as a downloadable resource
+			Resource resource = new FileSystemResource(outputFile);
 
             // Return the file as a downloadable resource
             return ResponseEntity.ok()
@@ -324,12 +316,11 @@ public class AutomataTransformerRESTController {
  			afdDocument = documentService.saveDocument(userId, afdDocument);
 
             // Save the resulting AFD into a .jff file
-			String outputPath = System.getProperty("user.dir") + File.separator + fileOutputDir + File.separator + "afd.jff";
-            File outputFile = new File(outputPath);
-            automataService.saveAFND(afd, outputFile.getAbsolutePath());
+			File outputFile = File.createTempFile("afd", ".jff");
+            automataService.saveAP(afd, outputFile.getAbsolutePath());
 
             // Prepare the file as a downloadable resource
-            Resource resource = new FileSystemResource(outputFile);
+			Resource resource = new FileSystemResource(outputFile);
 
             // Return the file as a downloadable resource with appropriate headers
             return ResponseEntity.ok()
