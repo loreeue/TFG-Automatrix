@@ -209,7 +209,7 @@ public class AutomataTransformerRESTController {
  			apDocument = documentService.saveDocument(userId, apDocument);
 
             // Save the resulting AP as a .jff file
-			File outputFile = File.createTempFile("ap", ".jff");
+			File outputFile = File.createTempFile("ap_from_gic", ".jff");
             automataService.saveAP(ap, outputFile.getAbsolutePath());
 
             // Prepare the file as a downloadable resource
