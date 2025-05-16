@@ -79,11 +79,6 @@ const MainMenu = () => {
                   cursor: "pointer",
                   transition: "transform 0.3s ease, box-shadow 0.3s ease",
                   transformOrigin: "center center",
-                  "&:hover": {
-                    backgroundColor: theme.palette.primary.main,
-                    transform: "scale(1.02)",
-                    boxShadow: "0px 4px 15px rgba(255, 255, 255, 0.2)",
-                  },
                 }}
               >
                 <Typography
