@@ -629,22 +629,28 @@ const DrawMT = () => {
 
             {/* Delete transition or state button */}
 			<Tooltip title="Eliminar estado o transición" placement="left">
-				<Button
-					variant="contained"
-					sx={{
-						position: "absolute",
-						right: { xs: "0.5rem", sm: "1.0rem" },
-						top: "30rem",
-						borderRadius: "50%",
-						minWidth: "3rem",
-						height: "3rem",
-						backgroundColor: theme.palette.secondary.main,
-						"&:hover": { backgroundColor: theme.palette.primary.main },
-					}}
-					onClick={handleDeleteModeClick}
-				>
-					<ClearIcon />
-				</Button>
+			<Button
+				variant="contained"
+				sx={{
+				position: "absolute",
+				right: { xs: "0.5rem", sm: "1.0rem" },
+				top: "30rem",
+				borderRadius: "50%",
+				minWidth: "3rem",
+				height: "3rem",
+				backgroundColor: deleteTransitionMode
+					? theme.palette.error.main        // rojo cuando el modo está activo
+					: theme.palette.secondary.main,   // color normal cuando está inactivo
+				"&:hover": {
+					backgroundColor: deleteTransitionMode
+					? theme.palette.error.dark      // rojo oscuro al pasar el ratón
+					: theme.palette.primary.main,   // color normal al pasar el ratón
+				},
+				}}
+				onClick={handleDeleteModeClick}
+			>
+				<ClearIcon />
+			</Button>
 			</Tooltip>
 
             <Dialog open={showStateTypeModal} onClose={() => setShowStateTypeModal(false)}>
