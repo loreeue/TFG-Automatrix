@@ -109,7 +109,7 @@ const Header = () => {
       return;
     }
     if (!validatePassword(password)) {
-      setPasswordError("Debe tener 8 caracteres, mayúscula, minúscula, número y símbolo.");
+	  setPasswordError('Debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un símbolo (@, $, !, %, *, ?, &).');
       return;
     }
     if (!isLogin && !validateConfirmPassword(password, confirmPassword)) {
