@@ -25,11 +25,6 @@ public class DocumentRESTController {
 		return ResponseEntity.ok(documents);
 	}
 
-    @PostMapping("/{userId}")
-    public Document uploadDocument(@PathVariable Long userId, @RequestBody Document document) {
-        return documentService.saveDocument(userId, document);
-    }
-
 	@GetMapping("/download/{documentId}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable Long documentId) {
         Optional<Document> documentOptional = documentService.getDocumentById(documentId);

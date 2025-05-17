@@ -24,10 +24,21 @@ public class AutomataSimulatorRESTController {
     @PostMapping("/afd")
     public boolean simulateAFD(@RequestParam("file") MultipartFile file, @RequestParam("input") String input, @RequestParam("userId") Long userId) {
         try {
-			Document originalDocument = new Document();
- 			originalDocument.setName(file.getOriginalFilename());
- 			originalDocument.setContent(file.getBytes());
- 			originalDocument = documentService.saveDocument(userId, originalDocument);
+			// Obtain content of the file
+			byte[] fileContent = file.getBytes();
+
+			// Verify if the document already exist
+			Document existingDocument = documentService.findDocumentByContent(fileContent);
+			Document document;
+
+			if (existingDocument != null) {
+				document = existingDocument;
+			} else {
+				document = new Document();
+				document.setName(file.getOriginalFilename());
+				document.setContent(fileContent);
+				document = documentService.saveDocument(userId, document);
+			}
 
             // Convert the MultipartFile to a file and load the automaton
             File tempFile = File.createTempFile("afd", ".jff");
@@ -47,10 +58,21 @@ public class AutomataSimulatorRESTController {
     @PostMapping("/afnd")
     public boolean simulateAFND(@RequestParam("file") MultipartFile file, @RequestParam("input") String input, @RequestParam("userId") Long userId) {
         try {
-			Document originalDocument = new Document();
- 			originalDocument.setName(file.getOriginalFilename());
- 			originalDocument.setContent(file.getBytes());
- 			originalDocument = documentService.saveDocument(userId, originalDocument);
+			// Obtain content of the file
+			byte[] fileContent = file.getBytes();
+
+			// Verify if the document already exist
+			Document existingDocument = documentService.findDocumentByContent(fileContent);
+			Document document;
+
+			if (existingDocument != null) {
+				document = existingDocument;
+			} else {
+				document = new Document();
+				document.setName(file.getOriginalFilename());
+				document.setContent(fileContent);
+				document = documentService.saveDocument(userId, document);
+			}
 
             // Convert the MultipartFile to a file and load the automaton
             File tempFile = File.createTempFile("afnd", ".jff");
@@ -70,10 +92,21 @@ public class AutomataSimulatorRESTController {
     @PostMapping("/turingMachine")
     public boolean simulateTuringMachine(@RequestParam("file") MultipartFile file, @RequestParam("input") String input, @RequestParam("userId") Long userId) {
         try {
-			Document originalDocument = new Document();
- 			originalDocument.setName(file.getOriginalFilename());
- 			originalDocument.setContent(file.getBytes());
- 			originalDocument = documentService.saveDocument(userId, originalDocument);
+			// Obtain content of the file
+			byte[] fileContent = file.getBytes();
+
+			// Verify if the document already exist
+			Document existingDocument = documentService.findDocumentByContent(fileContent);
+			Document document;
+
+			if (existingDocument != null) {
+				document = existingDocument;
+			} else {
+				document = new Document();
+				document.setName(file.getOriginalFilename());
+				document.setContent(fileContent);
+				document = documentService.saveDocument(userId, document);
+			}
 
             // Convert the MultipartFile to a file and load the turing machine
             File tempFile = File.createTempFile("turingMachine", ".jff");
@@ -93,10 +126,21 @@ public class AutomataSimulatorRESTController {
     @PostMapping("/ap")
     public boolean simulateAP(@RequestParam("file") MultipartFile file, @RequestParam("input") String input, @RequestParam("userId") Long userId) {
         try {
-			Document originalDocument = new Document();
- 			originalDocument.setName(file.getOriginalFilename());
- 			originalDocument.setContent(file.getBytes());
- 			originalDocument = documentService.saveDocument(userId, originalDocument);
+			// Obtain content of the file
+			byte[] fileContent = file.getBytes();
+
+			// Verify if the document already exist
+			Document existingDocument = documentService.findDocumentByContent(fileContent);
+			Document document;
+
+			if (existingDocument != null) {
+				document = existingDocument;
+			} else {
+				document = new Document();
+				document.setName(file.getOriginalFilename());
+				document.setContent(fileContent);
+				document = documentService.saveDocument(userId, document);
+			}
 
             // Convert the MultipartFile to a file and load the pushdown automaton
             File tempFile = File.createTempFile("pda", ".jff");

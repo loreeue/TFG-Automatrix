@@ -43,10 +43,21 @@ public class AutomataTransformerRESTController {
     @PostMapping("/afnd-to-afd")
     public ResponseEntity<Resource> convertAfndToAfd(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) {
         try {
-			Document originalDocument = new Document();
- 			originalDocument.setName(file.getOriginalFilename());
- 			originalDocument.setContent(file.getBytes());
- 			originalDocument = documentService.saveDocument(userId, originalDocument);
+			// Obtain content of the file
+			byte[] fileContent = file.getBytes();
+
+			// Verify if the document already exist
+			Document existingDocument = documentService.findDocumentByContent(fileContent);
+			Document document;
+
+			if (existingDocument != null) {
+				document = existingDocument;
+			} else {
+				document = new Document();
+				document.setName(file.getOriginalFilename());
+				document.setContent(fileContent);
+				document = documentService.saveDocument(userId, document);
+			}
 
             // Convert MultipartFile to a temporary file
             File tempFile = File.createTempFile("afnd", ".jff");
@@ -65,14 +76,21 @@ public class AutomataTransformerRESTController {
 			File afdTempFile = File.createTempFile("afd_from_afnd", ".jff");
  			automataService.saveAFND(afd, afdTempFile.getAbsolutePath());
 
- 			// Leer el contenido del archivo minimizado en un array de bytes
- 			byte[] afdContent = Files.readAllBytes(afdTempFile.toPath());
+			// Obtain content of the file
+			byte[] afdContent = Files.readAllBytes(afdTempFile.toPath());
 
- 			// Save the minimized AFD to the database
- 			Document afdDocument = new Document();
- 			afdDocument.setName("afd_from_afnd.jff");
- 			afdDocument.setContent(afdContent);
- 			afdDocument = documentService.saveDocument(userId, afdDocument);
+			// Verify if the document already exist
+			Document existingDocument2 = documentService.findDocumentByContent(afdContent);
+			Document document2;
+
+			if (existingDocument2 != null) {
+				document2 = existingDocument2;
+			} else {
+				document2 = new Document();
+				document2.setName("afd_from_afnd.jff");
+				document2.setContent(afdContent);
+				document2 = documentService.saveDocument(userId, document2);
+			}
 
             // Save the resulting AFD to a file
 			File outputFile = File.createTempFile("afd_minimized", ".jff");
@@ -96,10 +114,21 @@ public class AutomataTransformerRESTController {
     @PostMapping("/afd-to-minimized-afd")
     public ResponseEntity<Resource> convertAfdToMinimizedAfd(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) {
         try {
-			Document originalDocument = new Document();
-			originalDocument.setName(file.getOriginalFilename());
-			originalDocument.setContent(file.getBytes());
-			originalDocument = documentService.saveDocument(userId, originalDocument);
+			// Obtain content of the file
+			byte[] fileContent = file.getBytes();
+
+			// Verify if the document already exist
+			Document existingDocument = documentService.findDocumentByContent(fileContent);
+			Document document;
+
+			if (existingDocument != null) {
+				document = existingDocument;
+			} else {
+				document = new Document();
+				document.setName(file.getOriginalFilename());
+				document.setContent(fileContent);
+				document = documentService.saveDocument(userId, document);
+			}
 
             // Convert MultipartFile to a temporary file
             File tempFile = File.createTempFile("afd", ".jff");
@@ -118,14 +147,21 @@ public class AutomataTransformerRESTController {
 			File minimizedTempFile = File.createTempFile("afd_minimized", ".jff");
 			automataService.saveAFND(minimizedAfd, minimizedTempFile.getAbsolutePath());
 
-			// Read the content of the minimized file into a byte array
+			// Obtain content of the file
 			byte[] minimizedContent = Files.readAllBytes(minimizedTempFile.toPath());
 
-			// Save the minimized AFD to the database
-			Document minimizedDocument = new Document();
-			minimizedDocument.setName("afd_minimized.jff");
-			minimizedDocument.setContent(minimizedContent);
-			minimizedDocument = documentService.saveDocument(userId, minimizedDocument);
+			// Verify if the document already exist
+			Document existingDocument2 = documentService.findDocumentByContent(minimizedContent);
+			Document document2;
+
+			if (existingDocument2 != null) {
+				document2 = existingDocument2;
+			} else {
+				document2 = new Document();
+				document2.setName("afd_minimized.jff");
+				document2.setContent(minimizedContent);
+				document2 = documentService.saveDocument(userId, document2);
+			}
 
             // Save the resulting minimized AFD to a file
 			File outputFile = File.createTempFile("afd", ".jff");
@@ -149,10 +185,21 @@ public class AutomataTransformerRESTController {
     @PostMapping("/ap-to-gic")
     public ResponseEntity<Resource> convertApToGic(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) {
         try {
-			Document originalDocument = new Document();
- 			originalDocument.setName(file.getOriginalFilename());
- 			originalDocument.setContent(file.getBytes());
- 			originalDocument = documentService.saveDocument(userId, originalDocument);
+			// Obtain content of the file
+			byte[] fileContent = file.getBytes();
+
+			// Verify if the document already exist
+			Document existingDocument = documentService.findDocumentByContent(fileContent);
+			Document document;
+
+			if (existingDocument != null) {
+				document = existingDocument;
+			} else {
+				document = new Document();
+				document.setName(file.getOriginalFilename());
+				document.setContent(fileContent);
+				document = documentService.saveDocument(userId, document);
+			}
 
             // Convert the MultipartFile to a temporary file
             File tempFile = File.createTempFile("pda", ".jff");
@@ -199,14 +246,21 @@ public class AutomataTransformerRESTController {
 			File apTempFile = File.createTempFile("ap_from_gic", ".jff");
  			automataService.saveAP(ap, apTempFile.getAbsolutePath());
 
- 			// Read the content of the minimized file into a byte array
- 			byte[] apContent = Files.readAllBytes(apTempFile.toPath());
+			// Obtain content of the file
+			byte[] apContent = Files.readAllBytes(apTempFile.toPath());
 
- 			// Save the minimized AFD to the database
- 			Document apDocument = new Document();
- 			apDocument.setName("ap_from_gic.jff");
- 			apDocument.setContent(apContent);
- 			apDocument = documentService.saveDocument(userId, apDocument);
+			// Verify if the document already exist
+			Document existingDocument2 = documentService.findDocumentByContent(apContent);
+			Document document2;
+
+			if (existingDocument2 != null) {
+				document2 = existingDocument2;
+			} else {
+				document2 = new Document();
+				document2.setName("ap_from_gic.jff");
+				document2.setContent(apContent);
+				document2 = documentService.saveDocument(userId, document2);
+			}
 
             // Save the resulting AP as a .jff file
 			File outputFile = File.createTempFile("ap_from_gic", ".jff");
@@ -258,10 +312,21 @@ public class AutomataTransformerRESTController {
     @PostMapping("/afd-to-er")
     public ResponseEntity<String> convertAfdToEr(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long userId) {
         try {
-			Document originalDocument = new Document();
- 			originalDocument.setName(file.getOriginalFilename());
- 			originalDocument.setContent(file.getBytes());
- 			originalDocument = documentService.saveDocument(userId, originalDocument);
+			// Obtain content of the file
+			byte[] fileContent = file.getBytes();
+
+			// Verify if the document already exist
+			Document existingDocument = documentService.findDocumentByContent(fileContent);
+			Document document;
+
+			if (existingDocument != null) {
+				document = existingDocument;
+			} else {
+				document = new Document();
+				document.setName(file.getOriginalFilename());
+				document.setContent(fileContent);
+				document = documentService.saveDocument(userId, document);
+			}
 
             // Save uploaded file as a temporary file
             File tempFile = File.createTempFile("afd", ".jff");
@@ -306,14 +371,21 @@ public class AutomataTransformerRESTController {
 			File afdTempFile = File.createTempFile("afd_from_gld", ".jff");
  			automataService.saveAFND(afd, afdTempFile.getAbsolutePath());
 
- 			// Read the content of the minimized file into a byte array
- 			byte[] afdContent = Files.readAllBytes(afdTempFile.toPath());
+			// Obtain content of the file
+			byte[] afdContent = Files.readAllBytes(afdTempFile.toPath());
 
- 			// Save the minimized AFD to the database
- 			Document afdDocument = new Document();
- 			afdDocument.setName("afd_from_gld.jff");
- 			afdDocument.setContent(afdContent);
- 			afdDocument = documentService.saveDocument(userId, afdDocument);
+			// Verify if the document already exist
+			Document existingDocument2 = documentService.findDocumentByContent(afdContent);
+			Document document2;
+
+			if (existingDocument2 != null) {
+				document2 = existingDocument2;
+			} else {
+				document2 = new Document();
+				document2.setName("afd_from_gld.jff");
+				document2.setContent(afdContent);
+				document2 = documentService.saveDocument(userId, document2);
+			}
 
             // Save the resulting AFD into a .jff file
 			File outputFile = File.createTempFile("afd", ".jff");
