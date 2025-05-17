@@ -38,4 +38,8 @@ public class DocumentService {
 	public Optional<Document> getDocumentById(Long documentId) {
         return documentRepository.findById(documentId);
     }
+
+	public Document findDocumentByContent(byte[] content) {
+        return documentRepository.findByContent(content);
+    }
 }

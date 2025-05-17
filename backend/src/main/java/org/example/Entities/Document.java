@@ -12,7 +12,14 @@ public class Document {
     private Long id;
 
     private String name;
-    private String url;
+
+	@Lob
+    private byte[] content;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+	@JsonIgnore
+    private User user;
 
     public Long getId() {
         return id;
@@ -30,14 +37,6 @@ public class Document {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public byte[] getContent() {
         return content;
     }
@@ -53,12 +52,4 @@ public class Document {
     public void setUser(User user) {
         this.user = user;
     }
-
-    @Lob
-    private byte[] content;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-	@JsonIgnore
-    private User user;
 }
