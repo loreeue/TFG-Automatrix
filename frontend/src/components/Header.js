@@ -548,7 +548,7 @@ const Header = () => {
               setPasswordError(
                 validatePassword(e.target.value)
                   ? ""
-                  : "Debe tener 8 caracteres, mayúscula, minúscula, número y símbolo."
+                  : "Debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un símbolo (@, $, !, %, *, ?, &)."
               );
             }}
             error={!!passwordError}
