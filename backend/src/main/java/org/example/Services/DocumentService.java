@@ -6,6 +6,8 @@ import org.example.Repositories.DocumentRepository;
 import org.example.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +42,12 @@ public class DocumentService {
     }
 
 	public Document findDocumentByContent(byte[] content) {
-        return documentRepository.findByContent(content);
+        List<Document> documents = documentRepository.findAll();
+        for (Document doc : documents) {
+            if (Arrays.equals(doc.getContent(), content)) {
+                return doc;
+            }
+        }
+        return null;
     }
 }
