@@ -36,8 +36,7 @@ public class TMSimulator extends AutomatonSimulator {
                             + automaton.getClass());
         List<AcceptanceFilter> tlist = new ArrayList<AcceptanceFilter>();
 
-        if (Universe.curProfile.getAcceptByFinalState()) tlist.add(new AcceptByFinalStateFilter());
-        if (Universe.curProfile.getAcceptByHalting()) tlist.add(new AcceptByHaltingFilter());
+		tlist.add(new AcceptByFinalStateFilter());
 
         myFilters = tlist.toArray(new AcceptanceFilter[0]);
     }
