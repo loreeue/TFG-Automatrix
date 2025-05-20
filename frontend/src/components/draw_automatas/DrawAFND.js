@@ -46,7 +46,7 @@ const DrawAFND = () => {
 	const [validationResult, setValidationResult] = useState("");
 	const [loading, setLoading] = useState(false);
 
-	const [nodeCounter, setNodeCounter] = useState(1); // Counter for nodes
+	const [nodeCounter, setNodeCounter] = useState(0); // Counter for nodes
 
     const theme = useTheme();
 
