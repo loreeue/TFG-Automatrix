@@ -21,6 +21,7 @@ public class DocumentService {
     @Autowired
     private UserRepository userRepository;
 
+	@Transactional
     public List<Document> getDocumentsByUserId(Long userId) {
         return documentRepository.findByUserId(userId);
     }
@@ -35,14 +36,17 @@ public class DocumentService {
         throw new RuntimeException("Usuario no encontrado");
     }
 
+	@Transactional
     public void deleteDocument(Long documentId) {
         documentRepository.deleteById(documentId);
     }
 
+	@Transactional
 	public Optional<Document> getDocumentById(Long documentId) {
         return documentRepository.findById(documentId);
     }
 
+	@Transactional
 	public Document findDocumentByContent(byte[] content) {
         List<Document> documents = documentRepository.findAll();
         for (Document doc : documents) {
