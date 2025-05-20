@@ -51,21 +51,26 @@ const DrawAP = () => {
 	const [validationResult, setValidationResult] = useState("");
 	const [loading, setLoading] = useState(false);
 
+	const [nodeCounter, setNodeCounter] = useState(1); // Counter for nodes
+
     const theme = useTheme();
 
     const addNode = (e) => {
-        const { x, y } = e.target.getStage().getPointerPosition();
-        const newNode = {
-            id: `state-${nodes.length}`,
-            x,
-            y,
-            label: `q${nodes.length}`,
-            isFinal: false,
-            isInitial: false,
-            stackSymbol: null,
-        };
-        setNodes([...nodes, newNode]);
-    };
+		const { x, y } = e.target.getStage().getPointerPosition();
+
+		const newNode = {
+			id: `state-${nodeCounter}`,
+			x,
+			y,
+			label: `q${nodeCounter}`,
+			isFinal: false,
+			isInitial: false,
+			stackSymbol: null,
+		};
+
+		setNodeCounter(prev => prev + 1);
+		setNodes([...nodes, newNode]);
+	};
 
     const moveNode = (id, x, y) => {
         setNodes((prevNodes) =>

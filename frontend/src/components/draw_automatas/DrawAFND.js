@@ -46,21 +46,26 @@ const DrawAFND = () => {
 	const [validationResult, setValidationResult] = useState("");
 	const [loading, setLoading] = useState(false);
 
+	const [nodeCounter, setNodeCounter] = useState(1); // Counter for nodes
+
     const theme = useTheme();
 
     // Add a new status
     const addNode = (e) => {
-        const { x, y } = e.target.getStage().getPointerPosition();
-        const newNode = {
-            id: `state-${nodes.length}`,
-            x,
-            y,
-            label: `q${nodes.length}`,
-            isFinal: false,
-            isInitial: false,
-        };
-        setNodes([...nodes, newNode]);
-    };
+		const { x, y } = e.target.getStage().getPointerPosition();
+
+		const newNode = {
+			id: `state-${nodes.length}`,
+			x,
+			y,
+			label: `q${nodeCounter}`,
+			isFinal: false,
+			isInitial: false,
+		};
+
+		setNodeCounter(prev => prev + 1);
+		setNodes([...nodes, newNode]);
+	};
 
     // Move a state and update transitions
     const moveNode = (id, x, y) => {

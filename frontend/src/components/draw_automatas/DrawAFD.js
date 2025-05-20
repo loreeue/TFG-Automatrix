@@ -54,20 +54,16 @@ const DrawAFD = () => {
 	const addNode = (e) => {
         const { x, y } = e.target.getStage().getPointerPosition();
 
-        // Create a new node with a unique label using the counter
         const newNode = {
             id: `state-${nodes.length}`,
             x,
             y,
-            label: `q${nodeCounter}`, // Use the counter for the node label
+            label: `q${nodeCounter}`,
             isFinal: false,
             isInitial: false,
         };
 
-        // Increment the counter for the next node
         setNodeCounter(prev => prev + 1);
-
-        // Add the new node to the nodes list
         setNodes([...nodes, newNode]);
     };
 
