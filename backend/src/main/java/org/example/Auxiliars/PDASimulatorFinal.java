@@ -8,10 +8,8 @@ import automata.Transition;
 import automata.pda.CharacterStack;
 import automata.pda.PDAConfiguration;
 import automata.pda.PDATransition;
-
 import java.util.ArrayList;
 import java.util.Iterator;
-import javax.swing.JOptionPane;
 
 public class PDASimulatorFinal extends AutomatonSimulator {
 
@@ -113,16 +111,6 @@ public class PDASimulatorFinal extends AutomatonSimulator {
                 configurationsToAdd.addAll(configsToAdd);
                 it.remove();
                 count++;
-                if (count > 10000) {
-                    int result = JOptionPane.showConfirmDialog(null, "JFLAP has generated 10000 configurations. Continue?");
-                    switch (result) {
-                        case JOptionPane.CANCEL_OPTION:
-                            continue;
-                        case JOptionPane.NO_OPTION:
-                            return false;
-                        default:
-                    }
-                }
             }
             myConfigurations.addAll(configurationsToAdd);
         }
