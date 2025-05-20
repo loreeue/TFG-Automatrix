@@ -104,17 +104,15 @@ public class AutomataService {
     }
 
     public boolean simulateAPFinal(PushdownAutomaton automaton, String input) throws Exception {
-        AutomatonSimulator simulator = SimulatorFactory.getSimulator(automaton);
-        if (simulator == null) throw new RuntimeException("Cannot load a simulator for this automaton.");
-		PDASimulatorFinal pdaSimulatorfinal = (PDASimulatorFinal) simulator;
-        return pdaSimulatorfinal.simulateInput(input);
+        PDASimulatorFinal simulator = new PDASimulatorFinal(automaton);
+		simulator.setAcceptByFinalState();
+		return simulator.simulateInput(input);
     }
 
 	public boolean simulateAPEmpty(PushdownAutomaton automaton, String input) throws Exception {
-        AutomatonSimulator simulator = SimulatorFactory.getSimulator(automaton);
-        if (simulator == null) throw new RuntimeException("Cannot load a simulator for this automaton.");
-		PDASimulatorEmpty pdaSimulatorempty = (PDASimulatorEmpty) simulator;
-        return pdaSimulatorempty.simulateInput(input);
+		PDASimulatorEmpty simulator = new PDASimulatorEmpty(automaton);
+		simulator.setAcceptByEmptyStack();
+		return simulator.simulateInput(input);
     }
 
     public FiniteStateAutomaton convertAFNDToAFD(FiniteStateAutomaton nfa) {
