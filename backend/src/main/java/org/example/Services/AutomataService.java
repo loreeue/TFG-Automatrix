@@ -78,9 +78,9 @@ public class AutomataService {
             automaton = (TuringMachine) codec.decode(new File(filePath), null);
         }
 		catch (Exception e) {
-            System.out.println("El TM no se pudo cargar o es incorrecto");
-            return null;
-        }
+			e.printStackTrace(); // para ver el motivo real
+			return null;
+		}
         return automaton;
     }
 
