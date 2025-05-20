@@ -55,6 +55,7 @@ const DrawAP = () => {
 
     const theme = useTheme();
 
+	// Add a new status
     const addNode = (e) => {
 		const { x, y } = e.target.getStage().getPointerPosition();
 
