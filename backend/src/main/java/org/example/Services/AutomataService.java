@@ -7,6 +7,7 @@ import automata.fsa.NFAToDFA;
 import automata.pda.PDATransition;
 import automata.pda.PushdownAutomaton;
 import automata.pda.PDAToCFGConverter;
+import automata.turing.TMSimulator;
 import automata.turing.TuringMachine;
 import file.XMLCodec;
 import grammar.Grammar;
@@ -84,9 +85,8 @@ public class AutomataService {
     }
 
     public boolean simulateTuringMachine(TuringMachine automaton, String input) throws Exception {
-        AutomatonSimulator simulator = SimulatorFactory.getSimulator(automaton);
-        if (simulator == null) throw new RuntimeException("Cannot load a simulator for this automaton.");
-        return simulator.simulateInput(input);
+		TMSimulator simulator = new TMSimulator(automaton);
+		return simulator.simulateInput(input);
     }
 
     public PushdownAutomaton loadAP(String filePath) throws Exception {

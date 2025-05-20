@@ -100,7 +100,6 @@ public class PDASimulatorEmpty extends AutomatonSimulator {
             PDAConfiguration initialConfiguration = (PDAConfiguration) initialConfigs[k];
             myConfigurations.add(initialConfiguration);
         }
-        int count = 0;
         while (!myConfigurations.isEmpty()) {
             if (isAccepted())
                 return true;
@@ -111,7 +110,6 @@ public class PDASimulatorEmpty extends AutomatonSimulator {
                 ArrayList<Configuration> configsToAdd = stepConfiguration(configuration);
                 configurationsToAdd.addAll(configsToAdd);
                 it.remove();
-                count++;
             }
             myConfigurations.addAll(configurationsToAdd);
         }
