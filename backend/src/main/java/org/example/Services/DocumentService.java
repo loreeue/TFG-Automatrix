@@ -6,6 +6,7 @@ import org.example.Repositories.DocumentRepository;
 import org.example.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +25,7 @@ public class DocumentService {
         return documentRepository.findByUserId(userId);
     }
 
+	@Transactional
     public Document saveDocument(Long userId, Document document) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
