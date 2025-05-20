@@ -46,29 +46,30 @@ const DrawAFD = () => {
 	const [validationResult, setValidationResult] = useState("");
 	const [loading, setLoading] = useState(false);
 
+	const [nodeCounter, setNodeCounter] = useState(1); // Counter for nodes
+
     const theme = useTheme();
 
     // Add a new status
 	const addNode = (e) => {
-		const { x, y } = e.target.getStage().getPointerPosition();
+        const { x, y } = e.target.getStage().getPointerPosition();
 
-		const existingLabels = nodes.map(node => parseInt(node.label.replace("q", "")));
-		let newLabel = 1;  // Start from q1
+        // Create a new node with a unique label using the counter
+        const newNode = {
+            id: `state-${nodes.length}`,
+            x,
+            y,
+            label: `q${nodeCounter}`, // Use the counter for the node label
+            isFinal: false,
+            isInitial: false,
+        };
 
-		while (existingLabels.includes(newLabel)) {
-			newLabel++;
-		}
+        // Increment the counter for the next node
+        setNodeCounter(prev => prev + 1);
 
-		const newNode = {
-			id: `state-${nodes.length}`,
-			x,
-			y,
-			label: `q${newLabel}`,  // Assign the next available label
-			isFinal: false,
-			isInitial: false,
-		};
-		setNodes([...nodes, newNode]);
-	};
+        // Add the new node to the nodes list
+        setNodes([...nodes, newNode]);
+    };
 
     // Move a state and update transitions
     const moveNode = (id, x, y) => {
