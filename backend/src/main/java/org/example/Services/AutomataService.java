@@ -15,6 +15,9 @@ import grammar.Production;
 import grammar.cfg.CFGToPDALLConverter;
 import grammar.cfg.ContextFreeGrammar;
 import grammar.reg.RightLinearGrammarToFSAConverter;
+
+import org.example.Auxiliars.PDASimulatorEmpty;
+import org.example.Auxiliars.PDASimulatorFinal;
 import org.springframework.stereotype.Service;
 import java.io.File;
 import java.util.*;
@@ -100,10 +103,18 @@ public class AutomataService {
         return automaton;
     }
 
-    public boolean simulateAP(PushdownAutomaton automaton, String input) throws Exception {
+    public boolean simulateAPFinal(PushdownAutomaton automaton, String input) throws Exception {
         AutomatonSimulator simulator = SimulatorFactory.getSimulator(automaton);
         if (simulator == null) throw new RuntimeException("Cannot load a simulator for this automaton.");
-        return simulator.simulateInput(input);
+		PDASimulatorFinal pdaSimulatorfinal = (PDASimulatorFinal) simulator;
+        return pdaSimulatorfinal.simulateInput(input);
+    }
+
+	public boolean simulateAPEmpty(PushdownAutomaton automaton, String input) throws Exception {
+        AutomatonSimulator simulator = SimulatorFactory.getSimulator(automaton);
+        if (simulator == null) throw new RuntimeException("Cannot load a simulator for this automaton.");
+		PDASimulatorEmpty pdaSimulatorempty = (PDASimulatorEmpty) simulator;
+        return pdaSimulatorempty.simulateInput(input);
     }
 
     public FiniteStateAutomaton convertAFNDToAFD(FiniteStateAutomaton nfa) {

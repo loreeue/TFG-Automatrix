@@ -123,8 +123,8 @@ public class AutomataSimulatorRESTController {
         }
     }
 
-    @PostMapping("/ap")
-    public boolean simulateAP(@RequestParam("file") MultipartFile file, @RequestParam("input") String input, @RequestParam("userId") Long userId) {
+    @PostMapping("/ap/final")
+    public boolean simulateAPFinal(@RequestParam("file") MultipartFile file, @RequestParam("input") String input, @RequestParam("userId") Long userId) {
         try {
 			// Obtain content of the file
 			byte[] fileContent = file.getBytes();
@@ -150,7 +150,41 @@ public class AutomataSimulatorRESTController {
                 return false;
             }
             // Simulate the input
-            return automataService.simulateAP(automaton, input);
+            return automataService.simulateAPFinal(automaton, input);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+	@PostMapping("/ap/empty")
+    public boolean simulateAPEmpty(@RequestParam("file") MultipartFile file, @RequestParam("input") String input, @RequestParam("userId") Long userId) {
+        try {
+			// Obtain content of the file
+			byte[] fileContent = file.getBytes();
+
+			// Verify if the document already exist
+			Document existingDocument = documentService.findDocumentByContent(fileContent);
+			Document document;
+
+			if (existingDocument != null) {
+				document = existingDocument;
+			} else {
+				document = new Document();
+				document.setName(file.getOriginalFilename());
+				document.setContent(fileContent);
+				document = documentService.saveDocument(userId, document);
+			}
+
+            // Convert the MultipartFile to a file and load the pushdown automaton
+            File tempFile = File.createTempFile("pda", ".jff");
+            file.transferTo(tempFile);
+            PushdownAutomaton automaton = automataService.loadAP(tempFile.getAbsolutePath());
+            if (automaton == null) {
+                return false;
+            }
+            // Simulate the input
+            return automataService.simulateAPEmpty(automaton, input);
         } catch (Exception e) {
             e.printStackTrace();
             return false;

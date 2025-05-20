@@ -10,6 +10,7 @@ const SimulateAP = () => {
     const [result, setResult] = useState("");
     const [loading, setLoading] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
+	const [simulationMode, setSimulationMode] = useState(null); // "final" o "empty"
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -73,35 +74,28 @@ const SimulateAP = () => {
         setOpenDialog(true);
     };
 
-    const handleDialogClose = () => {
-        setOpenDialog(false);
-        handleSubmit();
-    };
+	const handleDialogClose = () => {
+    	setOpenDialog(false);
+	};
 
     const handleSubmit = async () => {
-		// Obtain the userId from localStorage
 		const userId = localStorage.getItem("userId");
 		if (!userId) {
-			toast.error("Error: No se encontró el ID del usuario. Inicia sesión de nuevo.", {
-				position: "top-right",
-				autoClose: 3000,
-				hideProgressBar: true,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-			});
+			toast.error("Error: No se encontró el ID del usuario. Inicia sesión de nuevo.");
 			return;
 		}
 
-        setLoading(true);
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("input", input);
+		setLoading(true);
+		const formData = new FormData();
+		formData.append("file", file);
+		formData.append("input", input);
 
 		try {
-			const response = await axios.post(`/api/validate/ap?userId=${userId}`, formData, {
+			const url = `/api/validate/ap/${simulationMode}?userId=${userId}`;
+			const response = await axios.post(url, formData, {
 				headers: { "Content-Type": "multipart/form-data" },
 			});
+
 			const accepted = response.data;
 			setResult(
 				accepted
@@ -110,11 +104,18 @@ const SimulateAP = () => {
 			);
 		} catch (error) {
 			console.error(error);
-			toast.error("Error en el servidor al procesar la simulación.", { position: "top-right" });
+			toast.error("Error en el servidor al procesar la simulación.");
 		} finally {
 			setLoading(false);
+			setSimulationMode(null); // Reset
 		}
-    };
+	};
+
+	useEffect(() => {
+		if (simulationMode) {
+			handleSubmit();
+		}
+	}, [simulationMode]);
 
     return (
         <Box
@@ -268,19 +269,36 @@ const SimulateAP = () => {
                         Es necesario que especifiques en JFLAP el tipo de Autómata a Pila.
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions sx={{ justifyContent: "center" }}>
-                    <Button
-                        onClick={handleDialogClose}
-                        sx={{
-                            backgroundColor: "#694D75",
-                            color: "#FFFFFF",
-                            fontFamily: "'Josefin Sans', sans-serif",
-                            "&:hover": { backgroundColor: "#331832" },
-                        }}
-                    >
-                        Aceptar
-                    </Button>
-                </DialogActions>
+                <DialogActions sx={{ justifyContent: "center", gap: 2 }}>
+					<Button
+						onClick={() => {
+							setSimulationMode("final");
+							handleDialogClose();
+						}}
+						sx={{
+							backgroundColor: "#694D75",
+							color: "#FFFFFF",
+							fontFamily: "'Josefin Sans', sans-serif",
+							"&:hover": { backgroundColor: "#331832" },
+						}}
+					>
+						Por Estado Final
+					</Button>
+					<Button
+						onClick={() => {
+							setSimulationMode("empty");
+							handleDialogClose();
+						}}
+						sx={{
+							backgroundColor: "#694D75",
+							color: "#FFFFFF",
+							fontFamily: "'Josefin Sans', sans-serif",
+							"&:hover": { backgroundColor: "#331832" },
+						}}
+					>
+						Por Vaciado de Pila
+					</Button>
+				</DialogActions>
             </Dialog>
         </Box>
     );
