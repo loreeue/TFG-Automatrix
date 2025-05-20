@@ -37,7 +37,7 @@ const EquivalentGrammars = () => {
         event.preventDefault();
 
         if (!grammar1.trim() || !grammar2.trim()) {
-            toast.error("Por favor, introduce ambas gramáticas antes de verificar.", {
+            toast.error("Por favor, introduce ambas gramáticas regulares antes de verificar.", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: true,
@@ -54,7 +54,7 @@ const EquivalentGrammars = () => {
             parsedGrammar1 = JSON.parse(grammar1.trim());
             parsedGrammar2 = JSON.parse(grammar2.trim());
         } catch (error) {
-            toast.error("Error en el formato de la gramática. Asegúrate de seguir el ejemplo.", {
+            toast.error("Error en el formato de la gramática regular. Asegúrate de seguir el ejemplo.", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: true,
@@ -122,7 +122,7 @@ const EquivalentGrammars = () => {
                     fontFamily: "'Spicy Rice', cursive",
                 }}
             >
-                Verificar Equivalencia de Gramáticas
+                Verificar Equivalencia de Gramáticas Regulares
             </Typography>
 
             <Box
@@ -147,7 +147,7 @@ const EquivalentGrammars = () => {
                     gutterBottom
                     sx={{ fontFamily: "'Josefin Sans', sans-serif" }}
                 >
-                    Introduzca cada gramática en formato JSON, con sus producciones enumeradas como se muestra a continuación:
+                    Introduzca cada gramática regular en formato JSON, con sus producciones enumeradas como se muestra a continuación:
                 </Typography>
                 <Box
                     sx={{
@@ -190,7 +190,7 @@ const EquivalentGrammars = () => {
                                 color: "#FFFFFF",
                             }}
                         >
-                            Gramática 1
+                            Gramática Regular 1
                         </Typography>
                         <TextField
                             variant="outlined"
@@ -223,7 +223,7 @@ const EquivalentGrammars = () => {
                                 color: "#FFFFFF",
                             }}
                         >
-                            Gramática 2
+                            Gramática Regular 2
                         </Typography>
                         <TextField
                             variant="outlined"
