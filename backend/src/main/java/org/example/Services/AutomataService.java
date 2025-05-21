@@ -19,7 +19,7 @@ import grammar.cfg.ContextFreeGrammar;
 import grammar.reg.RightLinearGrammarToFSAConverter;
 import org.example.Auxiliars.PDASimulatorEmpty;
 import org.example.Auxiliars.PDASimulatorFinal;
-import org.example.Auxiliars.TMTransducer;
+import org.example.Auxiliars.TMTransducerAux;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 import file.xml.Transducer;
@@ -85,7 +85,7 @@ public class AutomataService {
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document doc = builder.parse(file);
-			Transducer transducer = (Transducer) TMTransducer.getTransducer(doc);
+			TMTransducerAux transducer = TMTransducerAux.getTransducer(doc);
 			return transducer.fromDOM(doc);
 		} catch (ParserConfigurationException var7) {
 			throw new ParseException("Java could not create the parser!");
