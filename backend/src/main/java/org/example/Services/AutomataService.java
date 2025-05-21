@@ -11,7 +11,6 @@ import automata.turing.TMSimulator;
 import automata.turing.TuringMachine;
 import file.ParseException;
 import file.XMLCodec;
-import file.xml.Transducer;
 import grammar.Grammar;
 import grammar.GrammarToAutomatonConverter;
 import grammar.Production;
@@ -21,15 +20,22 @@ import grammar.reg.RightLinearGrammarToFSAConverter;
 
 import org.example.Auxiliars.PDASimulatorEmpty;
 import org.example.Auxiliars.PDASimulatorFinal;
-import org.example.Auxiliars.TransducerFactory;
+import org.example.Auxiliars.TMTransducer;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
+import file.xml.TMBBTransducer;
+import file.xml.Transducer;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import javax.swing.Icon;
+import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -82,12 +88,30 @@ public class AutomataService {
         return simulator.simulateInput(input);
     }
 
+	private static Transducer instantiate(Object object) {
+      if (object instanceof Class) {
+         try {
+            return (Transducer)object.getClass().getDeclaredConstructor().newInstance();
+         } catch (Throwable var2) {
+            throw new IllegalArgumentException("Could not instantiate " + object + "!");
+         }
+      } else if (object instanceof Transducer) {
+         return (Transducer)object;
+      } else {
+         throw new IllegalArgumentException("Object " + object + " does not correspond to a transducer!");
+      }
+   }
+
+	public static Transducer getTransducer(Document document)  {
+		return instantiate(new TMTransducer());
+	}
+
 	public Serializable decodeTM(File file, Map<?, ?> parameters) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document doc = builder.parse(file);
-			Transducer transducer = (Transducer) TransducerFactory.getTransducer(doc);
+			Transducer transducer = getTransducer(doc);
 			return transducer.fromDOM(doc);
 		} catch (ParserConfigurationException var7) {
 			throw new ParseException("Java could not create the parser!");

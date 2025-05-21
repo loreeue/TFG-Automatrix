@@ -18,9 +18,8 @@ import file.xml.PDATransducer;
 import file.xml.RETransducer;
 import file.xml.RegPumpingLemmaTransducer;
 import file.xml.TMBBTransducer;
-import file.xml.TMTransducer;
 
-public class TransducerFactory {
+public class TMTransducer {
     private static final Map<String, Object> typeToTransducer;
     private static final Map<Class<?>, Object> classToTransducer;
 
@@ -40,7 +39,7 @@ public class TransducerFactory {
         add(null, gui.pumping.CFPumpingLemmaChooser.class, new CFPumpingLemmaTransducer());
     }
 
-    public static TransducerFactory getTransducer(Document document) {
+    public static TMTransducer getTransducer(Document document) {
         Element elem = document.getDocumentElement();
         NodeList typeNodes = elem.getElementsByTagName("type");
         NodeList bbNodes = elem.getElementsByTagName("block");
@@ -82,7 +81,7 @@ public class TransducerFactory {
         return instantiate(o);
     }
 
-    public static TransducerFactory getTransducer(Serializable structure) {
+    public static TMTransducer getTransducer(Serializable structure) {
         Class<?> c = structure.getClass();
         while (c != null) {
             Object o = classToTransducer.get(c);
@@ -95,16 +94,16 @@ public class TransducerFactory {
                         + "!");
     }
 
-    private static TransducerFactory instantiate(Object object) {
+    private static TMTransducer instantiate(Object object) {
         if (object instanceof Class) {
             try {
-                return (TransducerFactory) object.getClass().getDeclaredConstructor().newInstance();
+                return (TMTransducer) object.getClass().getDeclaredConstructor().newInstance();
             } catch (Throwable e) {
                 throw new IllegalArgumentException("Could not instantiate "
                         + object + "!");
             }
-        } else if (object instanceof TransducerFactory) {
-            return (TransducerFactory) object;
+        } else if (object instanceof TMTransducer) {
+            return (TMTransducer) object;
         } else {
             throw new IllegalArgumentException("Object " + object
                     + " does not correspond to a transducer!");
