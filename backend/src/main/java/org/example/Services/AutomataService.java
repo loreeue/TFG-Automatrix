@@ -9,7 +9,9 @@ import automata.pda.PushdownAutomaton;
 import automata.pda.PDAToCFGConverter;
 import automata.turing.TMSimulator;
 import automata.turing.TuringMachine;
+import file.ParseException;
 import file.XMLCodec;
+import file.xml.Transducer;
 import grammar.Grammar;
 import grammar.GrammarToAutomatonConverter;
 import grammar.Production;
@@ -19,9 +21,19 @@ import grammar.reg.RightLinearGrammarToFSAConverter;
 
 import org.example.Auxiliars.PDASimulatorEmpty;
 import org.example.Auxiliars.PDASimulatorFinal;
+import org.example.Auxiliars.TransducerFactory;
 import org.springframework.stereotype.Service;
+import org.xml.sax.SAXException;
+
 import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
+import org.w3c.dom.Document;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import automata.*;
 
 @Service
@@ -70,17 +82,36 @@ public class AutomataService {
         return simulator.simulateInput(input);
     }
 
+	public Serializable decodeTM(File file, Map<?, ?> parameters) {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		try {
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document doc = builder.parse(file);
+			Transducer transducer = (Transducer) TransducerFactory.getTransducer(doc);
+			return transducer.fromDOM(doc);
+		} catch (ParserConfigurationException var7) {
+			throw new ParseException("Java could not create the parser!");
+		} catch (IOException var8) {
+			throw new ParseException("Could not open file to read!");
+		} catch (SAXException var9) {
+			throw new ParseException("Could not parse XML!\n" + var9.getMessage());
+		} catch (ExceptionInInitializerError var10) {
+			System.err.println("STATIC INIT:");
+			var10.getException().printStackTrace();
+			throw new ParseException("Unexpected Error!");
+		}
+   }
+
     public TuringMachine loadTuringMachine(String filePath) throws Exception {
-        XMLCodec codec = new XMLCodec();
         TuringMachine automaton = null;
 
         try {
-            automaton = (TuringMachine) codec.decode(new File(filePath), null);
+            automaton = (TuringMachine) decodeTM(new File(filePath), null);
         }
 		catch (Exception e) {
-			e.printStackTrace(); // para ver el motivo real
-			return null;
-		}
+            System.out.println("El TM no se pudo cargar o es incorrecto");
+            return null;
+        }
         return automaton;
     }
 
