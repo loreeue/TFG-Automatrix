@@ -3,6 +3,7 @@ package org.example.Entities;
 import java.util.Map;
 
 public class GrammarRequest {
+
     private Map<String, String> grammar1;  // Map productions grammar1
     private Map<String, String> grammar2;  // Map productions grammar2
 

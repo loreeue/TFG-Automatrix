@@ -8,7 +8,6 @@ import automata.Transition;
 import automata.pda.CharacterStack;
 import automata.pda.PDAConfiguration;
 import automata.pda.PDATransition;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -20,7 +19,6 @@ public class PDASimulatorEmpty extends AutomatonSimulator {
 
     public PDASimulatorEmpty(Automaton automaton) {
         super(automaton);
-
 		myAcceptance = EMPTY_STACK;
     }
 
@@ -60,12 +58,7 @@ public class PDASimulatorEmpty extends AutomatonSimulator {
                 list.add(configurationToAdd);
             }
         }
-
         return list;
-    }
-
-    public void setAcceptByFinalState() {
-        myAcceptance = FINAL_STATE;
     }
 
     public void setAcceptByEmptyStack() {

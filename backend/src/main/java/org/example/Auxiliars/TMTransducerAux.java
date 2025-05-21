@@ -1,7 +1,6 @@
 package org.example.Auxiliars;
 
 import gui.action.OpenAction;
-import java.io.Serializable;
 import java.util.*;
 import org.w3c.dom.*;
 import java.awt.Point;
@@ -16,7 +15,6 @@ import automata.mealy.MooreMachine;
 import automata.turing.TMTransition;
 import automata.turing.TuringMachine;
 import file.DataException;
-import file.xml.AutomatonTransducer;
 import file.xml.CFPumpingLemmaTransducer;
 import file.xml.FSATransducer;
 import file.xml.GrammarTransducer;
@@ -27,8 +25,6 @@ import file.xml.PDATransducer;
 import file.xml.RETransducer;
 import file.xml.RegPumpingLemmaTransducer;
 import file.xml.TMBBTransducer;
-import file.xml.TMTransducer;
-import file.xml.Transducer;
 
 public class TMTransducerAux{
     private static final Map<String, Object> typeToTransducer;
@@ -92,19 +88,6 @@ public class TMTransducerAux{
         return instantiate(o);
     }
 
-    public static TMTransducerAux getTransducer(Serializable structure) {
-        Class<?> c = structure.getClass();
-        while (c != null) {
-            Object o = classToTransducer.get(c);
-            if (o != null)
-                return instantiate(o);
-            c = c.getSuperclass();
-        }
-        throw new IllegalArgumentException(
-                "Cannot get transducer for object of " + structure.getClass()
-                        + "!");
-    }
-
     private static TMTransducerAux instantiate(Object object) {
         if (object instanceof Class) {
             try {
@@ -158,7 +141,6 @@ public class TMTransducerAux{
     }
 
 	private void readnotes(Node parent, Automaton root, Document document) {
-
         NodeList allNodes = parent.getChildNodes();
         ArrayList<Node> noteNodes = new ArrayList<Node>();
         for (int k = 0; k < allNodes.getLength(); k++) {
@@ -174,35 +156,30 @@ public class TMTransducerAux{
             Map<String, String> e2t = elementsToText(noteNode);
 
             java.awt.Point p = new java.awt.Point();
-            boolean hasLocation = true;
             Object obj = (e2t).get("text");
             if (obj == null) continue;
             String textString = obj.toString();
 
-            // Try to get the X coord.
             double x = 0, y = 0;
             try {
                 x = Double.parseDouble(e2t.get("x"));
             } catch (NullPointerException e) {
-                hasLocation = false;
+
             } catch (NumberFormatException e) {
                 throw new DataException("The x coordinate "
                         + e2t.get("x")
                         + " could not be read for the note with text " + textString + ".");
             }
-            // Try to get the Y coord.
             try {
                 y = Double.parseDouble(e2t.get("y"));
             } catch (NullPointerException e) {
-                hasLocation = false;
+
             } catch (NumberFormatException e) {
                 throw new DataException("The y coordinate "
                         + e2t.get("y")
                         + " could not be read for the note with text " + textString + ".");
             }
             p.setLocation(x, y);
-
-
             root.addNote(new Note(p, textString));
         }
     }
@@ -210,47 +187,37 @@ public class TMTransducerAux{
 	protected static Integer parseID(String string) {
         try {
             int num = Integer.parseInt(string);
-            //return new Integer(num); //deprecated
             Integer integer = Integer.valueOf(num);
             return integer;
         } catch (NumberFormatException e) {
             Integer integer = Integer.valueOf(-1);
             return integer;
-            //return new Integer(-1); //deprecated
         }
     }
 
 	protected void createState(ArrayList<Node> stateNodes, Map<Integer, Node> i2sn,
                                Automaton automaton, Set<Object> locatedStates, Map<Integer, State> i2s, boolean isBlock,
                                Document document) {
-        // Create the map of ids to state nodes.
         for (int i = 0; i < stateNodes.size(); i++) {
             Node stateNode = stateNodes.get(i);
             if (stateNode.getNodeType() != Node.ELEMENT_NODE)
                 continue;
-            // Extract the ID attribute.
             String idString = ((Element) stateNode).getAttribute("id");
-            // //System.out.println("State created with id " + idString);
             if (idString == null)
                 throw new DataException(
                         "State without id attribute encountered!");
             Integer id = parseID(idString);
-            // Check for duplicates.
             if (i2sn.put(id, stateNode) != null)
                 throw new DataException("The state ID " + id
                         + " appears twice!");
         }
-        // Go through the map, and turn the state nodes into states.
         Iterator<Integer> it = i2sn.keySet().iterator();
         while (it.hasNext()) {
             Integer id = it.next();
             Element stateNode = (Element) i2sn.get(id);
-            // Get the fields of this state.
             Map<String, String> e2t = elementsToText(stateNode);
-            // Create the state.
             java.awt.Point p = new java.awt.Point();
             boolean hasLocation = true;
-            // Try to get the X coord.
             double x = 0, y = 0;
             try {
                 x = Double.parseDouble(e2t.get("x"));
@@ -261,7 +228,6 @@ public class TMTransducerAux{
                         + e2t.get("x")
                         + " could not be read for state " + id + ".");
             }
-            // Try to get the Y coord.
             try {
                 y = Double.parseDouble(e2t.get("y"));
             } catch (NullPointerException e) {
@@ -272,9 +238,7 @@ public class TMTransducerAux{
                         + " could not be read for state " + id + ".");
             }
             p.setLocation(x, y);
-            // Create the state.
             State state = null;
-//			if (!isBlock){
             if (!(automaton instanceof TuringMachine)) {
                 state = automaton.createStateWithId(p, id.intValue());
             } else {
@@ -284,8 +248,6 @@ public class TMTransducerAux{
                     tempNode = document.getDocumentElement()
                             .getElementsByTagName(fileName).item(0);
                     Automaton temp = (TuringMachine) readAutomaton(tempNode, document);
-                    //MERLIN MERLIN MERLIN MERLIN MERLIN//
-//                    EDebug.print("Are we or not creating a block?");
                     state = ((TuringMachine) automaton).createInnerTM(p, temp, fileName,
                             id.intValue());
                 } else {
@@ -299,7 +261,6 @@ public class TMTransducerAux{
             if (name.equals("")) state.setName("q" + id.intValue());
             else state.setName(name);
 
-            // Add various attributes.
             if (e2t.containsKey("name"))
                 state.setName(e2t.get("name"));
             if (e2t.containsKey("label"))
@@ -308,9 +269,6 @@ public class TMTransducerAux{
                 automaton.addFinalState(state);
             if (e2t.containsKey("initial"))
                 automaton.setInitialState(state);
-            /*
-             * If it is a Moore machine, add state output.
-             */
             if (automaton instanceof MooreMachine && e2t.containsKey(MooreTransducer.STATE_OUTPUT_NAME))
                 ((MooreMachine) automaton).setOutput(state, e2t.get(MooreTransducer.STATE_OUTPUT_NAME));
         }
@@ -318,7 +276,7 @@ public class TMTransducerAux{
 
 	protected void addBlocks(Node node, Automaton automaton, Set<Object> locatedStates,
                              Map<Integer, State> i2s, Document document) {
-        assert (automaton instanceof TuringMachine); //this code should really be in TMTransducer, but I see why it's here
+        assert (automaton instanceof TuringMachine);
         if (node == null) return;
         if (!node.hasChildNodes())
             return;
@@ -343,7 +301,6 @@ public class TMTransducerAux{
         });
         createState(blockNodes, i2sn, automaton, locatedStates, i2s, true,
                 document);
-        // return i2s;
     }
 
 	private void readBlocks(Node parent, Automaton root, Set<Object> states,
@@ -363,8 +320,6 @@ public class TMTransducerAux{
                 stateNodes.add(allNodes.item(k));
             }
         }
-        // Map state IDs to states, in an attempt to add in numeric
-        // things first. A specialized Comparator is helpful here.
         Map<Integer, Node> i2sn = new java.util.TreeMap<Integer, Node>(new Comparator<Object>() {
             public int compare(Object o1, Object o2) {
                 if (o1 instanceof Integer && !(o2 instanceof Integer))
@@ -379,7 +334,6 @@ public class TMTransducerAux{
         });
         createState(stateNodes, i2sn, automaton, locatedStates, i2s, false,
                 document);
-        // i2s = addBlocks(document, automaton, locatedStates, i2s);
         return i2s;
     }
 
@@ -399,16 +353,13 @@ public class TMTransducerAux{
         TuringMachine tm = (TuringMachine) from.getAutomaton();
         int tapes = tm.tapes();
         String[] readStrings = new String[tapes], writeStrings = new String[tapes], moveStrings = new String[tapes];
-        // Set defaults in case the transition for that tape is not specified.
         Arrays.fill(readStrings, "");
         Arrays.fill(writeStrings, "");
         Arrays.fill(moveStrings, "R");
-        // Avoid undue code duplication.
         Map<String, String[]> tag2array = new HashMap<>();
         tag2array.put("read", readStrings);
         tag2array.put("write", writeStrings);
         tag2array.put("move", moveStrings);
-        // Go through the tags.
         Iterator<String> it = tag2array.keySet().iterator();
         while (it.hasNext()) {
             String tag = it.next();
@@ -416,10 +367,9 @@ public class TMTransducerAux{
             NodeList nodes = ((Element) node).getElementsByTagName(tag);
             for (int i = 0; i < nodes.getLength(); i++) {
                 Element elem = (Element) nodes.item(i);
-                // Get which tape this is for.
                 String tapeString = elem.getAttribute("tape");
                 if (tapeString.length() == 0)
-                    tapeString = "1"; // Default single tape.
+                    tapeString = "1";
                 int tape = 1;
                 try {
                     tape = Integer.parseInt(tapeString);
@@ -431,11 +381,9 @@ public class TMTransducerAux{
                     throw new DataException("In " + tag
                             + " tag, error reading " + tapeString + " as tape.");
                 }
-                // Get the contained text.
                 String contained = containedText(elem);
                 if (contained == null)
                     contained = "";
-                // Set the right text.
                 array[tape - 1] = contained;
 
                 if (isBlock) {
@@ -446,9 +394,7 @@ public class TMTransducerAux{
                 }
             }
         }
-        // Now, try creating the transition.
         try {
-            //System.out.println(isBlock);
             TMTransition t = new TMTransition(from, to, readStrings, writeStrings,
                     moveStrings);
             if (isBlock) t.setBlockTransition(true);
@@ -460,7 +406,6 @@ public class TMTransducerAux{
 
 	protected void readTransitions(Node parent, Automaton automaton,
                                    Map<Integer, State> map) {
-        Map<Object, State> i2s = new java.util.HashMap<>();
         if (parent == null || automaton == null) return;
         NodeList allNodes = parent.getChildNodes();
         ArrayList<Node> tNodes = new ArrayList<Node>();
@@ -471,15 +416,12 @@ public class TMTransducerAux{
             }
         }
 
-        // Create the transitions.
         for (int i = 0; i < tNodes.size(); i++) {
             Node tNode = tNodes.get(i);
-            // Get the subelements of this transition.
             Map<String, String> e2t = elementsToText(tNode);
-            // Get the from state.
             String isBlock = ((Element) tNode).getAttribute("block");
             if (isBlock.equals("true")) {
-                bool = true; //We have a block transition.
+                bool = true;
             }
             String fromName = e2t.get("from");
             if (fromName == null)
@@ -489,7 +431,6 @@ public class TMTransducerAux{
             if (from == null)
                 throw new DataException("A transition is defined from "
                         + "non-existent state " + id + "!");
-            // Get the to state.
             String toName = e2t.get("to");
             if (toName == null)
                 throw new DataException("A transition has no to state!");
@@ -498,38 +439,28 @@ public class TMTransducerAux{
             if (to == null)
                 throw new DataException("A transition is defined to "
                         + "non-existent state " + id + "!");
-            // Now, make the transition.
             Transition transition = createTransition(from, to, tNode, e2t, bool);
             automaton.addTransition(transition);
             bool = false;
-
-
-            //deal with the shapiness of the transition, if the file specifies it. //add controlX and controlY
             String controlX = e2t.get("controlx");
             String controlY = e2t.get("controly");
             if (controlX != null && controlY != null) {
                 Point p = new Point(Integer.parseInt(controlX), Integer.parseInt(controlY));
                 transition.setControl(p);
-            } else { //explicit is better than implicit
+            } else {
                 transition.setControl(null);
             }
         }
     }
 
 	private void performLayout(Automaton automaton, Set<Object> locStates) {
-        // Apply the graph layout algorithm to those states that
-        // appeared without the <x> and <y> tags.
         if (locStates.size() == automaton.getStates().length)
             return;
         AutomatonGraph graph = new AutomatonGraph(automaton);
         LayoutAlgorithm layout = new GEMLayoutAlgorithm();
         for (int i = 0; i < 3; i++)
-            // Do it a few times...
             layout.layout(graph, locStates);
         if (locStates.size() < 2) {
-            // Make sure things don't get too large or too small in
-            // the event that sufficient reference for scaling is not
-            // present.
             graph.moveWithinFrame(new java.awt.Rectangle(20, 20, 425, 260));
         }
         graph.moveAutomatonStates();
@@ -541,12 +472,9 @@ public class TMTransducerAux{
         Automaton root = createEmptyAutomaton(document);
         if (parent == null) return root;
         readBlocks(parent, root, locatedStates, document);
-        // Read the states and transitions.
         readTransitions(parent, root, readStates(parent, root, locatedStates,
                 document));
-        //read the notes
         readnotes(parent, root, document);
-        // Do the layout if necessary.
         performLayout(root, locatedStates);
         automatonMap.put(parent.getNodeName(), root);
         return root;
@@ -555,7 +483,6 @@ public class TMTransducerAux{
 	public java.io.Serializable fromDOM(Document document) {
 		Map<String, Automaton> automatonMap = new java.util.HashMap<>();
         automatonMap.clear();
-        Automaton a = createEmptyAutomaton(document);
         Node parent = document.getDocumentElement()
                 .getElementsByTagName("automaton").item(0);
         if (parent == null) parent = document.getDocumentElement();

@@ -19,7 +19,6 @@ public class PDASimulatorFinal extends AutomatonSimulator {
 
     public PDASimulatorFinal(Automaton automaton) {
         super(automaton);
-
 		myAcceptance = FINAL_STATE;
     }
 
@@ -59,16 +58,11 @@ public class PDASimulatorFinal extends AutomatonSimulator {
                 list.add(configurationToAdd);
             }
         }
-
         return list;
     }
 
     public void setAcceptByFinalState() {
         myAcceptance = FINAL_STATE;
-    }
-
-    public void setAcceptByEmptyStack() {
-        myAcceptance = EMPTY_STACK;
     }
 
     public boolean isAccepted() {

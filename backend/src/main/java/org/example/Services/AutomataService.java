@@ -7,7 +7,6 @@ import automata.fsa.NFAToDFA;
 import automata.pda.PDATransition;
 import automata.pda.PushdownAutomaton;
 import automata.pda.PDAToCFGConverter;
-import automata.turing.TMSimulator;
 import automata.turing.TuringMachine;
 import file.ParseException;
 import file.XMLCodec;
@@ -22,7 +21,6 @@ import org.example.Auxiliars.PDASimulatorFinal;
 import org.example.Auxiliars.TMTransducerAux;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
-import file.xml.Transducer;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -31,7 +29,6 @@ import org.w3c.dom.Document;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import automata.*;
 
 @Service

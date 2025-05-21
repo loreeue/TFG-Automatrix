@@ -7,7 +7,6 @@ import org.example.Entities.LoginRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -17,11 +16,6 @@ public class UserRESTController {
 
     @Autowired
     private UserService userService;
-
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
-    }
 
     @PostMapping("/register")
     public User createUser(@RequestBody User user) {

@@ -22,7 +22,6 @@ public class SecurityConfig {
 		http
 			.cors(withDefaults())
 			.authorizeHttpRequests(auth -> auth
-				// I allow all POST, GET and DELETE requests
 				.requestMatchers(HttpMethod.POST, "/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/**").permitAll()
 				.requestMatchers(HttpMethod.DELETE, "/**").permitAll()
