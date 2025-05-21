@@ -85,7 +85,7 @@ public class AutomataService {
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document doc = builder.parse(file);
-			Transducer transducer = TMTransducer.getTransducer(doc);
+			Transducer transducer = (Transducer) TMTransducer.getTransducer(doc);
 			return transducer.fromDOM(doc);
 		} catch (ParserConfigurationException var7) {
 			throw new ParseException("Java could not create the parser!");
@@ -106,20 +106,17 @@ public class AutomataService {
         try {
             automaton = (TuringMachine) decodeTM(new File(filePath), null);
         }
-		/*catch (Exception e) {
-            System.out.println("El TM no se pudo cargar o es incorrecto");
-            return null;
-        }*/
 		catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException("Error cargando el fichero de MT: " + e.getMessage(), e);
+			throw new RuntimeException("El TM no se pudo cargar o es incorrecto: " + e.getMessage(), e);
 		}
         return automaton;
     }
 
     public boolean simulateTuringMachine(TuringMachine automaton, String input) throws Exception {
-		TMSimulator simulator = new TMSimulator(automaton);
-		return simulator.simulateInput(input);
+		AutomatonSimulator simulator = SimulatorFactory.getSimulator(automaton);
+        if (simulator == null) throw new RuntimeException("Cannot load a simulator for this automaton.");
+        return simulator.simulateInput(input);
     }
 
     public PushdownAutomaton loadAP(String filePath) throws Exception {

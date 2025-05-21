@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.*;
 import org.w3c.dom.*;
 
-import file.XMLCodec;
 import file.xml.CFPumpingLemmaTransducer;
 import file.xml.FSATransducer;
 import file.xml.GrammarTransducer;
@@ -18,7 +17,7 @@ import file.xml.RegPumpingLemmaTransducer;
 import file.xml.TMBBTransducer;
 import file.xml.Transducer;
 
-public class TMTransducer implements Transducer{
+public class TMTransducer{
     private static final Map<String, Object> typeToTransducer;
     private static final Map<Class<?>, Object> classToTransducer;
 
@@ -113,22 +112,4 @@ public class TMTransducer implements Transducer{
         typeToTransducer.put(type, transducer);
         classToTransducer.put(structureClass, transducer);
     }
-
-	@Override
-	public Serializable fromDOM(Document doc) {
-		Transducer transducer = TMTransducer.getTransducer(doc);
-		return transducer.fromDOM(doc);
-	}
-
-	@Override
-	public String getType() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getType'");
-	}
-
-	@Override
-	public Document toDOM(Serializable arg0) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'toDOM'");
-	}
 }
