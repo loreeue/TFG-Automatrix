@@ -9,7 +9,6 @@ const SimulateMT = () => {
     const [input, setInput] = useState("");
     const [result, setResult] = useState("");
     const [loading, setLoading] = useState(false);
-    const [openDialog, setOpenDialog] = useState(false);
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -69,11 +68,6 @@ const SimulateMT = () => {
             toast.error("Por favor ingresa una cadena de entrada.", { position: "top-right" });
             return;
         }
-        setOpenDialog(true);
-    };
-
-    const handleDialogClose = () => {
-        setOpenDialog(false);
         handleSubmit();
     };
 
@@ -236,52 +230,6 @@ const SimulateMT = () => {
 					{result}
 				</Typography>
 			)}
-
-            <Dialog
-                open={openDialog}
-                onClose={handleDialogClose}
-                sx={{
-                    "& .MuiDialog-paper": {
-                        backgroundColor: "#2C2C2C",
-                        color: "#FFFFFF",
-                        borderRadius: "10px",
-                        padding: "1rem",
-                    },
-                }}
-            >
-                <DialogTitle
-                    sx={{
-                        fontFamily: "'Spicy Rice', cursive",
-                        textAlign: "center",
-                    }}
-                >
-                    Atención
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText
-                        sx={{
-                            fontFamily: "'Josefin Sans', sans-serif",
-                            color: "#FFFFFF",
-                            textAlign: "center",
-                        }}
-                    >
-                        Es necesario que especifiques en JFLAP el tipo de Máquina de Turing.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions sx={{ justifyContent: "center" }}>
-                    <Button
-                        onClick={handleDialogClose}
-                        sx={{
-                            backgroundColor: "#694D75",
-                            color: "#FFFFFF",
-                            fontFamily: "'Josefin Sans', sans-serif",
-                            "&:hover": { backgroundColor: "#331832" },
-                        }}
-                    >
-                        Aceptar
-                    </Button>
-                </DialogActions>
-            </Dialog>
         </Box>
     );
 };
