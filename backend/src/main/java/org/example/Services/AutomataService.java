@@ -108,10 +108,14 @@ public class AutomataService {
         try {
             automaton = (TuringMachine) decodeTM(new File(filePath), null);
         }
-		catch (Exception e) {
+		/*catch (Exception e) {
             System.out.println("El TM no se pudo cargar o es incorrecto");
             return null;
-        }
+        }*/
+		catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("Error cargando el fichero de MT: " + e.getMessage(), e);
+		}
         return automaton;
     }
 
