@@ -18,8 +18,9 @@ import file.xml.PDATransducer;
 import file.xml.RETransducer;
 import file.xml.RegPumpingLemmaTransducer;
 import file.xml.TMBBTransducer;
+import file.xml.Transducer;
 
-public class TMTransducer {
+public class TMTransducer implements Transducer{
     private static final Map<String, Object> typeToTransducer;
     private static final Map<Class<?>, Object> classToTransducer;
 
@@ -114,4 +115,22 @@ public class TMTransducer {
         typeToTransducer.put(type, transducer);
         classToTransducer.put(structureClass, transducer);
     }
+
+	@Override
+	public Serializable fromDOM(Document arg0) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'fromDOM'");
+	}
+
+	@Override
+	public String getType() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'getType'");
+	}
+
+	@Override
+	public Document toDOM(Serializable arg0) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'toDOM'");
+	}
 }
