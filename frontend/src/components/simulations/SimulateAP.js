@@ -11,7 +11,7 @@ const SimulateAP = () => {
     const [result, setResult] = useState("");
     const [loading, setLoading] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
-	const [simulationMode, setSimulationMode] = useState(null); // "final" o "empty"
+	const [simulationMode, setSimulationMode] = useState(null); // "final" or "empty"
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -108,7 +108,7 @@ const SimulateAP = () => {
 			toast.error("Error en el servidor al procesar la simulación.");
 		} finally {
 			setLoading(false);
-			setSimulationMode(null); // Reset
+			setSimulationMode(null);
 		}
 	};
 

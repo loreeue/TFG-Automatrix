@@ -608,12 +608,12 @@ const DrawAFND = () => {
 				minWidth: "3rem",
 				height: "3rem",
 				backgroundColor: deleteTransitionMode
-					? theme.palette.error.main        // rojo cuando el modo está activo
-					: theme.palette.secondary.main,   // color normal cuando está inactivo
+					? theme.palette.error.main
+					: theme.palette.secondary.main,
 				"&:hover": {
 					backgroundColor: deleteTransitionMode
-					? theme.palette.error.dark      // rojo oscuro al pasar el ratón
-					: theme.palette.primary.main,   // color normal al pasar el ratón
+					? theme.palette.error.dark
+					: theme.palette.primary.main,
 				},
 				}}
 				onClick={handleDeleteModeClick}

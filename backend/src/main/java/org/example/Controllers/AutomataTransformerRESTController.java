@@ -93,7 +93,7 @@ public class AutomataTransformerRESTController {
 			}
 
             // Save the resulting AFD to a file
-			File outputFile = File.createTempFile("afd_minimized", ".jff");
+			File outputFile = File.createTempFile("afd", ".jff");
             automataService.saveAFND(afd, outputFile.getAbsolutePath());
 
             // Prepare the file as a downloadable resource
@@ -164,7 +164,7 @@ public class AutomataTransformerRESTController {
 			}
 
             // Save the resulting minimized AFD to a file
-			File outputFile = File.createTempFile("afd", ".jff");
+			File outputFile = File.createTempFile("afd_minimized", ".jff");
             automataService.saveAFND(minimizedAfd, outputFile.getAbsolutePath());
 
             // Prepare the file as a downloadable resource
