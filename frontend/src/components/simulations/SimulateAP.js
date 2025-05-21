@@ -116,7 +116,7 @@ const SimulateAP = () => {
 		if (simulationMode) {
 			handleSubmit();
 		}
-	}, [simulationMode]);
+	}, [simulationMode, handleSubmit]);
 
     return (
         <Box
