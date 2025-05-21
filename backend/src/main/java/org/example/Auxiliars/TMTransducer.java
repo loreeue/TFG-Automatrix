@@ -4,10 +4,8 @@ import gui.action.OpenAction;
 import java.io.Serializable;
 import java.util.*;
 import org.w3c.dom.*;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
+import file.XMLCodec;
 import file.xml.CFPumpingLemmaTransducer;
 import file.xml.FSATransducer;
 import file.xml.GrammarTransducer;
@@ -117,9 +115,9 @@ public class TMTransducer implements Transducer{
     }
 
 	@Override
-	public Serializable fromDOM(Document arg0) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'fromDOM'");
+	public Serializable fromDOM(Document doc) {
+		Transducer transducer = TMTransducer.getTransducer(doc);
+		return transducer.fromDOM(doc);
 	}
 
 	@Override
