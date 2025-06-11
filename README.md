@@ -26,6 +26,14 @@ El aprendizaje de teoría de autómatas y lenguajes formales suele representar u
 
 ---
 
+## Imágenes
+
+![Screenshot1](imgs/home.png)
+![Screenshot2](imgs/draw.png)
+![Screenshot3](imgs/docs.png)
+
+---
+
 ## Características
 
 - **Conversión Bidireccional:** Permite transformar autómatas, expresiones regulares y gramáticas regulares.
