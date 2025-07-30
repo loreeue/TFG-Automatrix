@@ -39,7 +39,7 @@ El aprendizaje de teoría de autómatas y lenguajes formales suele representar u
 - **Conversión Bidireccional:** Permite transformar autómatas, expresiones regulares y gramáticas regulares.
 - **Simulación Interactiva:** Los usuarios pueden ingresar cadenas y visualizar si el autómata acepta o rechaza dichas entradas.
 - **Visualización Gráfica:** Genera representaciones gráficas de los autómatas, facilitando su comprensión.
-- **Gestión de Usuarios:** Funcionalidades de registro, inicio de sesión y persistencia de datos mediante una base de datos H2.
+- **Gestión de Usuarios:** Funcionalidades de registro, inicio de sesión y persistencia de datos mediante una base de datos PostgreSQL.
 - **Editor Interactivo:** Interfaz desarrollada en React que permite editar y modificar autómatas mediante técnicas de arrastrar y soltar.
 - **Arquitectura Modular:** Implementación en Java con Spring Boot siguiendo el patrón Modelo–Vista–Controlador (MVC).
 
@@ -49,7 +49,7 @@ El aprendizaje de teoría de autómatas y lenguajes formales suele representar u
 
 - **Frontend:** React, HTML5, CSS3, JavaScript.
 - **Backend:** Java, Spring Boot, patrón MVC.
-- **Base de Datos:** H2 (embebida).
+- **Base de Datos:** PostgreSQL (relacional).
 - **Control de Versiones:** Git y GitHub para el seguimiento y respaldo del desarrollo.
 - **Metodología de Desarrollo:** Kanban adaptado para trabajo individual, gestionado a través de Jira.
 
@@ -93,7 +93,7 @@ El aprendizaje de teoría de autómatas y lenguajes formales suele representar u
 
 4. **Configuración de la Base de Datos:**
 
-   - La aplicación utiliza H2 de manera embebida. No se requiere configuración adicional, pero puedes acceder a la consola de H2 para monitorear la base de datos según la documentación del proyecto.
+   - La aplicación utiliza una base de datos relacional llamada PostgreSQL.
 
 ---
 
